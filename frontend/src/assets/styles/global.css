@@ -1,0 +1,36 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+/* Define default container bg color */
+.main-container {
+  background-color: #fafaf9;
+  min-height: 75vh;
+  min-width: 60vw;
+  max-width: 95vw;
+  margin-bottom: 4rem;
+  margin-top: 3rem;
+}
+
+.main-container h1 {
+  font-size: 4em; /* Default size, can be overridden */
+  color: #333;
+}
+
+.main-container p {
+  font-size: 2em; /* Default size, can be overridden */
+  text-align: center;
+}
+
+.main-container .btn {
+  border-radius: 0.75em;
+  margin: 1.4em;
+}
+
+.card-title {
+  text-align: center;
+}
+
+.card-text {
+  text-align: center;
+}

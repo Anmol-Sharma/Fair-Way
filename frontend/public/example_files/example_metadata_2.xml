@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+  <dc:creator>Purohit, Harsh</dc:creator>
+  <dc:creator>Tanabe, Ryo</dc:creator>
+  <dc:creator>Ichige, Kenji</dc:creator>
+  <dc:creator>Endo, Takashi</dc:creator>
+  <dc:creator>Nikaido, Yuki</dc:creator>
+  <dc:creator>Suefusa, Kaori</dc:creator>
+  <dc:creator>Kawaguchi, Yohei</dc:creator>
+  <dc:date>2019-09-20</dc:date>
+  <dc:description>&amp;lt;p&amp;gt;This dataset&amp;nbsp;is a sound dataset for malfunctioning industrial machine investigation and inspection (MIMII dataset).&amp;nbsp;It contains the sounds generated from four types of industrial machines, i.e. valves, pumps, fans, and slide rails. Each type of machine&amp;nbsp;includes seven individual product models*1, and the data for each model contains normal sounds (from 5000 seconds to 10000 seconds) and anomalous sounds (about 1000&amp;nbsp;seconds). To resemble a&amp;nbsp;real-life scenario, various anomalous sounds were recorded (e.g., contamination, leakage, rotating unbalance, and rail damage). Also, the background noise recorded in multiple real factories was mixed with the machine sounds. The sounds were recorded by eight-channel microphone array with 16 kHz sampling rate and 16 bit per sample. The MIMII dataset assists&amp;nbsp;benchmark for sound-based machine fault diagnosis. Users can test the performance for specific functions e.g., unsupervised anomaly detection, transfer learning, noise robustness, etc. The detail of the dataset is described in [1][2].&amp;lt;/p&amp;gt;
+
+&amp;lt;p&amp;gt;This dataset is made available by Hitachi, Ltd. under a Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license.&amp;lt;/p&amp;gt;
+
+&amp;lt;p&amp;gt;A baseline&amp;nbsp;sample code&amp;nbsp;for anomaly detection is available&amp;nbsp;on GitHub: &amp;lt;a href="https://github.com/MIMII-hitachi/mimii_baseline/"&amp;gt;https://github.com/MIMII-hitachi/mimii_baseline/&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+
+&amp;lt;p&amp;gt;*1: This version &amp;quot;public 1.0&amp;quot; contains four models (model ID 00, 02, 04, and 06). The rest three models will be released in a future edition.&amp;lt;/p&amp;gt;
+
+&amp;lt;p&amp;gt;[1] Harsh Purohit, Ryo Tanabe, Kenji Ichige, Takashi Endo, Yuki Nikaido, Kaori Suefusa, and Yohei Kawaguchi, &amp;ldquo;MIMII Dataset: Sound Dataset for Malfunctioning Industrial Machine Investigation and Inspection,&amp;rdquo; arXiv preprint arXiv:1909.09347, 2019.&amp;lt;/p&amp;gt;
+
+&amp;lt;p&amp;gt;[2] Harsh Purohit, Ryo Tanabe, Kenji Ichige, Takashi Endo, Yuki Nikaido, Kaori Suefusa, and Yohei Kawaguchi, &amp;ldquo;MIMII Dataset: Sound Dataset for Malfunctioning Industrial Machine Investigation and Inspection,&amp;rdquo; in Proc. 4th Workshop on Detection and Classification of Acoustic Scenes and Events (DCASE), 2019.&amp;lt;/p&amp;gt;</dc:description>
+  <dc:identifier>https://doi.org/10.5281/zenodo.3384388</dc:identifier>
+  <dc:identifier>oai:zenodo.org:3384388</dc:identifier>
+  <dc:publisher>Zenodo</dc:publisher>
+  <dc:relation>https://zenodo.org/communities/dcase</dc:relation>
+  <dc:relation>https://doi.org/10.5281/zenodo.3384387</dc:relation>
+  <dc:rights>info:eu-repo/semantics/openAccess</dc:rights>
+  <dc:rights>Creative Commons Attribution Share Alike 4.0 International</dc:rights>
+  <dc:rights>https://creativecommons.org/licenses/by-sa/4.0/legalcode</dc:rights>
+  <dc:source>DCASE 2019 Workshop, 4th Workshop on Detection and Classification of Acoustic Scenes and Events, New York, USA, 25-26 October 2019</dc:source>
+  <dc:subject>anomaly detection</dc:subject>
+  <dc:subject>machine fault diagnosis</dc:subject>
+  <dc:subject>acoustic condition monitoring</dc:subject>
+  <dc:subject>machine learning</dc:subject>
+  <dc:subject>unsupervised learning</dc:subject>
+  <dc:subject>acoustic scene classification</dc:subject>
+  <dc:subject>acoustic signal processing</dc:subject>
+  <dc:subject>microphone array</dc:subject>
+  <dc:subject>computational auditory scene analysis</dc:subject>
+  <dc:subject>audio</dc:subject>
+  <dc:title>MIMII Dataset: Sound Dataset for Malfunctioning Industrial Machine Investigation and Inspection</dc:title>
+  <dc:type>info:eu-repo/semantics/other</dc:type>
+</oai_dc:dc>

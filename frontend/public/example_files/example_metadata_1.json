@@ -1,0 +1,127 @@
+{
+    "contributors": [
+      {
+        "affiliation": [
+          {
+            "name": "Energy Systems and Data Group, University of Birmingham"
+          }
+        ],
+        "contributorType": "Researcher",
+        "familyName": "Day",
+        "givenName": "Joseph",
+        "name": "Day, Joseph",
+        "nameIdentifiers": [
+          {
+            "nameIdentifier": "0000-0003-2170-8190",
+            "nameIdentifierScheme": "ORCID"
+          }
+        ],
+        "nameType": "Personal"
+      }
+    ],
+    "creators": [
+      {
+        "affiliation": [
+          {
+            "name": "Energy Systems and Data Group, University of Birmingham, UK"
+          }
+        ],
+        "familyName": "Grant Wilson",
+        "name": "Grant Wilson",
+        "nameIdentifiers": [
+          {
+            "nameIdentifier": "0000-0003-4083-597X",
+            "nameIdentifierScheme": "ORCID"
+          }
+        ],
+        "nameType": "Personal"
+      }
+    ],
+    "dates": [
+      {
+        "date": "2024-08-19",
+        "dateType": "Issued"
+      },
+      {
+        "date": "2024-08-19",
+        "dateType": "Updated"
+      }
+    ],
+    "descriptions": [
+      {
+        "description": "A journal paper published in Energy Strategy Reviews details the method to create the data.\n\n\nhttps://www.sciencedirect.com/science/article/pii/S2211467X21001280\n\n\n2023-10-10: Version 8.0.5 has additional columns added, one for day of the year, and one for the half hour period of the year (17520 in a standard year and 17568 in a leap year). A new interconnector (https://www.viking-link.com/) has posted a value since 2023-07-12 but the values have all been a zero value so far (until 2023-09-30).\n\n\n2023-03-15: Version 8.0.1 is a major rewrite with column names that now include the units and the data type. Also, pumped storage has charging values included from 2012, i.e., the negative values when pumped storage is being charged, as well as the positive values when it was discharging (which were available previously). The raw version of the data (rather than cleaned) has been dropped for the time being.\n\n\n2023-01-06: Version 7.0.0 was created. Now includes data for the Eleclink interconnector from Great Britain to France through the Channel Tunnel (https://www.eleclink.co.uk/index.php). This supersedes\u00a0previous versions - as the Eleclink data is now included for historical data (including in the ESPENI total).\n\n\n2021-09-09: Version 6.0.0 was created. Now includes data for the North Sea Link (NSL) interconnector from Great Britain to Norway (https://www.northsealink.com). The previous version (5.0.4) should not be used - as there was an error with interconnector data having a static value over the summer 2021.\n\n\n\u00a0\n\n\n2021-05-05: Version 5.0.0 was created. Datetimes now in ISO 8601 format (with capital letter 'T' between the date and time) rather than previously with a space (to RFC 3339 format) and with an offset to identify both UTC and localtime. MW values now all saved as integers rather than floats. Elexon data as always from www.elexonportal.co.uk/fuelhh, National Grid data from\u00a0https://data.nationalgrideso.com/demand/historic-demand-data \u00a0 Raw data now added again for comparison of pre and post cleaning - to allow for training of additional cleaning methods. If using Microsoft Excel, the T between the date and time can be removed using the =SUBSTITUTE() command - and substitute \"T\" for a space \" \"\n\n\n_____________________________________________________________________________________________________\n\n\n2021-03-02: Version 4.0.0 was created. Due to a new interconnecter (IFA2 -\u00a0https://en.wikipedia.org/wiki/IFA-2) being commissioned in Q1 2021, there is an additional column with data from National Grid - this is called 'POWER_NGEM_IFA2_FLOW_MW' in the espeni dataset. In addition, National Grid has dropped\u00a0the column name 'FRENCH_FLOW' that used to provide\u00a0the value for the column\u00a0'POWER_NGEM_FRENCH_FLOW_MW' in previous espeni versions. However, this has been changed to 'IFA_FLOW' in National Grid's original data, which is now called 'POWER_NGEM_IFA_FLOW_MW' in the espeni dataset. Lastly, the IO14 columns have all been dropped by National Grid - and potentially unlikely to appear again in future.\n\n\n2020-12-02: Version 3.0.0 was created. There was a problem with earlier versions\u00a0local time format - where the +01:00 value was not carried through into the data properly. Now addressed - therefore - local time now has the format e.g.\u00a02020-03-31 20:00:00+01:00 when in British Summer Time.\n\n\n2020-10-03: Version 2.0.0 was created as it looks like National Grid has\u00a0had a significant change\u00a0to the methodology underpinning the embedded wind calculations. The wind profile seems similar to previous values, but with an increasing value in comparison\u00a0to the value published in earlier\u00a0the greater the embedded value is. The 'new' values are from\u00a0https://data.nationalgrideso.com/demand/daily-demand-update from 2013.\n\n\nPreviously: raw and cleaned datasets for Great Britain's\u00a0publicly available electrical data from\u00a0Elexon (www.elexonportal.co.uk) and National Grid (https://demandforecast.nationalgrid.com/efs_demand_forecast/faces/DataExplorer). Updated versions with more recent data will be uploaded with a differing\u00a0version number and doi\n\n\nAll data is released in accordance with Elexon's disclaimer and reservation of rights.\n\n\nhttps://www.elexon.co.uk/using-this-website/disclaimer-and-reservation-of-rights/\n\n\nThis disclaimer is also felt to cover\u00a0the data from National Grid, and the parsed data from the Energy Informatics Group at the University of Birmingham.",
+        "descriptionType": "Abstract"
+      },
+      {
+        "description": "Grant funding as part of Research Councils (UK)  EP/W008726/1 - GasNetNew\nGrant funding as part of Research Councils (UK) EP/V012053/1 - The Active Building Centre Research Programme (ABC RP)\nGrant funding as part of Research Councils (UK)  EP/L024756/1 - UK Energy Research Centre research programme Phase 3",
+        "descriptionType": "Other"
+      }
+    ],
+    "fundingReferences": [
+      {
+        "awardNumber": "EP/W008726/1",
+        "awardTitle": "GasNetNew - The role of the gas network in a future decarbonised UK",
+        "awardURI": "https://gow.epsrc.ukri.org/NGBOViewGrant.aspx?GrantRef=EP/W008726/1",
+        "funderName": "UK Research and Innovation"
+      }
+    ],
+    "identifiers": [
+      {
+        "identifier": "https://zenodo.org/records/13345363",
+        "identifierType": "URL"
+      },
+      {
+        "identifier": "10.5281/zenodo.13345363",
+        "identifierType": "DOI"
+      },
+      {
+        "identifier": "oai:zenodo.org:13345363",
+        "identifierType": "oai"
+      }
+    ],
+    "language": "eng",
+    "publicationYear": "2024",
+    "publisher": "Zenodo",
+    "relatedIdentifiers": [
+      {
+        "relatedIdentifier": "10.1016/j.esr.2021.100743",
+        "relatedIdentifierType": "DOI",
+        "relationType": "IsDescribedBy",
+        "resourceTypeGeneral": "Text"
+      },
+      {
+        "relatedIdentifier": "10.5281/zenodo.3884858",
+        "relatedIdentifierType": "DOI",
+        "relationType": "IsVersionOf"
+      },
+      {
+        "relatedIdentifier": "https://zenodo.org/communities/energy_data",
+        "relatedIdentifierType": "URL",
+        "relationType": "IsPartOf"
+      }
+    ],
+    "rightsList": [
+      {
+        "rights": "Creative Commons Attribution Non Commercial 4.0 International",
+        "rightsIdentifier": "cc-by-nc-4.0",
+        "rightsIdentifierScheme": "spdx",
+        "rightsUri": "https://creativecommons.org/licenses/by-nc/4.0/legalcode"
+      }
+    ],
+    "schemaVersion": "http://datacite.org/schema/kernel-4",
+    "subjects": [
+      {
+        "subject": "electrical supply, half-hourly, Great Britain"
+      }
+    ],
+    "titles": [
+      {
+        "title": "Electrical half hourly raw and cleaned datasets for Great Britain from 2008-11-05"
+      }
+    ],
+    "types": {
+      "resourceType": "",
+      "resourceTypeGeneral": "Dataset"
+    },
+    "version": "8.0.10"
+  }

@@ -1,0 +1,13 @@
+
+frontend/dist/*
+*node_modules*
+*__pycache__*
+
+*pyrightconfig.json*
+
+*.env
+
+*logs/*
+*.log
+
+*.DS_Store*

@@ -1,0 +1,12 @@
+{
+	"supported_metadata_file_types":[".md", ".json", ".xml", ".txt", ".html", ".xhtml"],
+	"supported_data_file_types":[".csv"],
+	"max_metadata_file_size":104857600,
+	"JSON_MAX_CHUNK_SIZE": 2500,
+	"JSON_MIN_CHUNK_SIZE": 800,
+	"XML_MIN_CHUNK_SIZE": 800,
+	"XML_MAX_CHUNK_SIZE": 2500,
+	"HTML_CHUNK_SIZE": 800,
+	"TEXT_MAX_CHAR_COUNT": 4000,
+	"MARKDOWN_MAX_CHAR_COUNT": 5000
+}

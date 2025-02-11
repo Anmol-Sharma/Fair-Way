@@ -1,0 +1,95 @@
+# Frontend
+FROM --platform=$BUILDPLATFORM node:22.12.0-alpine AS frontend_base
+# Add user asharma with specific UID/GID
+RUN adduser -D -u 1014 -G root asharma && \
+    mkdir -p /configs && \
+    chown -R asharma:root /configs
+WORKDIR /app
+COPY ./frontend/package*.json ./
+# Fix permissions before npm install
+RUN chown -R asharma:root /app && \
+    # Give write permission to npm cache directories
+    mkdir -p /home/asharma/.npm && \
+    chown -R asharma:root /home/asharma/.npm
+USER asharma
+RUN npm install
+
+# Backend
+FROM --platform=$BUILDPLATFORM python:3.12.8-alpine AS backend_base
+# Add user asharma with specific UID/GID
+RUN adduser -D -u 1014 -G root asharma && \
+    mkdir -p /configs && \
+    chown -R asharma:root /configs
+WORKDIR /app
+RUN chown asharma:root /app
+
+# Install poetry as root and make it accessible to asharma
+RUN pip install poetry==2.0.1 && \
+    # Create poetry config directory for asharma
+    mkdir -p /home/asharma/.local/bin && \
+    mkdir -p /home/asharma/.config/pypoetry && \
+    chown -R asharma:root /home/asharma/.local && \
+    chown -R asharma:root /home/asharma/.config
+
+COPY ./backend/pyproject.toml ./backend/poetry.lock ./
+RUN chown asharma:root pyproject.toml poetry.lock
+
+USER asharma
+ENV PATH="/home/asharma/.local/bin:$PATH"
+RUN poetry install --without dev
+
+# Run the backend service
+FROM backend_base AS backend
+USER asharma
+# No additional steps needed since we're using volumes
+CMD ["poetry", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+# Run the celery service
+FROM backend_base AS celery
+USER asharma
+# No additional steps needed since we're using volumes
+CMD ["poetry", "run", "celery", "-A", "celery_tasks.cel", "worker", "--loglevel=info"]
+
+# Redis base image
+FROM --platform=$BUILDPLATFORM redis:alpine AS redis_base
+# Add user asharma with specific UID/GID and create needed directories
+RUN adduser -D -u 1014 -G root asharma && \
+    mkdir -p /usr/local/etc/redis /var/log/redis /data && \
+    chown -R asharma:root /usr/local/etc/redis /var/log/redis /data
+
+# No additional steps needed since we're using volumes
+
+FROM redis_base AS redis_prod
+USER asharma
+CMD ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
+# Build and deploy
+FROM frontend_base AS frontend_prod
+USER asharma
+RUN chown -R asharma:root /app
+COPY --chown=asharma:root ./frontend ./
+COPY --chown=asharma:root ./configs /configs
+RUN npm run build
+
+# Nginx stage to serve the built files
+FROM --platform=$BUILDPLATFORM nginx:alpine AS frontend_server
+# Add user asharma with specific UID/GID
+RUN adduser -D -u 1014 -G root asharma && \
+    chown -R asharma:root /usr/share/nginx/html && \
+    mkdir -p /var/cache/nginx/client_temp && \
+    chown -R asharma:root /var/cache/nginx && \
+    mkdir -p /var/run/nginx && \
+    chown -R asharma:root /var/run/nginx && \
+    chmod -R 777 /var/run/nginx /tmp
+
+# Copy the global Nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Copy the virtual host configuration
+COPY default.conf /etc/nginx/conf.d/default.conf
+
+# Copy built files from the previous stage
+COPY --from=frontend_prod /app/dist /usr/share/nginx/html
+
+USER asharma
+CMD ["nginx", "-g", "daemon off;"]
