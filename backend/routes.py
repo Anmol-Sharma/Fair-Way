@@ -134,7 +134,7 @@ async def handle_published(item: OnlineResource):
         )
         return {
             "success": True,
-            "comment": "DOI dataset being processed",
+            "comment": "Assessment is being processed",
             "task_id": task_id,
         }
     except Exception as e:

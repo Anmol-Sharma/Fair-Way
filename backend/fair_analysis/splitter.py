@@ -12,8 +12,6 @@ from config import get_global_settings
 
 global_settings = get_global_settings()
 
-# TODO: Add logic logic to handle parsing errors for JSON, HTML, XML etc.
-
 
 class Splitter:
     def __init__(

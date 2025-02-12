@@ -12,8 +12,6 @@ from fair_analysis.model import ModelBase
 _env_settings = get_env_settings()
 _global_settings = get_global_settings()
 
-# TODO: Add test id to test base in order to use down the line for result aggregation
-
 
 # Test Base Class
 class BaseTest:

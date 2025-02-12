@@ -82,6 +82,4 @@ def analyze_fair(file_type, file_content) -> Sequence[Dict[str, Any]]:
         all_results["metrics"][res["metric_id"]] = res
 
     all_results["summary"] = aggregate_results(results=all_results["metrics"])
-
-    # TODO: here setup the scoring function values
     return all_results
