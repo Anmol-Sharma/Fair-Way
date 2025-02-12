@@ -6,6 +6,7 @@ services:
       target: redis_prod
     image: fairway_redis
     container_name: fairway_redis_ct
+    restart: unless-stopped
     hostname: redis
     volumes:
       - ./redis.conf:/usr/local/etc/redis/redis.conf
@@ -22,6 +23,7 @@ services:
       target: backend
     image: fairway_backend
     container_name: fairway_backend_ct
+    restart: unless-stopped
     volumes:
       - ./backend:/app
       - ./configs:/configs
@@ -44,6 +46,7 @@ services:
       target: celery
     image: fairway_celery_workers
     container_name: fairway_celery_ct
+    restart: unless-stopped
     volumes:
       - ./backend:/app
       - ./configs:/configs

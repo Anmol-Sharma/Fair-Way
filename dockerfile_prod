@@ -100,7 +100,7 @@ CMD ["nginx", "-g", "daemon off;"]
 
 
 # OLLAMA setup
-FROM ollama/ollama:0.5.7 as ollama_server
+FROM ollama/ollama:0.5.8 as ollama_server
 # Copy the script to the docker image
 COPY ./wait_for_ollama.sh /wait_for_ollama.sh
 # Ensure the script is executable
