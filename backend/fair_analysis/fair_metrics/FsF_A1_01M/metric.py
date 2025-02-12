@@ -32,7 +32,7 @@ class Metric(BaseMetric):
         return results
 
 
-# TODO: We will have to define machine readability test of access level
+# TODO: Decide what to do for 2nd test. F-UJI checks for 2nd test against a closed set of vocabs.
 
 M = Metric(
     metric_id="FsF_A1_01M",

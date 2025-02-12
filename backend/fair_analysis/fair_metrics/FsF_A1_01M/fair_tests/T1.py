@@ -39,7 +39,7 @@ class Test(BaseTest):
 t1 = Test(
     name="Metadata contains access level and access conditions of the data",
     feedback_format=ResponseFormat,
-    test_main_cmd="Your task is to help analyze the metadata provided for data access conditions and extract them. Data access conditions can be `public` where data is available with open licence and available without any restrictions. Access condition can be `embargoed` or `restricted` where data is available only under certain conditions.",
-    test_instruction="Check the data access conditions. If there is no information about the same, return back empty value for the access condition. Check carefully as similar words could have been used for it.",
+    test_main_cmd="Your task is to help analyze the metadata provided for data access conditions and extract them. Data access conditions can be `public` where data is available with open licence and available without any restrictions. Access condition can be `embargoed` if it is available after a time period or `restricted` where data is available only under certain conditions. Another access condition can be `metadata-only` where users can only have access to metadata",
+    test_instruction="Check the data access conditions carefully. If there is no information about the same, return back empty value for the access condition. Check carefully as similar words could have been used for it.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )

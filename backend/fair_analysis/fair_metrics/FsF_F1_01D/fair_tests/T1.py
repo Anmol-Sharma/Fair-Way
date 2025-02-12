@@ -30,14 +30,14 @@ class Test(BaseTest):
 
     def filter_chunk_results(self, chunk_results):
         # If all empty, return false, full empty (return chunks as empty)
-        chunk_results = [ch_res for ch_res in chunk_results if not ch_res["success"]]
+        chunk_results = [ch_res for ch_res in chunk_results if ch_res["success"]]
         return chunk_results
 
 
 t1 = Test(
     name="Data is assigned global unique identifier",
     feedback_format=ResponseFormat,
-    test_main_cmd="Your task is to help analyze the metadata and carefully check and extract if Data is assigned a global unique identifier. The unique identifier should be for data and not metadata. Examples of unique identifiers of data are Internationalized Resource Identifier (IRI), URL, URN, Digital Object Identifier (DOI), Archival Resource Key (ARK), W3ID links, Identifiers.org identification of biological entities.",
-    test_instruction="Check if metadata below has a globally unique identifier for data. Check carefully all the links.",
+    test_main_cmd="Your task is to help analyze the metadata and carefully check and extract if Data is assigned a global unique identifier. The unique identifier should be for data and not metadata and should follow a unique identifier syntax. Examples of unique identifiers of data are Internationalized Resource Identifier (IRI), URL, Digital Object Identifier (DOI), ORCID etc. Records associated with Zenodo or Dryad Data repositories are also globally unique. Furthermore, if detect either a DOI or URL or URN or IRI check if they follow the defined syntax for those.",
+    test_instruction="Check carefully if metadata below has a globally unique identifier for data or not.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )

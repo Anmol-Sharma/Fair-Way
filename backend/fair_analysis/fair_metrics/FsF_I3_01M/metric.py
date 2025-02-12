@@ -33,6 +33,8 @@ class Metric(BaseMetric):
         return results
 
 
+# TODO: Add test for valid spdx licence test.
+
 M = Metric(
     metric_id="FsF_I3_01M",
     name="Metadata includes links between the data and its related entities",

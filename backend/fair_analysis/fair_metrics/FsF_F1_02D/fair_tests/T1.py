@@ -30,14 +30,14 @@ class Test(BaseTest):
 
     def filter_chunk_results(self, chunk_results):
         # If all empty, return false, full empty (return chunks as empty)
-        chunk_results = [ch_res for ch_res in chunk_results if not ch_res["success"]]
+        chunk_results = [ch_res for ch_res in chunk_results if ch_res["success"]]
         return chunk_results
 
 
 t1 = Test(
     name="Data is assigned a persistent identifier",
     feedback_format=ResponseFormat,
-    test_main_cmd="Your task is to help analyze the metadata and carefully check and extract if Data is assigned a persistent identifier. Examples of persistent identifiers of data are Digital Object Identifier (DOI), arXiv ID, orcid id (orcid.org), handle system (handle.net).",
-    test_instruction="Check if metadata below has a persistent identifier for data. Check carefully all the links.",
+    test_main_cmd="Your task is to help analyze the metadata and carefully check and extract if Data is assigned a persistent identifier. Examples of persistent identifiers are Digital Object Identifier (DOI), arXiv ID, orcid id (orcid.org), handle system (handle.net), ARK (Archival Resource Key)",
+    test_instruction="Check if metadata below has a persistent identifier for data.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )

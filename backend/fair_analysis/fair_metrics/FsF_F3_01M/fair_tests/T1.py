@@ -42,7 +42,7 @@ class Test(BaseTest):
 t1 = Test(
     name="Metadata identifier information about data for its size, type and files",
     feedback_format=ResponseFormat,
-    test_main_cmd="Your task is to help analyze the metadata provided at the end for `file names`, `dataset size` and `type of files` and extract them from the data.",
-    test_instruction="Check if metadata below has file names, sizes and type information. Check carefully as similar words could have been used for them.",
+    test_main_cmd="Your task is to help analyze the metadata provided at the end for `file names`, `dataset size` and `type of files` and extract them from the data. Only extract information that is explicitly mentioned in the metadata.",
+    test_instruction="Check if metadata below has file names, sizes and type information. Check carefully as different vocabulary could have been used for them.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )

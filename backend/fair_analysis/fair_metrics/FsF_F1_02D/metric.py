@@ -33,6 +33,8 @@ class Metric(BaseMetric):
         return results
 
 
+# TODO: Define test to check if the identifier is web-accessible
+
 M = Metric(
     metric_id="FsF_F1_02D",
     name="Data is assigned a persistent identifier",

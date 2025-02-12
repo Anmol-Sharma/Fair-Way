@@ -48,7 +48,7 @@ class Test(BaseTest):
 t2 = Test(
     name="Metadata contains information about content of the data.",
     feedback_format=ResponseFormat,
-    test_main_cmd="Your task is to help analyze the metadata provided at the end for content of the data, which includes file information like types, sizes and measured variables.",
-    test_instruction="Check if metadata includes information about data content. Check carefully as similar words could have been used for it.",
+    test_main_cmd="Your task is to help analyze the metadata provided at the end for content of the data, which includes file types, file sizes and measured variables. Check carefully if information explicitly about files has been mentioned and also carefully look if metadata includes information about variables/ observations which were measured.",
+    test_instruction="Check if metadata includes information about data content. Check carefully as different vocabulary could have been used for them.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )

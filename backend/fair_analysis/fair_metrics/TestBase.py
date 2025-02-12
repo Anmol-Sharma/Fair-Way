@@ -16,7 +16,7 @@ _global_settings = get_global_settings()
 # Test Base Class
 class BaseTest:
     SystemPrompt: str = (
-        """You are a helpful assistant who will help with FAIR data assessment and metadata improvements. You will be given metadata in various formats like json, json-ld, rdfs/xml and even plaintext or markdown. You are given specific instructions on the task. Analyze carefully and make sure to answer using json ONLY as you are interacting with a programming API and not a human. The format of the response JSON to be returned is provided to you explicitly."""
+        """You are a helpful assistant who will help with FAIR data assessment and metadata improvements. You will be given metadata in various formats like json, json-ld, rdfs/xml and even plaintext or markdown and specific instructions on the task like analysis and information extraction will be provided. Analyze carefully and make sure to answer using json ONLY as you are interacting with a programming API and not a human. The format of the response JSON to be returned is provided to you explicitly."""
     )
 
     def __init__(
@@ -96,9 +96,8 @@ class BaseTest:
         chunk_results,
         export_chunk_results: bool = False,
     ) -> Dict[str, str]:
-        combine_prompt = f"Here are some results for the test: '{self.test_name}' detected by you on different chunks of a metadata file. Combine them together in a single result. Carefully analyze results, remove duplicate results and answer as precisely as possible. Answer in the provided JSON format."
+        combine_prompt = f"Here are some results for the test: '{self.test_name}' detected by you on different chunks of a metadata file. Combine them together in a single result. Carefully analyze results, remove duplicate results and answer as precisely as possible. Avoid returning generic statements and rather return back precise results and answer in the provided JSON format."
         chunk_results = self.filter_chunk_results(chunk_results)
-
         messages = [
             {
                 "role": _env_settings.role_user,
