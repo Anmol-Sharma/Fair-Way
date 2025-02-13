@@ -37,7 +37,10 @@
             <RouterLink class="nav-link" to="/Docs">Docs</RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" to="/Feedback">Feedback</RouterLink>
+            <RouterLink class="nav-link" to="/Feedback">General Feedback</RouterLink>
+          </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link" to="/Survey">Survey Feedback</RouterLink>
           </li>
         </ul>
       </div>

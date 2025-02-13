@@ -55,7 +55,7 @@ async function handleSubmit(event) {
   >
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">Feedbacks are always Welcome!</h5>
+        <h5 class="card-title">General Feedbacks are always Welcome!</h5>
         <p class="card-text my-4">Please provide your feedback below.</p>
         <form @submit.prevent="handleSubmit($event)">
           <div class="row my-3">
