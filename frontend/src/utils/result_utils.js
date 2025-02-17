@@ -242,45 +242,49 @@ export async function offline_assessment(event, Files, metadata_file){
 
 export async function fetchResults() {
   try {
-      const initiated_task = JSON.parse(sessionStorage.getItem("initiated_task"));
-      let delay = 30000; // Start with 30 seconds
+        const initiatedTask = sessionStorage.getItem("initiated_task");
+        if (!initiatedTask) {
+            throw new Error('No initiated task found in sessionStorage');
+        }
+        const initiated_task = JSON.parse(initiatedTask);
+        let delay = 30000; // Start with 30 seconds
 
-      while (true) {
-          const statusResponse = await fetch(`/api/Status/${initiated_task.task_id}`, {});
+        while (true) {
+            const statusResponse = await fetch(`/api/Status/${initiated_task.task_id}`, {});
 
-          // Check for HTTP 500 error
-          if (statusResponse.status === 500) {
-              router.push({ name: '500' });
-              throw new Error('Internal Server Error');
-          }
+            // Check for HTTP 500 error
+            if (statusResponse.status === 500) {
+                router.push({ name: '500' });
+                throw new Error('Internal Server Error');
+            }
 
-          const status = await statusResponse.json();
+            const status = await statusResponse.json();
 
-          if (status.success) {
-              const resultsResponse = await fetch(`/api/Results/${initiated_task.task_id}`, {});
+            if (status.success) {
+                const resultsResponse = await fetch(`/api/Results/${initiated_task.task_id}`, {});
 
-              // Check for HTTP 500 error
-              if (resultsResponse.status === 500) {
-                  router.push({ name: '500' });
-                  throw new Error('Internal Server Error');
-              }
+                // Check for HTTP 500 error
+                if (resultsResponse.status === 500) {
+                    router.push({ name: '500' });
+                    throw new Error('Internal Server Error');
+                }
 
-              const parsed_results = await resultsResponse.json();
+                const parsed_results = await resultsResponse.json();
 
-              if (parsed_results.task_id === initiated_task.task_id) {
-                  return parsed_results;
-              } else {
-                  throw new Error("Task ID don't Match");
-              }
-          } else {
-              console.log("Awaiting Results");
-              // Update delay for next iteration
-              delay = Math.max(delay / 2, 5000);
-              await sleep(delay);
-          }
-      }
+                if (parsed_results.task_id === initiated_task.task_id) {
+                    return parsed_results;
+                } else {
+                    throw new Error("Task ID doesn't Match");
+                }
+            } else {
+                console.log("Awaiting Results");
+                // Update delay for next iteration check for status update
+                delay = Math.max(delay / 2, 5000);
+                await sleep(delay);
+            }
+        }
   } catch (error) {
-      console.error("Error fetching results:", error);
-      throw error;
+        console.error("Error fetching results:", error);
+        throw error;
   }
 }
