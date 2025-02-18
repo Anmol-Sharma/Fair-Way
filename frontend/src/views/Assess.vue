@@ -15,6 +15,45 @@ let metadata_file = ref();
 // Define some conditional rendering variables
 let online_flag = ref(true);
 let offline_flag = ref(false);
+let advanced_testing = ref(false);
+
+let advancedTests = ref([
+  { domain: "", type: "", condition: "" }, // Initial empty row
+]);
+
+function addTestRow() {
+  advancedTests.value.push({ domain: "", type: "" });
+}
+
+function removeTestRow(index) {
+  if (advancedTests.value.length > 1) {
+    advancedTests.value.splice(index, 1);
+  }
+}
+
+function getPlaceholder(type) {
+  if (type === "Vocabulary Check") {
+    return "For Vocabulary Checks, define comma separate values on each line for a single property. Eg:\n\n'Temporal Resolution', Describes the frequency or interval of data collection over time\n'Geospatial Extent', Geographic area covered by a dataset";
+  } else if (type === "Standard Check") {
+    return "Describe a single standard check here. Don't create complex instructions, Keep it simple with max 3-4 lines and in a manner which can be answered on metadata with true/false.";
+  }
+  return ""; // default placeholder
+}
+
+function getAdvancedTests() {
+  if (advancedTests.value.length === 1) {
+    // No Tests defined
+    if (
+      !advanced_testing &&
+      advancedTests.value[0].domain === "" &&
+      advancedTests.value[0].type === ""
+    )
+      return [];
+    else return advancedTests.value;
+    // Single Test defined
+  }
+  return advancedTests.value;
+}
 
 // Helper function which triggers when the file input changes.
 function offline_preprocess(event) {
@@ -32,21 +71,25 @@ function offline_preprocess(event) {
 
   Files.value = filteredFiles;
 }
-function online_assess(event, url) {
+function online_assess(event, provided_url) {
   const pattern_doi = /^(?:https?:\/\/)?doi\.org\/10\.\d+\/(?:dryad|zenodo)(?:\.[\w-]+)*$/;
   const pattern_zenodo = /^(https?:\/\/)?zenodo\.org\/records\/\d+$/;
   const pattern_dryad =
     /^(https?:\/\/)datadryad\.org\/stash\/dataset\/doi:10\.\d+\/dryad\.[a-zA-Z0-9-]+$/;
 
-  if (!pattern_doi.test(url) && !pattern_zenodo.test(url) && !pattern_dryad.test(url)) {
+  if (
+    !pattern_doi.test(provided_url) &&
+    !pattern_zenodo.test(provided_url) &&
+    !pattern_dryad.test(provided_url)
+  ) {
     alert(
       "Invalid Record. Only valid DOIs published by Zenodo or Dryad accepted or Enter valid url of a Zenodo or Dryad Record."
     );
   } else {
     // send back the url to backend for processing
-    online_assessment(url);
+    online_assessment({ url: provided_url, advancedTests: toRaw(getAdvancedTests()) });
   }
-  this.url = "";
+  url.value = "";
 }
 </script>
 
@@ -120,7 +163,16 @@ function online_assess(event, url) {
             <p class="card-text">Select your Local/ Unpublished data sources.</p>
 
             <!-- pass raw js object for files and metadata selected file. -->
-            <form @submit.prevent="offline_assessment($event, toRaw(Files), toRaw(metadata_file))">
+            <form
+              @submit.prevent="
+                offline_assessment(
+                  $event,
+                  toRaw(Files),
+                  toRaw(metadata_file),
+                  toRaw(getAdvancedTests())
+                )
+              "
+            >
               <div class="d-flex justify-content-center mt-4 mb-3 ms-5" v-if="online_flag">
                 <input type="file" webkitdirectory @change="offline_preprocess" />
               </div>
@@ -202,6 +254,83 @@ function online_assess(event, url) {
         </div>
       </div>
     </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-auto">
+        <div class="form-check text-center my-1">
+          <label class="form-label" id="advanced-testing-label"
+            ><strong>Advanced Testing</strong></label
+          >
+          <input type="checkbox" class="form-check-input" v-model="advanced_testing" />
+        </div>
+      </div>
+    </div>
+    <div class="row g-4 justify-content-center mb-5" v-if="advanced_testing">
+      <div class="col-12 col-lg-9">
+        <div class="card advanced-testing-card">
+          <div class="card-body text-center">
+            <p class="text-muted fs-6">For your Domain Specific Tests on Metadata.</p>
+            <h5 class="card-title">Advanced User Defined Tests on Metadata</h5>
+            <!-- TODO: Define/ update logic to include this form alongside the other forms. -->
+            <!-- Dynamic test rows container -->
+            <div id="test-rows-container">
+              <!-- Initial test row -->
+              <div class="row g-3" v-for="(test, index) in advancedTests" :key="index">
+                <!-- Minus button column -->
+                <div class="col-md-1">
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger"
+                    @click="removeTestRow(index)"
+                    :disabled="advancedTests.length === 1"
+                  >
+                    <i class="bi bi-dash-md" style="font-size: 1.1em">-</i>
+                  </button>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Specify Your Domain</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    required
+                    v-model="test.domain"
+                    placeholder="Your Domain. Eg. Biological Sciences"
+                    style="font-size: 0.7em; text-align: center"
+                  />
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label">Test Type</label>
+                  <select class="form-select" v-model="test.type" style="font-size: 0.9em">
+                    <option value="">Please select</option>
+                    <option>Vocabulary Check</option>
+                    <option>Standard Check</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Condition</label>
+                  <textarea
+                    class="form-control"
+                    id="feedbackText"
+                    required
+                    rows="4"
+                    :placeholder="getPlaceholder(test.type)"
+                    v-model="test.condition"
+                    style="font-size: 0.8em"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Add new test row button -->
+            <div class="text-center my-2">
+              <button type="button" class="btn btn-outline-primary" @click="addTestRow">
+                <i class="bi bi-plus-md" style="font-size: 1.1em"></i> +
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -227,8 +356,34 @@ function online_assess(event, url) {
   position: relative;
 }
 
+#advanced-testing-label {
+  font-size: 1.2em;
+}
+
+/* Increase checkbox size */
+.form-check-input {
+  width: 1.2em;
+  height: 1.2em;
+}
+
+/* Optional: Add some styling to make it look better */
+.form-check-input {
+  border-radius: 0.35em;
+  transition: all 0.2s ease-in-out;
+}
+
+.form-check-input:hover {
+  border-color: #80bdff;
+}
+
+.form-check-input:checked {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
 .card {
-  height: 30em;
+  height: 25em;
+  max-width: 45vw;
 }
 
 .example-file-card {
@@ -243,6 +398,14 @@ function online_assess(event, url) {
 }
 
 .row {
-  margin-top: 1rem;
+  margin-top: 0.6em;
+}
+
+/* New styles for advanced testing card */
+.advanced-testing-card {
+  min-width: 75vw; /* Set width to 75% of view width */
+  margin: 0 auto; /* Center the card horizontally */
+  min-height: 15em;
+  height: auto;
 }
 </style>
