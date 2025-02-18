@@ -4,7 +4,7 @@ import log_config
 
 import re
 
-from fastapi import APIRouter, HTTPException, UploadFile, status
+from fastapi import APIRouter, HTTPException, status, Form, UploadFile
 from celery.result import AsyncResult
 
 from celery_tasks import analyze_fair
@@ -59,7 +59,7 @@ def __add_to_queue(file_type: str, file_content: str) -> str:
     status_code=status.HTTP_202_ACCEPTED,
     response_model=ResourceAcceptAssessment,
 )
-async def handle_published(item: OnlineResource):
+async def handle_published(data: OnlineResource):
     """Endpoint to handle online published datasets from zenodo and dryad (doi)
 
     Args:
@@ -74,27 +74,27 @@ async def handle_published(item: OnlineResource):
     try:
         # make the get request based on either dryad or zenodo
         # Fow now only metadata and raise the request to perform analysis on the request
-        logger.info(f"Request initiated for online resource: {item.url}")
+        logger.info(f"Request initiated for online resource: {data.url}")
 
         # Check if zenodo url or dryad record or doi
         pattern_zenodo = r"^(https?://)?zenodo\.org/records/\d+$"
         pattern_dryad = r"^(https?://)datadryad\.org/stash/dataset/doi:10\.\d+/dryad\.[a-zA-Z0-9-]+$"
 
-        if re.match(pattern_zenodo, item.url):
-            _record_num = item.url.split("/")[-1]
+        if re.match(pattern_zenodo, data.url):
+            _record_num = data.url.split("/")[-1]
             res, zen_rec = await fetch_zenodo_record(_record_num)
             if not res:
-                logger.warning(f"Could not resolve DOI for the url: {item.url}")
+                logger.warning(f"Could not resolve DOI for the url: {data.url}")
                 raise HTTPException(
                     status_code=400,
                     detail=f"Could not resolve Zenodo Record {_record_num}",
                 )
             file_content = json.dumps(zen_rec, separators=(",", ":"))
-        elif re.match(pattern_dryad, item.url):
-            doi = "/".join(item.url.split("/")[-2:])
+        elif re.match(pattern_dryad, data.url):
+            doi = "/".join(data.url.split("/")[-2:])
             res, dry_rec = await fetch_dryad_record(doi)
             if not res:
-                logger.warning(f"Could not resolve DOI for the url: {item.url}")
+                logger.warning(f"Could not resolve DOI for the url: {data.url}")
                 raise HTTPException(
                     status_code=400,
                     detail=f"Could not resolve Zenodo Record {_record_num}",
@@ -102,27 +102,27 @@ async def handle_published(item: OnlineResource):
             file_content = json.dumps(dry_rec, separators=(",", ":"))
         else:
             # Send the doi to doi resolver to check for validity
-            doi = "/".join(item.url.split("/")[-2:])
+            doi = "/".join(data.url.split("/")[-2:])
             logger.info(f"Processing DOI: {doi}")
             res, doi_resp = await fetch_doi(doi)
             if not res:
-                logger.warning(f"Could not resolve DOI for the url: {item.url}")
+                logger.warning(f"Could not resolve DOI for the url: {data.url}")
                 raise HTTPException(status_code=400, detail="Could not resolve DOI")
-            if "zenodo" in item.url:
+            if "zenodo" in data.url:
                 _record_num = doi_resp["value"].split("/")[-1]
                 res, zen_rec = await fetch_zenodo_record(_record_num)
                 if not res:
-                    logger.warning(f"Could not resolve DOI for the url: {item.url}")
+                    logger.warning(f"Could not resolve DOI for the url: {data.url}")
                     raise HTTPException(
                         status_code=400,
                         detail=f"Could not resolve Zenodo Record {_record_num}",
                     )
                 file_content = json.dumps(zen_rec, separators=(",", ":"))
-            elif "dryad" in item.url:
+            elif "dryad" in data.url:
                 doi = "/".join(doi_resp["value"].split("/")[-2:])
                 res, dry_rec = await fetch_dryad_record(doi)
                 if not res:
-                    logger.warning(f"Could not resolve DOI for the url: {item.url}")
+                    logger.warning(f"Could not resolve DOI for the url: {data.url}")
                     raise HTTPException(
                         status_code=400,
                         detail=f"Could not resolve Zenodo Record {_record_num}",
@@ -138,7 +138,7 @@ async def handle_published(item: OnlineResource):
             "task_id": task_id,
         }
     except Exception as e:
-        logger.error(f"Error processing item: {item} Error: {str(e)}")
+        logger.error(f"Error processing item: {data.url} Error: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -147,7 +147,10 @@ async def handle_published(item: OnlineResource):
     status_code=status.HTTP_202_ACCEPTED,
     response_model=ResourceAcceptAssessment,
 )
-async def handle_unpublished(file: UploadFile):
+async def handle_unpublished(
+    file: UploadFile,
+    advanced_tests: str = Form(..., alias="advancedTests"),
+):
     """Endpoint to handle offline file analysis
 
     Args:
@@ -167,6 +170,10 @@ async def handle_unpublished(file: UploadFile):
         logger.info(
             f"Request for Offline File Type {file_type} and file size: {file.size}"
         )
+
+        # Load the user defined tests
+        tests = json.loads(advanced_tests)
+
         task_id = __add_to_queue(file_type, file_content)
         return {
             "success": True,

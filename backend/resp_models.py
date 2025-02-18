@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 
 
 class Feedback(BaseModel):
@@ -12,9 +12,9 @@ class Feedback(BaseModel):
 #  Define Request Models #
 ##########################
 
-
 class OnlineResource(BaseModel):
     url: str
+    advancedTests: List[Dict]
 
 
 ##########################
