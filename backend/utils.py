@@ -171,9 +171,14 @@ def aggregate_results(results):
         * Percentage FAIR Score
     """
     summary = {}
-    summary["title"] = results["FsF_F2_01M"]["test_results"]["FsF_F2_01M-1"]["result"][
-        "title"
-    ]
+    try:
+        summary["title"] = results["FsF_F2_01M"]["test_results"]["FsF_F2_01M-1"][
+            "result"
+        ]["title"]
+    except KeyError:
+        logger.error("Key-Error while parsing results for title")
+        summary["title"] = ""
+
     summary["total_metrics"] = len(results)
 
     summary["score_summary"] = {
