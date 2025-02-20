@@ -33,9 +33,9 @@ function removeTestRow(index) {
 
 function getPlaceholder(type) {
   if (type === "Vocabulary Check") {
-    return "For Vocabulary Checks, define comma separate values on each line for a single property. Eg:\n\n'Temporal Resolution', Describes the frequency or interval of data collection over time\n'Geospatial Extent', Geographic area covered by a dataset";
+    return "Eg:\n'Temporal Resolution', Describes the frequency or interval of data collection over time\n'Geospatial Extent', Geographic area covered by a dataset";
   } else if (type === "Standard Check") {
-    return "Describe a single standard check here. Don't create complex instructions, Keep it simple with max 3-4 lines and in a manner which can be answered on metadata with true/false.";
+    return "Describe a single standard check here. Don't create complex instructions, Keep it simple in a manner which can be answered on metadata with true/false.";
   }
   return ""; // default placeholder
 }
@@ -254,9 +254,9 @@ function online_assess(event, provided_url) {
         </div>
       </div>
     </div>
-    <div class="row g-4 justify-content-center">
+    <div class="row justify-content-center my-3">
       <div class="col-auto">
-        <div class="form-check text-center my-1">
+        <div class="form-check text-center my-2">
           <label class="form-label" id="advanced-testing-label"
             ><strong>Advanced Testing</strong></label
           >
@@ -264,18 +264,30 @@ function online_assess(event, provided_url) {
         </div>
       </div>
     </div>
-    <div class="row g-4 justify-content-center mb-5" v-if="advanced_testing">
-      <div class="col-12 col-lg-9">
+    <div class="row-cols-1 mb-5" v-if="advanced_testing">
+      <div class="col-12 d-flex justify-content-center">
         <div class="card advanced-testing-card">
           <div class="card-body text-center">
-            <p class="text-muted fs-6">For your Domain Specific Tests on Metadata.</p>
             <h5 class="card-title">Advanced User Defined Tests on Metadata</h5>
-            <!-- TODO: Define/ update logic to include this form alongside the other forms. -->
+            <p class="text-muted fs-5 m-3">
+              LLMs can assist with checking your domain specific Vocabulary and Other Standards if
+              carefully provided with instructions.<br />
+              Use the following section to test:-
+            </p>
+            <ol class="text-muted fs-5 text-center">
+              <li>Vocabulary Checks</li>
+              <li>Simple Domain Standard Checks</li>
+            </ol>
+            <p class="text-muted fs-5 m-3">
+              For Vocabulary Checks, define comma separated values on each line for a single
+              property where first column represents name and second columnd represents property
+              description.<br />
+              For Standard Checks, Mention the condition explicitly in max 3-4 lines.
+            </p>
             <!-- Dynamic test rows container -->
             <div id="test-rows-container">
               <!-- Initial test row -->
               <div class="row g-3" v-for="(test, index) in advancedTests" :key="index">
-                <!-- Minus button column -->
                 <div class="col-md-1">
                   <button
                     type="button"
@@ -305,7 +317,6 @@ function online_assess(event, provided_url) {
                     <option>Standard Check</option>
                   </select>
                 </div>
-
                 <div class="col-md-6">
                   <label class="form-label">Condition</label>
                   <textarea
@@ -342,6 +353,10 @@ function online_assess(event, provided_url) {
 
 .text-muted {
   color: #6c757d !important;
+}
+
+.fs-5 {
+  font-size: 0.775rem !important;
 }
 
 .fs-6 {
@@ -407,5 +422,9 @@ function online_assess(event, provided_url) {
   margin: 0 auto; /* Center the card horizontally */
   min-height: 15em;
   height: auto;
+}
+.text-center ol {
+  list-style-position: inside;
+  padding-left: 0;
 }
 </style>
