@@ -14,8 +14,7 @@ export function redirectValidity() {
       throw new Error("Results not present");
     }
     initiated_task = JSON.parse(initiated_task);
-    console.log("Initiated Task:");
-    console.log(initiated_task);
+    console.log("Initiated Task:", initiated_task);
   }
 }
 
@@ -57,33 +56,47 @@ export function compute_acc_list(test_results, principle) {
     return bodyContent;
   };
 
+  const determineColor = (testResults) => {
+    // Determine color based on test results
+    let allPassed = true;
+    let anyPassed = false;
+
+    for (const test of Object.values(testResults)) {
+      if (test.score < test.out_of) {
+        allPassed = false;
+        continue;
+      } else if (test.score > 0) {
+        anyPassed = true;
+      }
+    }
+
+    let color;
+    if (allPassed) {
+      color = "#5ac481";
+    } else if (!allPassed && anyPassed) {
+      color = "#bdb359";
+    } else {
+      color = "#c95564";
+    }
+    return color;
+  };
+
   for (const [key, val] of Object.entries(test_results)) {
-    if (val.principle === principle) {
+    console.log("Passed Principle:", principle);
+    if (principle != "user" && val.principle === principle) {
       const acId = renameMetricID(key);
       const bodyContent = processTestResults(val.test_results);
-
-      // Determine color based on test results
-      let allPassed = true;
-      let anyPassed = false;
-
-      for (const test of Object.values(val.test_results)) {
-        if (test.score < test.out_of) {
-          allPassed = false;
-          continue;
-        } else if (test.score > 0) {
-          anyPassed = true;
-        }
-      }
-
-      let color;
-      if (allPassed) {
-        color = "#5ac481";
-      } else if (!allPassed && anyPassed) {
-        color = "#bdb359";
-      } else {
-        color = "#c95564";
-      }
-
+      const color = determineColor(val.test_results);
+      accList.push({
+        title: `${acId}: ${val.metric_name}`,
+        id: acId,
+        test_analysis: bodyContent,
+        color: color,
+      });
+    } else if (principle === "user" && !("principle" in val)) {
+      const acId = renameMetricID(key);
+      const bodyContent = processTestResults(val.test_results);
+      const color = determineColor(val.test_results);
       accList.push({
         title: `${acId}: ${val.metric_name}`,
         id: acId,
@@ -92,7 +105,6 @@ export function compute_acc_list(test_results, principle) {
       });
     }
   }
-
   return ref(accList);
 }
 
