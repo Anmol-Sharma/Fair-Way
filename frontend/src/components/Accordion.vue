@@ -64,7 +64,8 @@ const collapse_id_target = "#" + collapse_id;
 
 <style scoped>
 .accordion {
-  min-width: 85vw;
+  min-width: 80vw;
+  max-width: 85vw;
 }
 
 .accordion-button {

@@ -31,6 +31,7 @@ let f_accordions;
 let a_accordions;
 let i_accordions;
 let r_accordions;
+let user_accordions;
 
 // Function to export results as JSON
 const exportToJson = () => {
@@ -98,6 +99,7 @@ onMounted(async () => {
     a_accordions = compute_acc_list(parsed_res["fair_assessment"]["metrics"], "accessible");
     i_accordions = compute_acc_list(parsed_res["fair_assessment"]["metrics"], "interoperable");
     r_accordions = compute_acc_list(parsed_res["fair_assessment"]["metrics"], "reusable");
+    user_accordions = compute_acc_list(parsed_res["fair_assessment"]["metrics"], "user");
   } catch (error) {
     console.error("An error occurred while fetching results. Please try again later");
     console.log(error);
@@ -319,6 +321,16 @@ onMounted(async () => {
             <h3 class="display-7 text-center">Reusable</h3>
             <div>
               <Accordion v-for="(accord, index) in r_accordions" :key="index" :acc="accord" />
+            </div>
+          </div>
+        </div>
+        <br />
+
+        <div class="container d-flex justify-content-center">
+          <div>
+            <h3 class="display-7 text-center">User Defined Tests</h3>
+            <div>
+              <Accordion v-for="(accord, index) in user_accordions" :key="index" :acc="accord" />
             </div>
           </div>
         </div>
