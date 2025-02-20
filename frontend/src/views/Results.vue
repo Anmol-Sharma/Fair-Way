@@ -281,7 +281,7 @@ onMounted(async () => {
         </div>
 
         <!-- Findable Section -->
-        <div class="container">
+        <div class="container d-flex justify-content-center">
           <div>
             <h3 class="display-7 text-center">Findable</h3>
             <div>
@@ -292,7 +292,7 @@ onMounted(async () => {
         <br />
 
         <!-- Accessible Section -->
-        <div class="container">
+        <div class="container d-flex justify-content-center">
           <div>
             <h3 class="display-7 text-center">Accessible</h3>
             <div>
@@ -303,7 +303,7 @@ onMounted(async () => {
         <br />
 
         <!-- Interoperable Section -->
-        <div class="container">
+        <div class="container d-flex justify-content-center">
           <div>
             <h3 class="display-7 text-center">Interoperable</h3>
             <div>
@@ -314,7 +314,7 @@ onMounted(async () => {
         <br />
 
         <!-- Reusable Section -->
-        <div class="container">
+        <div class="container d-flex justify-content-center">
           <div>
             <h3 class="display-7 text-center">Reusable</h3>
             <div>
