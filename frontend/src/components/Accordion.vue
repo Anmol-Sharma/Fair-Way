@@ -18,7 +18,7 @@ const collapse_id_target = "#" + collapse_id;
     <div class="accordion-item text">
       <h2 class="accordion-header" :id="acc_head_id">
         <button
-          class="accordion-button"
+          class="accordion-button fw-bold"
           type="button"
           data-bs-toggle="collapse"
           :data-bs-target="collapse_id_target"
@@ -64,7 +64,11 @@ const collapse_id_target = "#" + collapse_id;
 
 <style scoped>
 .accordion {
-  min-width: 80vw;
+  min-width: 85vw;
+}
+
+.accordion-button {
+  font-size: 0.55em;
 }
 
 .accordion-button:focus {
