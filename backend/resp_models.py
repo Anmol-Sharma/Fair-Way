@@ -2,6 +2,22 @@ from pydantic import BaseModel
 from typing import Dict, Any, Optional, List
 
 
+class Survey(BaseModel):
+    easeOfUse: str
+    recommendation: str
+    fairFamiliarity: str
+    priorUsage: str
+    priorTools: str
+    professionalStatus: str
+    academicBG: str
+    academicBGOther: Optional[str] = None
+    usefulness: str
+    fairRating: int
+    usefulAspects: str
+    futureUsage: str
+    comments: Optional[str] = None
+
+
 class Feedback(BaseModel):
     name: str
     email: Optional[str] = None
@@ -11,6 +27,7 @@ class Feedback(BaseModel):
 ##########################
 #  Define Request Models #
 ##########################
+
 
 class OnlineResource(BaseModel):
     url: str
