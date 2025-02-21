@@ -10,7 +10,7 @@ class Survey(BaseModel):
     priorTools: str
     professionalStatus: str
     academicBG: str
-    academicBGOther: Optional[str] = None
+    academicBgOther: Optional[str] = None
     usefulness: str
     fairRating: int
     usefulAspects: str
