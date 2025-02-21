@@ -9,6 +9,8 @@ from typing import Tuple, Dict
 import sqlite3
 from contextlib import contextmanager
 
+from resp_models import Feedback, Survey
+
 env_settings = get_env_settings()
 
 
@@ -199,7 +201,9 @@ def aggregate_results(results):
 
     # Compute total score per principle, then sum them later for full score
     for metric_id, res in results.items():
-        val, total = get_max_result_vals(results[metric_id]["test_results"])
+        # TODO: Remove this if condition later on and compute the max results for all.
+        if "FsF" in metric_id:
+            val, total = get_max_result_vals(results[metric_id]["test_results"])
         if "FsF_F" in metric_id:
             summary["score_summary"]["score"]["F"] += val
             summary["score_summary"]["score_out_of"]["F"] += total
@@ -230,14 +234,35 @@ def init_db():
         cursor = conn.cursor()
         cursor.execute(
             """
-        CREATE TABLE IF NOT EXISTS feedback (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name VARCHAR(128) NOT NULL,
-            email VARCHAR(128) NULL,
-            feedback TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            CREATE TABLE IF NOT EXISTS feedback (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name VARCHAR(128) NOT NULL,
+                email VARCHAR(128) NULL,
+                feedback TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+            """
         )
-        """
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS Survey (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                EASE_OF_USE VARCHAR(64) NOT NULL,
+                OVERALL_RECOMMENDATION VARCHAR(64) NOT NULL,
+                FAIR_FAMILIARITY VARCHAR(64) NOT NULL,
+                PRIOR_TOOL_USAGE VARCHAR(64) NOT NULL,
+                USED_OTHER_TOOLS VARCHAR(64),
+                PROFESSIONAL_STATUS VARCHAR(128) NOT NULL,
+                ACADEMIC_BG VARCHAR(128) NOT NULL,
+                ACADEMIC_BG_OTHER VARCHAR(128),
+                FAIR_USEFULL VARCHAR(128) NOT NULL,
+                FAIR_RATING SHORT NOT NULL,
+                USEFUL_ASPECTS VARCHAR(128) NOT NULL,
+                FUTURE_USAGE VARCHAR(128) NOT NULL,
+                COMMENTS TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+            """
         )
         conn.commit()
 
@@ -252,17 +277,47 @@ def get_db():
         conn.close()
 
 
-def save_feedback(name: str, email: str, feedback: str) -> bool:
+def save_feedback(feedback: Feedback) -> bool:
     """Save feedback to the database"""
     with get_db() as conn:
         try:
             cursor = conn.cursor()
             cursor.execute(
                 """INSERT INTO feedback (name, email, feedback) VALUES (?, ?, ?)""",
-                (name, email, feedback),
+                (feedback.name, feedback.email, feedback.feedback),
             )
             conn.commit()
             return True
         except sqlite3.Error as e:
             print(f"Error saving feedback: {e}")
+            return False
+
+
+def save_survey(survey: Survey) -> bool:
+    """Save feedback to the database"""
+    with get_db() as conn:
+        try:
+            cursor = conn.cursor()
+            cursor.execute(
+                """INSERT INTO Survey (EASE_OF_USE, OVERALL_RECOMMENDATION, FAIR_FAMILIARITY, PRIOR_TOOL_USAGE, USED_OTHER_TOOLS, PROFESSIONAL_STATUS, ACADEMIC_BG, ACADEMIC_BG_OTHER, FAIR_USEFULL, FAIR_RATING, USEFUL_ASPECTS, FUTURE_USAGE, COMMENTS) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (
+                    survey.easeOfUse,
+                    survey.recommendation,
+                    survey.fairFamiliarity,
+                    survey.priorUsage,
+                    survey.priorTools,
+                    survey.professionalStatus,
+                    survey.academicBG,
+                    survey.academicBgOther,
+                    survey.usefulness,
+                    survey.fairRating,
+                    survey.usefulAspects,
+                    survey.futureUsage,
+                    survey.comments,
+                ),
+            )
+            conn.commit()
+            return True
+        except sqlite3.Error as e:
+            print(f"Error saving Survey: {e}")
             return False
