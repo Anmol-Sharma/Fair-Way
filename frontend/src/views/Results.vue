@@ -2,7 +2,7 @@
 import Accordion from "../components/Accordion.vue";
 import { onMounted, onUnmounted } from "vue";
 import { ref } from "vue";
-import { redirectValidity, compute_acc_list, fetchResults } from "../utils/result_utils.js";
+import { redirectValidity, computeAccList, fetchResults } from "../utils/resultUtils.js";
 
 // Check for redirect validity
 redirectValidity();
@@ -95,11 +95,11 @@ onMounted(async () => {
       parsed_res["fair_assessment"]["summary"]["score_summary"]["score_percent"]["R"] * 100
     ).toFixed(1);
     // Create accordions for individual metrics
-    f_accordions = compute_acc_list(parsed_res["fair_assessment"]["metrics"], "findable");
-    a_accordions = compute_acc_list(parsed_res["fair_assessment"]["metrics"], "accessible");
-    i_accordions = compute_acc_list(parsed_res["fair_assessment"]["metrics"], "interoperable");
-    r_accordions = compute_acc_list(parsed_res["fair_assessment"]["metrics"], "reusable");
-    user_accordions = compute_acc_list(parsed_res["fair_assessment"]["metrics"], "user");
+    f_accordions = computeAccList(parsed_res["fair_assessment"]["metrics"], "findable");
+    a_accordions = computeAccList(parsed_res["fair_assessment"]["metrics"], "accessible");
+    i_accordions = computeAccList(parsed_res["fair_assessment"]["metrics"], "interoperable");
+    r_accordions = computeAccList(parsed_res["fair_assessment"]["metrics"], "reusable");
+    user_accordions = computeAccList(parsed_res["fair_assessment"]["metrics"], "user");
   } catch (error) {
     console.error("An error occurred while fetching results. Please try again later");
     console.log(error);
