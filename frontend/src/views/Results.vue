@@ -13,29 +13,29 @@ let isProcessing = ref(true);
 sessionStorage.setItem("isProcessing", "true");
 
 // Storage for parsed results
-let parsed_res = ref();
+let parsedRes = ref();
 
 // Summary section variables
-let resource_title = ref("No Title Detected!");
-let total_fair_score = ref(0.0);
-let max_fair_score = ref(0.0);
-let total_metrics = ref();
+let resourceTitle = ref("No Title Detected!");
+let totalFairScore = ref(0.0);
+let maxFairScore = ref(0.0);
+let totalMetrics = ref();
 
 // Bar Chart section
-let f_percent = ref(0.0);
-let a_percent = ref(0.0);
-let i_percent = ref(0.0);
-let r_percent = ref(0.0);
+let fPercent = ref(0.0);
+let aPercent = ref(0.0);
+let iPercent = ref(0.0);
+let rPercent = ref(0.0);
 
-let f_accordions;
-let a_accordions;
-let i_accordions;
-let r_accordions;
-let user_accordions;
+let fAccordions;
+let aAccordions;
+let iAccordions;
+let rAccordions;
+let userAccordions;
 
 // Function to export results as JSON
 const exportToJson = () => {
-  const jsonData = JSON.stringify(parsed_res, null, 2);
+  const jsonData = JSON.stringify(parsedRes, null, 2);
   const blob = new Blob([jsonData], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -64,7 +64,7 @@ onMounted(async () => {
     }
   };
   try {
-    parsed_res = await fetchResults();
+    parsedRes = await fetchResults();
     isProcessing.value = false;
     sessionStorage.setItem("isProcessing", "false");
     sessionStorage.removeItem("formSubmitted");
@@ -72,34 +72,34 @@ onMounted(async () => {
     console.log("Results Received!");
 
     // get title
-    resource_title.value = parsed_res["fair_assessment"]["summary"]["title"];
-    total_metrics.value = parsed_res["fair_assessment"]["summary"]["total_metrics"];
+    resourceTitle.value = parsedRes["fair_assessment"]["summary"]["title"];
+    totalMetrics.value = parsedRes["fair_assessment"]["summary"]["total_metrics"];
 
     // get the total fair score
-    const _scores = parsed_res["fair_assessment"]["summary"]["score_summary"]["score"];
+    const _scores = parsedRes["fair_assessment"]["summary"]["score_summary"]["score"];
     Object.keys(_scores).forEach((key) => {
-      total_fair_score.value += _scores[key];
-      max_fair_score.value +=
-        parsed_res["fair_assessment"]["summary"]["score_summary"]["score_out_of"][key];
+      totalFairScore.value += _scores[key];
+      maxFairScore.value +=
+        parsedRes["fair_assessment"]["summary"]["score_summary"]["score_out_of"][key];
     });
-    f_percent.value = (
-      parsed_res["fair_assessment"]["summary"]["score_summary"]["score_percent"]["F"] * 100
+    fPercent.value = (
+      parsedRes["fair_assessment"]["summary"]["score_summary"]["score_percent"]["F"] * 100
     ).toFixed(1);
-    a_percent.value = (
-      parsed_res["fair_assessment"]["summary"]["score_summary"]["score_percent"]["A"] * 100
+    aPercent.value = (
+      parsedRes["fair_assessment"]["summary"]["score_summary"]["score_percent"]["A"] * 100
     ).toFixed(1);
-    i_percent.value = (
-      parsed_res["fair_assessment"]["summary"]["score_summary"]["score_percent"]["I"] * 100
+    iPercent.value = (
+      parsedRes["fair_assessment"]["summary"]["score_summary"]["score_percent"]["I"] * 100
     ).toFixed(1);
-    r_percent.value = (
-      parsed_res["fair_assessment"]["summary"]["score_summary"]["score_percent"]["R"] * 100
+    rPercent.value = (
+      parsedRes["fair_assessment"]["summary"]["score_summary"]["score_percent"]["R"] * 100
     ).toFixed(1);
     // Create accordions for individual metrics
-    f_accordions = computeAccList(parsed_res["fair_assessment"]["metrics"], "findable");
-    a_accordions = computeAccList(parsed_res["fair_assessment"]["metrics"], "accessible");
-    i_accordions = computeAccList(parsed_res["fair_assessment"]["metrics"], "interoperable");
-    r_accordions = computeAccList(parsed_res["fair_assessment"]["metrics"], "reusable");
-    user_accordions = computeAccList(parsed_res["fair_assessment"]["metrics"], "user");
+    fAccordions = computeAccList(parsedRes["fair_assessment"]["metrics"], "findable");
+    aAccordions = computeAccList(parsedRes["fair_assessment"]["metrics"], "accessible");
+    iAccordions = computeAccList(parsedRes["fair_assessment"]["metrics"], "interoperable");
+    rAccordions = computeAccList(parsedRes["fair_assessment"]["metrics"], "reusable");
+    userAccordions = computeAccList(parsedRes["fair_assessment"]["metrics"], "user");
   } catch (error) {
     console.error("An error occurred while fetching results. Please try again later");
     console.log(error);
@@ -138,16 +138,16 @@ onMounted(async () => {
         <h2 class="display-6 text-center">Result Summary</h2>
         <div class="card px-5">
           <div class="card-body justify-content-center">
-            <h3 class="card-title d-flex justify-content-center">{{ resource_title }}</h3>
+            <h3 class="card-title d-flex justify-content-center">{{ resourceTitle }}</h3>
             <table class="table my-3">
               <tbody>
                 <tr>
                   <th>FAIR Score:</th>
-                  <td>{{ total_fair_score }} / {{ max_fair_score }}</td>
+                  <td>{{ totalFairScore }} / {{ maxFairScore }}</td>
                 </tr>
                 <tr>
                   <th>FAIR Level:</th>
-                  <td>{{ ((total_fair_score / max_fair_score) * 100).toFixed(0) }}%</td>
+                  <td>{{ ((totalFairScore / maxFairScore) * 100).toFixed(0) }}%</td>
                 </tr>
                 <tr>
                   <th>Detected Resource PID/URL:</th>
@@ -159,7 +159,7 @@ onMounted(async () => {
                 </tr>
                 <tr>
                   <th>Total Metrics Measured:</th>
-                  <td>{{ total_metrics }}</td>
+                  <td>{{ totalMetrics }}</td>
                 </tr>
                 <tr>
                   <th>Export assessment results:</th>
@@ -184,12 +184,12 @@ onMounted(async () => {
                   <div
                     class="progress-bar bg-success"
                     role="progressbar"
-                    :style="{ width: f_percent + '%' }"
-                    :aria-valuenow="f_percent"
+                    :style="{ width: fPercent + '%' }"
+                    :aria-valuenow="fPercent"
                     aria-valuemin="0"
                     aria-valuemax="100"
                   >
-                    {{ f_percent }}%
+                    {{ fPercent }}%
                   </div>
                 </div>
               </div>
@@ -205,12 +205,12 @@ onMounted(async () => {
                   <div
                     class="progress-bar bg-info"
                     role="progressbar"
-                    :style="{ width: a_percent + '%' }"
-                    :aria-valuenow="a_percent"
+                    :style="{ width: aPercent + '%' }"
+                    :aria-valuenow="aPercent"
                     aria-valuemin="0"
                     aria-valuemax="100"
                   >
-                    {{ a_percent }}%
+                    {{ aPercent }}%
                   </div>
                 </div>
               </div>
@@ -227,12 +227,12 @@ onMounted(async () => {
                   <div
                     class="progress-bar bg-warning"
                     role="progressbar"
-                    :style="{ width: i_percent + '%' }"
-                    :aria-valuenow="i_percent"
+                    :style="{ width: iPercent + '%' }"
+                    :aria-valuenow="iPercent"
                     aria-valuemin="0"
                     aria-valuemax="100"
                   >
-                    {{ i_percent }}%
+                    {{ iPercent }}%
                   </div>
                 </div>
               </div>
@@ -249,12 +249,12 @@ onMounted(async () => {
                   <div
                     class="progress-bar"
                     role="progressbar"
-                    :style="{ width: r_percent + '%' }"
-                    :aria-valuenow="r_percent"
+                    :style="{ width: rPercent + '%' }"
+                    :aria-valuenow="rPercent"
                     aria-valuemin="0"
                     aria-valuemax="100"
                   >
-                    {{ r_percent }}%
+                    {{ rPercent }}%
                   </div>
                 </div>
               </div>
@@ -287,7 +287,7 @@ onMounted(async () => {
           <div>
             <h3 class="display-7 text-center">Findable</h3>
             <div>
-              <Accordion v-for="(accord, index) in f_accordions" :key="index" :acc="accord" />
+              <Accordion v-for="(accord, index) in fAccordions" :key="index" :acc="accord" />
             </div>
           </div>
         </div>
@@ -298,7 +298,7 @@ onMounted(async () => {
           <div>
             <h3 class="display-7 text-center">Accessible</h3>
             <div>
-              <Accordion v-for="(accord, index) in a_accordions" :key="index" :acc="accord" />
+              <Accordion v-for="(accord, index) in aAccordions" :key="index" :acc="accord" />
             </div>
           </div>
         </div>
@@ -309,7 +309,7 @@ onMounted(async () => {
           <div>
             <h3 class="display-7 text-center">Interoperable</h3>
             <div>
-              <Accordion v-for="(accord, index) in i_accordions" :key="index" :acc="accord" />
+              <Accordion v-for="(accord, index) in iAccordions" :key="index" :acc="accord" />
             </div>
           </div>
         </div>
@@ -320,7 +320,7 @@ onMounted(async () => {
           <div>
             <h3 class="display-7 text-center">Reusable</h3>
             <div>
-              <Accordion v-for="(accord, index) in r_accordions" :key="index" :acc="accord" />
+              <Accordion v-for="(accord, index) in rAccordions" :key="index" :acc="accord" />
             </div>
           </div>
         </div>
@@ -330,7 +330,7 @@ onMounted(async () => {
           <div>
             <h3 class="display-7 text-center">User Defined Tests</h3>
             <div>
-              <Accordion v-for="(accord, index) in user_accordions" :key="index" :acc="accord" />
+              <Accordion v-for="(accord, index) in userAccordions" :key="index" :acc="accord" />
             </div>
           </div>
         </div>
