@@ -7,6 +7,8 @@ import re
 from fastapi import APIRouter, HTTPException, status, Form, UploadFile
 from celery.result import AsyncResult
 
+from typing import Dict
+
 from celery_tasks import analyze_fair
 from resp_models import (
     OnlineResource,
@@ -14,6 +16,7 @@ from resp_models import (
     TaskStatus,
     AssessmentResults,
     Feedback,
+    Survey,
     ResourceAcceptFeedback,
 )
 from utils import (
@@ -22,6 +25,7 @@ from utils import (
     fetch_dryad_record,
     init_db,
     save_feedback,
+    save_survey,
 )
 
 
@@ -35,7 +39,7 @@ log_config.setup_logging()
 logger = logging.getLogger("fastapi")
 
 
-def __add_to_queue(file_type: str, file_content: str) -> str:
+def __add_to_queue(file_type: str, file_content: str, user_tests: Dict) -> str:
     """Method to create a task for FAIR analysis in the Celery Queue
 
     Args:
@@ -47,7 +51,9 @@ def __add_to_queue(file_type: str, file_content: str) -> str:
         task_id of the created Task
     """
     try:
-        Task = analyze_fair.apply_async((file_type, file_content), countdown=1)
+        Task = analyze_fair.apply_async(
+            (file_type, file_content, user_tests), countdown=1
+        )
         logger.info(f"Successfully created Task with ID: {Task.task_id}")
         return Task.task_id
     except Exception as e:
@@ -131,6 +137,7 @@ async def handle_published(data: OnlineResource):
         task_id = __add_to_queue(
             file_type="application/json",
             file_content=file_content,
+            user_tests=data.advancedTests,
         )
         return {
             "success": True,
@@ -174,7 +181,7 @@ async def handle_unpublished(
         # Load the user defined tests
         tests = json.loads(advanced_tests)
 
-        task_id = __add_to_queue(file_type, file_content)
+        task_id = __add_to_queue(file_type, file_content, user_tests=tests)
         return {
             "success": True,
             "comment": "File succesfully uploaded",
@@ -251,15 +258,27 @@ async def get_results(task_id: str):
 )
 async def feedback(feedback_data: Feedback):
     # Save the feedback
-    success = save_feedback(
-        name=feedback_data.name,
-        email=feedback_data.email,
-        feedback=feedback_data.feedback,
-    )
-
+    success = save_feedback(feedback_data)
     if not success:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to save feedback",
+        )
+    return {"success": True}
+
+
+@app_router.post(
+    "/api/Survey",
+    status_code=status.HTTP_201_CREATED,
+    response_model=ResourceAcceptFeedback,
+)
+async def survey(survey_data: Survey):
+    # Save the feedback
+    success = save_survey(survey_data)
+
+    if not success:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to save survey",
         )
     return {"success": True}
