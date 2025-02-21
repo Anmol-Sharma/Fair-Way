@@ -1,6 +1,4 @@
-<script setup>
-sessionStorage.clear();
-</script>
+<script setup></script>
 
 <template>
   <div class="container-fluid main-container align-content-center my-md-5">

@@ -1,7 +1,3 @@
-<script setup>
-sessionStorage.clear();
-</script>
-
 <template>
   <div class="container-fluid main-container">
     <div class="row-cols-1">

@@ -2,8 +2,6 @@
 import router from "../router";
 import { ref } from "vue";
 
-sessionStorage.clear();
-
 let survey = ref({
   easeOfUse: "",
   recommendation: "",

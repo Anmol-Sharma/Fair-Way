@@ -1,6 +1,4 @@
-<script setup>
-sessionStorage.clear();
-</script>
+<script setup></script>
 
 <template>
   <div class="container-fluid main-container" id="about-section">

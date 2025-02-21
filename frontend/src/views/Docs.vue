@@ -1,7 +1,3 @@
-<script setup>
-sessionStorage.clear();
-</script>
-
 <template>
   <div class="container-fluid main-container align-content-center my-md-5">
     <div class="row-cols-1">
