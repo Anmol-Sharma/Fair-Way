@@ -1,4 +1,5 @@
 <script setup>
+import router from "../router";
 import { ref } from "vue";
 
 sessionStorage.clear();
@@ -37,7 +38,6 @@ async function handleSubmit(event) {
       alert("Error while processing your feedback. We'll look into it.");
       throw new Error(`HTTP response code ${response.status}. Data has not been accepted.`);
     }
-
     alert("Thanks for you Feedback");
     // Clear form fields after submission
     userName.value = "";

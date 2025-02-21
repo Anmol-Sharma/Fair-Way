@@ -1,4 +1,5 @@
 <script setup>
+import router from "../router";
 import { ref } from "vue";
 
 sessionStorage.clear();
@@ -93,7 +94,7 @@ async function handleSubmit(event) {
       academicBG: "",
       academicBgOther: "",
       usefulness: "",
-      fairRating: "",
+      fairRating: 5,
       usefulAspects: "",
       futureUsage: "",
       comments: "",
@@ -277,6 +278,7 @@ async function handleSubmit(event) {
               <option>Medical Sciences</option>
               <option>Earth & Environmental Sciences</option>
               <option>Agricultural Sciences</option>
+              <option>Humanities</option>
               <option>Other</option>
             </select>
             <div v-if="shouldShowError('academicBG')" class="invalid-feedback">
