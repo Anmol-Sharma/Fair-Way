@@ -1,6 +1,6 @@
 import router from "../router";
 import { ref } from "vue";
-import { FileSizeCheck, sleep } from "./helper_utils";
+import { fileSizeCheck, sleep } from "./helperUtils";
 
 export function redirectValidity() {
   // Check for validity of form submission
@@ -8,17 +8,17 @@ export function redirectValidity() {
   if (isFormSubmitted === null || !isFormSubmitted) {
     router.push({ name: "Assess" });
   } else {
-    let initiated_task = sessionStorage.getItem("initiated_task");
-    if (initiated_task === null) {
+    let initiatedTask = sessionStorage.getItem("initiated_task");
+    if (initiatedTask === null) {
       router.push({ name: "Assess" });
       throw new Error("Results not present");
     }
-    initiated_task = JSON.parse(initiated_task);
-    console.log("Initiated Task:", initiated_task);
+    initiatedTask = JSON.parse(initiatedTask);
+    console.log("Initiated Task:", initiatedTask);
   }
 }
 
-export function compute_acc_list(test_results, principle) {
+export function computeAccList(testResults, principle) {
   /*
         Helper function to build accordions from the test results for all metrics for a given principle.
     */
@@ -26,7 +26,7 @@ export function compute_acc_list(test_results, principle) {
 
   // Helper function to convert keys to IDs
   // TODO: (low priority) better processing after checking out ids
-  const renameMetricID = (key) => {
+  const renameMetricId = (key) => {
     if (key === "FsF_R1_1_01M") {
       return "FsF-R1.1-01M";
     }
@@ -81,10 +81,10 @@ export function compute_acc_list(test_results, principle) {
     return color;
   };
 
-  for (const [key, val] of Object.entries(test_results)) {
+  for (const [key, val] of Object.entries(testResults)) {
     console.log("Passed Principle:", principle);
     if (principle != "user" && val.principle === principle) {
-      const acId = renameMetricID(key);
+      const acId = renameMetricId(key);
       const bodyContent = processTestResults(val.test_results);
       const color = determineColor(val.test_results);
       accList.push({
@@ -94,7 +94,7 @@ export function compute_acc_list(test_results, principle) {
         color: color,
       });
     } else if (principle === "user" && !("principle" in val)) {
-      const acId = renameMetricID(key);
+      const acId = renameMetricId(key);
       const bodyContent = processTestResults(val.test_results);
       const color = determineColor(val.test_results);
       accList.push({
@@ -144,7 +144,7 @@ export async function postData(data, endpoint, headerObj = null) {
   }
 }
 
-export async function online_assessment(_data) {
+export async function onlineAssessment(_data) {
   // Upload the file to backend system for processing
   try {
     const h = { "Content-Type": "application/json" };
@@ -209,28 +209,28 @@ async function validateAndProcess(meta_file) {
   return new File([blob], fileName, { type: fileType });
 }
 
-export async function offline_assessment(event, Files, metadata_file, advancedTests) {
+export async function offlineAssessment(event, Files, metadataFile, advancedTests) {
   // Get the file information
   try {
-    let meta_file = Files[metadata_file];
-    let valid_file_size = FileSizeCheck(meta_file);
-    if (!valid_file_size) {
+    let metaFile = Files[metadataFile];
+    let validFileSize = fileSizeCheck(metaFile);
+    if (!validFileSize) {
       alert("File Size Too Big");
       return;
     }
 
     if (
-      meta_file.type === "text/xml" ||
-      meta_file.type === "application/xml" ||
-      meta_file.type === "application/xhtml+xml" ||
-      meta_file.type === "application/json" ||
-      meta_file.type === "application/ld+json"
+      metaFile.type === "text/xml" ||
+      metaFile.type === "application/xml" ||
+      metaFile.type === "application/xhtml+xml" ||
+      metaFile.type === "application/json" ||
+      metaFile.type === "application/ld+json"
     ) {
-      meta_file = await validateAndProcess(meta_file);
+      metaFile = await validateAndProcess(metaFile);
     }
 
     const formData = new FormData();
-    formData.append("file", meta_file);
+    formData.append("file", metaFile);
     formData.append("advancedTests", JSON.stringify(advancedTests));
     await postData(formData, "/api/OfflineAnalyze");
     router.push({ name: "Results" });
