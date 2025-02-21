@@ -2,8 +2,6 @@
 import router from "../router";
 import { ref } from "vue";
 
-sessionStorage.clear();
-
 const userName = ref("");
 const mailId = ref("");
 const feedbackText = ref("");
