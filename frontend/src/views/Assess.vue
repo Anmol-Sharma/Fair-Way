@@ -1,5 +1,6 @@
 <script setup>
-import { offline_assessment, online_assessment } from "../utils/result_utils.js";
+import { offlineAssessment, onlineAssessment } from "../utils/resultUtils.js";
+import { validateVocabulary } from "../utils/helperUtils.js";
 import { ref, toRaw } from "vue";
 import { getConfig } from "../utils/config_loader.js";
 const config = getConfig();
@@ -10,12 +11,12 @@ let url = ref();
 
 // Define variables to handle files for offline assessment
 let Files = ref([]);
-let metadata_file = ref();
+let metadataFile = ref();
 
 // Define some conditional rendering variables
-let online_flag = ref(true);
-let offline_flag = ref(false);
-let advanced_testing = ref(false);
+let onlineFlag = ref(true);
+let offlineFlag = ref(false);
+let advancedTesting = ref(false);
 
 let advancedTests = ref([
   { domain: "", type: "", condition: "" }, // Initial empty row
@@ -41,26 +42,46 @@ function getPlaceholder(type) {
 }
 
 function getAdvancedTests() {
-  if (advancedTests.value.length === 1) {
-    // No Tests defined
-    if (
-      !advanced_testing &&
-      advancedTests.value[0].domain === "" &&
-      advancedTests.value[0].type === ""
-    )
-      return [];
-    else return advancedTests.value;
-    // Single Test defined
+  // Only validate when advanced testing is enabled
+  if (advancedTesting.value) {
+    // Iterate over each advanced test row
+    for (const test of advancedTests.value) {
+      // Skip rows that are completely empty (allows the default single empty row)
+      if (test.domain.trim() === "" && test.type.trim() === "" && test.condition.trim() === "") {
+        continue;
+      }
+      // If any field is filled, then all must be filled
+      if (test.domain.trim() === "" || test.type.trim() === "" || test.condition.trim() === "") {
+        alert("Incomplete advanced test row. Please fill in Domain, Test Type, and Condition.");
+        throw new Error("Incomplete advanced test row.");
+      }
+      // For Vocabulary Check, do additional validation on the condition
+      if (test.type === "Vocabulary Check" && !validateVocabulary(test.condition)) {
+        alert("Condition Not Satisfied for Vocabulary Test");
+        throw new Error("Vocabulary Condition Not Satisfied");
+      }
+    }
   }
+
+  // If there is only one row and it is completely empty, treat it as if no advanced test is defined.
+  if (
+    advancedTests.value.length === 1 &&
+    advancedTests.value[0].domain.trim() === "" &&
+    advancedTests.value[0].type.trim() === "" &&
+    advancedTests.value[0].condition.trim() === ""
+  ) {
+    return [];
+  }
+
   return advancedTests.value;
 }
 
 // Helper function which triggers when the file input changes.
-function offline_preprocess(event) {
+function offlinePreprocess(event) {
   const validType = config.global["supported_metadata_file_types"];
 
-  online_flag.value = false;
-  offline_flag.value = true;
+  onlineFlag.value = false;
+  offlineFlag.value = true;
 
   const files = Array.from(event.target.files);
   // Filter files based on extensions and only allow supported metadata file types
@@ -71,23 +92,29 @@ function offline_preprocess(event) {
 
   Files.value = filteredFiles;
 }
-function online_assess(event, provided_url) {
-  const pattern_doi = /^(?:https?:\/\/)?doi\.org\/10\.\d+\/(?:dryad|zenodo)(?:\.[\w-]+)*$/;
-  const pattern_zenodo = /^(https?:\/\/)?zenodo\.org\/records\/\d+$/;
-  const pattern_dryad =
+
+function onlineAssess(event, resourceUrl) {
+  const doiPattern = /^(?:https?:\/\/)?doi\.org\/10\.\d+\/(?:dryad|zenodo)(?:\.[\w-]+)*$/;
+  const zenodoPattern = /^(https?:\/\/)?zenodo\.org\/records\/\d+$/;
+  const dryadPattern =
     /^(https?:\/\/)datadryad\.org\/stash\/dataset\/doi:10\.\d+\/dryad\.[a-zA-Z0-9-]+$/;
 
   if (
-    !pattern_doi.test(provided_url) &&
-    !pattern_zenodo.test(provided_url) &&
-    !pattern_dryad.test(provided_url)
+    !doiPattern.test(resourceUrl) &&
+    !zenodoPattern.test(resourceUrl) &&
+    !dryadPattern.test(resourceUrl)
   ) {
     alert(
       "Invalid Record. Only valid DOIs published by Zenodo or Dryad accepted or Enter valid url of a Zenodo or Dryad Record."
     );
   } else {
     // send back the url to backend for processing
-    online_assessment({ url: provided_url, advancedTests: toRaw(getAdvancedTests()) });
+    try {
+      const tests = getAdvancedTests();
+      onlineAssessment({ url: resourceUrl, advancedTests: toRaw(tests) });
+    } catch (e) {
+      // TODO: Handle if advanced tests conditions aren't satisfied for both online and offline assessment forms
+    }
   }
   url.value = "";
 }
@@ -113,13 +140,13 @@ function online_assess(event, provided_url) {
       </div>
     </div>
     <div class="row g-4 justify-content-center">
-      <div class="col-6" v-if="online_flag">
+      <div class="col-6" v-if="onlineFlag">
         <div class="card">
           <div class="card-body text-center">
             <h5 class="card-title">Online / Published Dataset</h5>
             <p>Enter Valid DOI of dataset from defined Data Repositories above.</p>
             <!-- TODO: Add support for hugging face datasets -->
-            <form @submit.prevent="online_assess($event, toRaw(url))">
+            <form @submit.prevent="onlineAssess($event, toRaw(url))">
               <div class="my-4 d-flex justify-content-center">
                 <div class="input-group w-75">
                   <input
@@ -138,7 +165,7 @@ function online_assess(event, provided_url) {
                 <button type="submit" class="btn btn-primary">Start Assessment</button>
               </div>
               <!-- Add help section with examples -->
-              <div class="mt-4 text-center" v-if="online_flag">
+              <div class="mt-4 text-center" v-if="onlineFlag">
                 <p class="text-muted fs-6">Not sure what to test? Try the example below:</p>
                 <div class="mt-1">
                   <a
@@ -165,18 +192,18 @@ function online_assess(event, provided_url) {
             <!-- pass raw js object for files and metadata selected file. -->
             <form
               @submit.prevent="
-                offline_assessment(
+                offlineAssessment(
                   $event,
                   toRaw(Files),
-                  toRaw(metadata_file),
+                  toRaw(metadataFile),
                   toRaw(getAdvancedTests())
                 )
               "
             >
-              <div class="d-flex justify-content-center mt-4 mb-3 ms-5" v-if="online_flag">
-                <input type="file" webkitdirectory @change="offline_preprocess" />
+              <div class="d-flex justify-content-center mt-4 mb-3 ms-5" v-if="onlineFlag">
+                <input type="file" webkitdirectory required @change="offlinePreprocess" />
               </div>
-              <div class="min-height: 75vh;" v-if="offline_flag">
+              <div class="min-height: 75vh;" v-if="offlineFlag">
                 <br />
                 <p class="card-text">Detected Metadata Files:-</p>
                 <ul class="list-inline">
@@ -190,7 +217,7 @@ function online_assess(event, provided_url) {
                     class="form-select form-select-sm w-50 mx-3"
                     name="Metadata File"
                     id="file-select"
-                    v-model="metadata_file"
+                    v-model="metadataFile"
                     required
                   >
                     <option v-for="(file, index) in Files" v-bind:value="index">
@@ -205,7 +232,7 @@ function online_assess(event, provided_url) {
                 </button>
               </div>
               <!-- Add help section with example files -->
-              <div class="mt-1 text-center" v-if="!offline_flag">
+              <div class="mt-1 text-center" v-if="!offlineFlag">
                 <p class="text-muted fs-6">
                   Not sure what to test? Try these example metadata files:
                 </p>
@@ -260,11 +287,11 @@ function online_assess(event, provided_url) {
           <label class="form-label" id="advanced-testing-label"
             ><strong>Advanced Testing</strong></label
           >
-          <input type="checkbox" class="form-check-input" v-model="advanced_testing" />
+          <input type="checkbox" class="form-check-input" v-model="advancedTesting" />
         </div>
       </div>
     </div>
-    <div class="row-cols-1 mb-5" v-if="advanced_testing">
+    <div class="row-cols-1 mb-5" v-if="advancedTesting">
       <div class="col-12 d-flex justify-content-center">
         <div class="card advanced-testing-card">
           <div class="card-body text-center">
