@@ -13,18 +13,18 @@ body {
 }
 
 .main-container h1 {
-  font-size: 4em; /* Default size, can be overridden */
+  font-size: 4rem; /* Default size, can be overridden */
   color: #333;
 }
 
 .main-container p {
-  font-size: 2em; /* Default size, can be overridden */
+  font-size: 2rem; /* Default size, can be overridden */
   text-align: center;
 }
 
 .main-container .btn {
-  border-radius: 0.75em;
-  margin: 1.4em;
+  border-radius: 0.50em;
+  margin: 1.3em;
 }
 
 .card-title {
@@ -33,4 +33,16 @@ body {
 
 .card-text {
   text-align: center;
+}
+
+.text-muted {
+  color: #6c757d !important;
+}
+
+.small-text-1 {
+  font-size: 0.80rem !important;
+}
+
+.small-text-2 {
+  font-size: 0.85rem !important;
 }
