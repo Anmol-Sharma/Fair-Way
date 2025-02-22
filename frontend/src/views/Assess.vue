@@ -12,9 +12,7 @@ sessionStorage.clear();
 let showOnlineFlag = ref(true);
 let showOfflineFlag = ref(false);
 let advancedTestingFlag = ref(false);
-
-const advTest = { domain: "", type: "", condition: "" }; // Initial empty row
-let advancedTests = ref([advTest]);
+let advancedTests = ref([]);
 
 // TODO: Handle bakar for this function
 function getAdvancedTests() {
@@ -110,10 +108,7 @@ const submitOnlineRequest = (resourceUrl) => {
     </div>
     <div class="row-cols-1 mb-5" v-if="advancedTestingFlag">
       <div class="col-12 d-flex justify-content-center">
-        <AdvancedTestsCard
-          v-model:advancedTests="advancedTests"
-          v-model:advTest="advTest"
-        ></AdvancedTestsCard>
+        <AdvancedTestsCard v-model:advancedTests="advancedTests"></AdvancedTestsCard>
       </div>
     </div>
   </div>

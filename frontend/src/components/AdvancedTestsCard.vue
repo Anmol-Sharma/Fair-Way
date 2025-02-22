@@ -1,37 +1,31 @@
 <script setup>
-const props = defineProps({
-  advancedTests: {
-    type: Object,
-    required: true,
-  },
-});
+import { ref, watch } from "vue";
 
+let advancedTests = ref([{ domain: "", type: "", condition: "" }]); // Initial empty row
 const emit = defineEmits(["update:advancedTests"]);
 
 // Add Test Row to the advanced Tests
 function addTestRow() {
-  const newTest = { domain: "", type: "", condition: "" }; // Create a fresh object
-  emit("update:advancedTests", [...props.advancedTests, newTest]);
+  advancedTests.value.push({ domain: "", type: "", condition: "" });
+  emit("update:advancedTests", advancedTests.value);
 }
 
 // Remove test row from advancedTests
 function removeTestRow(index) {
-  if (props.advancedTests.length > 1) {
-    const newTests = [...props.advancedTests];
-    newTests.splice(index, 1);
-    emit("update:advancedTests", newTests);
+  if (advancedTests.value.length > 1) {
+    advancedTests.value.splice(index, 1);
+    emit("update:advancedTests", advancedTests.value);
   }
 }
 
-// Update individual field in a test row
-function updateField(index, field, value) {
-  const newTests = [...props.advancedTests];
-  newTests[index] = {
-    ...newTests[index],
-    [field]: value,
-  };
-  emit("update:advancedTests", newTests);
-}
+// Watch for changes in the advancedTests array
+watch(
+  advancedTests,
+  (newValue) => {
+    emit("update:advancedTests", newValue);
+  },
+  { deep: true } // Enable deep watching to detect nested object changes
+);
 
 // Placeholder function for condition
 function getPlaceholder(type) {
@@ -66,35 +60,35 @@ function getPlaceholder(type) {
       </div>
       <!-- Dynamic test rows container -->
       <div id="test-rows-container">
-        <div class="row g-3" v-for="(test, index) in props.advancedTests" :key="index">
+        <div class="row g-3" v-for="(test, index) in advancedTests" :key="index">
           <div class="col-1">
             <button
               type="button"
               class="btn btn-outline-danger"
               @click="removeTestRow(index)"
-              :disabled="props.advancedTests.length === 1"
+              :disabled="advancedTests.length === 1"
             >
               -
             </button>
           </div>
           <div class="col-3">
-            <label class="form-label">Specify Your Domain</label>
+            <label class="form-label" :for="'domain-' + index">Specify Your Domain</label>
             <input
+              :id="'domain-' + index"
               type="text"
               class="form-control"
               required
               v-model="test.domain"
-              @input="updateField(index, 'domain', $event.target.value)"
               placeholder="Your Domain. Eg. Biological Sciences"
               style="font-size: 0.7em; text-align: center"
             />
           </div>
           <div class="col-2">
-            <label class="form-label">Test Type</label>
+            <label class="form-label" :for="'type-' + index">Test Type</label>
             <select
               class="form-select"
+              :id="'type-' + index"
               v-model="test.type"
-              @change="updateField(index, 'type', $event.target.value)"
               style="font-size: 0.9em"
             >
               <option value="">Please select</option>
@@ -103,21 +97,21 @@ function getPlaceholder(type) {
             </select>
           </div>
           <div class="col-6">
-            <label class="form-label">Condition</label>
+            <label class="form-label" :for="'condition-' + index">Condition</label>
             <textarea
               class="form-control"
+              :id="'condition-' + index"
               required
               rows="5"
               :placeholder="getPlaceholder(test.type)"
               v-model="test.condition"
-              @input="updateField(index, 'condition', $event.target.value)"
               style="font-size: 0.8em"
             ></textarea>
           </div>
         </div>
       </div>
       <!-- Add new test row button -->
-      <div>
+      <div class="mt-3">
         <button type="button" class="btn btn-outline-primary" @click="addTestRow">+</button>
       </div>
     </div>
