@@ -12,52 +12,78 @@ sessionStorage.clear();
 let showOnlineFlag = ref(true);
 let showOfflineFlag = ref(false);
 let advancedTestingFlag = ref(false);
-let advancedTests = ref([]);
+let advancedTests = ref();
 
-// TODO: Handle bakar for this function
 function getAdvancedTests() {
   // Only validate when advanced testing is enabled
+  let final_test_list = [];
   if (advancedTestingFlag.value) {
-    // Iterate over each advanced test row
+    // If there is only one row and it is completely empty, treat it as if no advanced test is defined.
+    if (
+      advancedTests.value.length === 1 &&
+      advancedTests.value[0].domain.trim() === "" &&
+      advancedTests.value[0].type.trim() === "" &&
+      advancedTests.value[0].condition.trim() === ""
+    ) {
+      console.log("advanced testing enabled but completely empty");
+      return { success: true, tests: [] };
+    }
+
+    // Iterate over each advanced test row and perform certain standard checks
     for (const test of advancedTests.value) {
-      // Skip rows that are completely empty (allows the default single empty row)
+      // Skip rows that are completely empty
       if (test.domain.trim() === "" && test.type.trim() === "" && test.condition.trim() === "") {
+        console.log("Test Row completely Empty");
         continue;
       }
       // If any field is filled, then all must be filled
       if (test.domain.trim() === "" || test.type.trim() === "" || test.condition.trim() === "") {
-        alert("Incomplete advanced test row. Please fill in Domain, Test Type, and Condition.");
-        throw new Error("Incomplete advanced test row.");
+        return {
+          success: false,
+          tests: [],
+          error: "Incomplete advanced test row. Please fill in Domain, Test Type, and Condition.",
+        };
       }
       // For Vocabulary Check, do additional validation on the condition
-      if (test.type === "Vocabulary Check" && !validateVocabulary(test.condition)) {
-        alert("Condition Not Satisfied for Vocabulary Test");
-        throw new Error("Vocabulary Condition Not Satisfied");
+      const vocabValidationResults = validateVocabulary(test.condition);
+      if (test.type === "Vocabulary Check" && !vocabValidationResults.isValid) {
+        return {
+          success: false,
+          tests: [],
+          error: vocabValidationResults.errors.join("\n"),
+        };
       }
+
+      if (test.type === "Standard Check" && test.condition.length < 10) {
+        return {
+          success: false,
+          tests: [],
+          error: "Standard Check must be atleast 10 characters long",
+        };
+      }
+
+      // Return the tests which have succeeded
+      final_test_list.push(test);
     }
-  }
 
-  // If there is only one row and it is completely empty, treat it as if no advanced test is defined.
-  if (
-    advancedTests.value.length === 1 &&
-    advancedTests.value[0].domain.trim() === "" &&
-    advancedTests.value[0].type.trim() === "" &&
-    advancedTests.value[0].condition.trim() === ""
-  ) {
-    return [];
+    // Return the final test list
+    return { success: true, tests: final_test_list };
+  } else {
+    console.log("advanced testing not enabled");
+    return { success: true, tests: [] };
   }
-
-  return advancedTests.value;
 }
 
 const submitOnlineRequest = (resourceUrl) => {
   // send back the url to backend for processing
-  try {
-    const tests = getAdvancedTests();
-    onlineAssessment({ url: resourceUrl, advancedTests: toRaw(tests) });
-  } catch (e) {
-    // TODO: Handle if advanced tests conditions aren't satisfied for both online and offline assessment forms
+  const results = getAdvancedTests();
+  if (!results.success) {
+    // Show error messages to the user
+    alert(results.error); // Display error
+    return; // Stop further execution
   }
+  console.log(toRaw(results.tests));
+  onlineAssessment({ url: resourceUrl, advancedTests: toRaw(results.tests) });
 };
 </script>
 

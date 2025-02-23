@@ -28,13 +28,6 @@ export function validateVocabulary(vocabData) {
     data: [], // Will contain parsed data if valid
   };
 
-  // Basic empty check
-  if (!vocabData || vocabData.trim() === "") {
-    result.isValid = false;
-    result.errors.push("CSV data is empty");
-    return result;
-  }
-
   // Split into lines and remove empty lines
   const lines = vocabData
     .split("\n")
@@ -68,9 +61,9 @@ export function validateVocabulary(vocabData) {
     } else if (vocabulary.length < 2) {
       result.isValid = false;
       result.errors.push(`Line ${index + 1}: Vocabulary name must be at least 2 characters`);
-    } else if (vocabulary.length > 50) {
+    } else if (vocabulary.length > 75) {
       result.isValid = false;
-      result.errors.push(`Line ${index + 1}: Vocabulary name must not exceed 50 characters`);
+      result.errors.push(`Line ${index + 1}: Vocabulary name must not exceed 75 characters`);
     }
 
     // Validate description
