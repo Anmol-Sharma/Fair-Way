@@ -1,6 +1,68 @@
 import router from "../router";
 import { ref } from "vue";
-import { fileSizeCheck, sleep } from "./helperUtils";
+
+// ###########################################################
+// #        Define Helper Functions for internal Use         #
+// ###########################################################
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function renameId(id) {
+  // Helper function to convert python module name syntax Metric/ Test Ids to their actual values
+  const patternMatch = id.match(/[A-Za-z]\d_\d/g)[0];
+  if (patternMatch) {
+    id = id.replace(patternMatch, patternMatch.replace("_", "."));
+  }
+  return id.replace(/_/g, "-");
+}
+
+// Helper function to process test results and generate Body content for each test.
+function processTestResults(testResults) {
+  const bodyContent = {};
+  for (const [testKey, result] of Object.entries(testResults)) {
+    const testId = renameId(testKey);
+    bodyContent[testId] = {
+      result: result.result,
+      score: result.score,
+      out_of: result.out_of,
+    };
+  }
+  return bodyContent;
+}
+
+function determineColor(testResults) {
+  // Determine color based on test results
+  let allPassed = true;
+  let anyPassed = false;
+
+  for (const test of Object.values(testResults)) {
+    if (test.score < test.out_of) {
+      allPassed = false;
+      continue;
+    } else if (test.score > 0) {
+      anyPassed = true;
+    }
+  }
+
+  let color;
+  if (allPassed) {
+    // All tests passed --> Green
+    color = "#5ac481";
+  } else if (!allPassed && anyPassed) {
+    // Some tests passed --> Yello
+    color = "#bdb359";
+  } else {
+    // No tests passed --> Red
+    color = "#c95564";
+  }
+  return color;
+}
+// ###############################################################################
+
+// ###########################################################
+// #        Define Helper Functions for external Use         #
+// ###########################################################
 
 export function redirectValidity() {
   // Check for validity of form submission
@@ -10,8 +72,8 @@ export function redirectValidity() {
   } else {
     let initiatedTask = sessionStorage.getItem("initiated_task");
     if (initiatedTask === null) {
+      console.log("No request found, redirecting to Assessment page.");
       router.push({ name: "Assess" });
-      throw new Error("Results not present");
     }
     initiatedTask = JSON.parse(initiatedTask);
     console.log("Initiated Task:", initiatedTask);
@@ -20,69 +82,12 @@ export function redirectValidity() {
 
 export function computeAccList(testResults, principle) {
   /*
-        Helper function to build accordions from the test results for all metrics for a given principle.
-    */
+    Helper function to build accordions from the test results for all metrics for a given principle.
+  */
   let accList = [];
 
-  // Helper function to convert keys to IDs
-  // TODO: (low priority) better processing after checking out ids
-  const renameMetricId = (key) => {
-    if (key === "FsF_R1_1_01M") {
-      return "FsF-R1.1-01M";
-    }
-    return key.replace(/_/g, "-");
-  };
-
-  // Helper function to process test results
-  const processTestResults = (testResults) => {
-    const bodyContent = {};
-    for (const [testKey, result] of Object.entries(testResults)) {
-      const testId = testKey.replace(/_/g, "-");
-      // Special case handling
-      if (testKey === "FsF_R1_1_01M-1") {
-        bodyContent["FsF-R1.1-01M-1"] = {
-          result: result.result,
-          score: result.score,
-          out_of: result.out_of,
-        };
-      } else {
-        bodyContent[testId] = {
-          result: result.result,
-          score: result.score,
-          out_of: result.out_of,
-        };
-      }
-    }
-    return bodyContent;
-  };
-
-  const determineColor = (testResults) => {
-    // Determine color based on test results
-    let allPassed = true;
-    let anyPassed = false;
-
-    for (const test of Object.values(testResults)) {
-      if (test.score < test.out_of) {
-        allPassed = false;
-        continue;
-      } else if (test.score > 0) {
-        anyPassed = true;
-      }
-    }
-
-    let color;
-    if (allPassed) {
-      color = "#5ac481";
-    } else if (!allPassed && anyPassed) {
-      color = "#bdb359";
-    } else {
-      color = "#c95564";
-    }
-    return color;
-  };
-
   for (const [key, val] of Object.entries(testResults)) {
-    console.log("Passed Principle:", principle);
+    // Process FsF Metrics
     if (principle != "user" && val.principle === principle) {
       const acId = renameMetricId(key);
       const bodyContent = processTestResults(val.test_results);
@@ -94,6 +99,7 @@ export function computeAccList(testResults, principle) {
         color: color,
       });
     } else if (principle === "user" && !("principle" in val)) {
+      // Process User Metrics
       const acId = renameMetricId(key);
       const bodyContent = processTestResults(val.test_results);
       const color = determineColor(val.test_results);
@@ -108,156 +114,23 @@ export function computeAccList(testResults, principle) {
   return ref(accList);
 }
 
-export async function postData(data, endpoint, headerObj = null) {
-  // Initialize request configuration with default method and body
-  const req = { method: "POST", body: data };
-  // Add headers if provided
-  if (headerObj) {
-    req.headers = headerObj;
-  }
-
-  try {
-    // Upload the file to backend system for processing
-    const response = await fetch(endpoint, req);
-
-    // Check for HTTP 500 error
-    if (response.status === 500) {
-      router.push({ name: "500" });
-      throw new Error("Internal Server Error");
-    }
-
-    if (response.status !== 202) {
-      throw new Error(`HTTP response code ${response.status}. Data has not been accepted.`);
-    }
-
-    // Read JSON response from server
-    const jsonResponse = await response.json();
-    if (jsonResponse.error === 1) {
-      throw new Error(jsonResponse.message);
-    }
-
-    sessionStorage.setItem("formSubmitted", "true");
-    sessionStorage.setItem("initiated_task", JSON.stringify(jsonResponse));
-  } catch (error) {
-    console.error("Error in postData:", error);
-    throw error; // Re-throw the error after logging it
-  }
-}
-
-export async function onlineAssessment(_data) {
-  // Upload the file to backend system for processing
-  try {
-    const h = { "Content-Type": "application/json" };
-    await postData(JSON.stringify(_data), "/api/OnlineAnalyze", h);
-    router.push({ name: "Results" });
-  } catch (error) {
-    console.error("Error in online_assessment:", error);
-    // If it's a 500, already redirected in postData
-  }
-}
-
-async function validateAndProcess(meta_file) {
-  // FOR XML and JSON FILES
-  const fileContent = await meta_file.text();
-  let parsedContent;
-  let cleanedContent;
-
-  if (
-    meta_file.type === "text/xml" ||
-    meta_file.type === "application/xml" ||
-    meta_file.type === "application/xhtml+xml"
-  ) {
-    try {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(fileContent, "text/xml");
-
-      // Check for parsing errors
-      const parserError = xmlDoc.querySelector("parsererror");
-      if (parserError) {
-        throw new Error("Invalid XML format");
-      }
-
-      parsedContent = xmlDoc;
-
-      // Clean the XML content
-      const serializer = new XMLSerializer();
-      cleanedContent = serializer
-        .serializeToString(parsedContent)
-        .replace(/>\s+</g, "><") // Remove whitespace between tags
-        .trim(); // Remove leading and trailing whitespace
-    } catch (e) {
-      alert("Invalid XML file");
-      throw new Error("Invalid XML file: " + e.message);
-    }
-  } else if (meta_file.type === "application/json" || meta_file.type === "application/ld+json") {
-    try {
-      parsedContent = JSON.parse(fileContent);
-
-      // Clean the JSON content
-      cleanedContent = JSON.stringify(parsedContent, null, 0); // Remove all whitespace
-    } catch (e) {
-      alert("Invalid JSON file");
-      throw new Error("Invalid JSON file: " + e.message);
-    }
-  }
-
-  // Create a new File object with cleaned content
-  const fileName = meta_file.name;
-  const fileType = meta_file.type;
-  const blob = new Blob([cleanedContent], { type: fileType });
-
-  return new File([blob], fileName, { type: fileType });
-}
-
-export async function offlineAssessment(event, Files, metadataFile, advancedTests) {
-  // Get the file information
-  try {
-    let metaFile = Files[metadataFile];
-    let validFileSize = fileSizeCheck(metaFile);
-    if (!validFileSize) {
-      alert("File Size Too Big");
-      return;
-    }
-
-    if (
-      metaFile.type === "text/xml" ||
-      metaFile.type === "application/xml" ||
-      metaFile.type === "application/xhtml+xml" ||
-      metaFile.type === "application/json" ||
-      metaFile.type === "application/ld+json"
-    ) {
-      metaFile = await validateAndProcess(metaFile);
-    }
-
-    const formData = new FormData();
-    formData.append("file", metaFile);
-    formData.append("advancedTests", JSON.stringify(advancedTests));
-    await postData(formData, "/api/OfflineAnalyze");
-    router.push({ name: "Results" });
-  } catch (error) {
-    console.error("Error in offline_assessment:", error);
-    if (error.message.includes("500")) {
-      router.push({ name: "InternalServerError" });
-    } else {
-      alert(error.message);
-    }
-  }
-}
-
-// ####################################
-// Utility functions for connections
-// ####################################
-
 export async function fetchResults() {
   try {
     const initiatedTask = sessionStorage.getItem("initiated_task");
     if (!initiatedTask) {
+      // Update the throw with actual user notifications
       throw new Error("No initiated task found in sessionStorage");
     }
     const initiated_task = JSON.parse(initiatedTask);
     let delay = 30000; // Start with 30 seconds
+    const startTime = Date.now();
+    const timeout = 1800000; // 30 minutes in milliseconds
 
     while (true) {
+      const currentTime = Date.now();
+      if (currentTime - startTime >= timeout) {
+        throw new Error("Timeout exceeded after 30 minutes");
+      }
       const statusResponse = await fetch(`/api/Status/${initiated_task.task_id}`, {});
 
       // Check for HTTP 500 error
@@ -296,3 +169,5 @@ export async function fetchResults() {
     throw error;
   }
 }
+
+// ###############################################################################
