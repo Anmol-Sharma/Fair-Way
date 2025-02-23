@@ -1,7 +1,12 @@
 <script setup>
-import { offlineAssessment, onlineAssessment } from "../utils/resultUtils.js";
-import { validateVocabulary } from "../utils/helperUtils.js";
+import router from "../router";
 import { ref, toRaw } from "vue";
+
+// Import helper js functions
+import { offlineAssessmentRequest, onlineAssessmentRequest } from "../utils/assessmentUtils.js";
+import { validateVocabulary } from "../utils/assessmentUtils.js";
+
+// Import components
 import AdvancedTestsCard from "../components/AdvancedTestsCard.vue";
 import OfflineCard from "../components/OfflineCard.vue";
 import OnlineCard from "../components/OnlineCard.vue";
@@ -74,7 +79,7 @@ function getAdvancedTests() {
   }
 }
 
-const submitOnlineRequest = (resourceUrl) => {
+async function submitOfflineRequest(Files, metadataFile) {
   // send back the url to backend for processing
   const results = getAdvancedTests();
   if (!results.success) {
@@ -82,9 +87,40 @@ const submitOnlineRequest = (resourceUrl) => {
     alert(results.error); // Display error
     return; // Stop further execution
   }
-  console.log(toRaw(results.tests));
-  onlineAssessment({ url: resourceUrl, advancedTests: toRaw(results.tests) });
-};
+  // TODO: Handle response failures
+  const resp = await offlineAssessmentRequest(Files, metadataFile, toRaw(results.tests));
+  if (!resp.success) {
+    alert("Error-" + resp.code.toString() + "\n" + resp.error);
+    return;
+  }
+
+  sessionStorage.setItem("formSubmitted", "true");
+  sessionStorage.setItem("initiated_task", JSON.stringify(resp.response));
+  router.push({ name: "Results" });
+}
+
+async function submitOnlineRequest(resourceUrl) {
+  // send back the url to backend for processing
+  const results = getAdvancedTests();
+  if (!results.success) {
+    // Show error messages to the user
+    alert(results.error); // Display error
+    return; // Stop further execution
+  }
+  const resp = await onlineAssessmentRequest({
+    url: resourceUrl,
+    advancedTests: toRaw(results.tests),
+  });
+
+  if (!resp.success) {
+    alert("Error-" + resp.code.toString() + "\n" + resp.error);
+    return;
+  }
+
+  sessionStorage.setItem("formSubmitted", "true");
+  sessionStorage.setItem("initiated_task", JSON.stringify(resp.response));
+  router.push({ name: "Results" });
+}
 </script>
 
 <template>
@@ -116,7 +152,7 @@ const submitOnlineRequest = (resourceUrl) => {
           v-model:showOfflineFlag="showOfflineFlag"
           @formSubmit="
             (Files, metadataFile) => {
-              offlineAssessment(Files, metadataFile, getAdvancedTests());
+              submitOfflineRequest(Files, metadataFile);
             }
           "
         ></OfflineCard>
