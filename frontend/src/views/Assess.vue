@@ -132,11 +132,13 @@ const submitOnlineRequest = (resourceUrl) => {
         </div>
       </div>
     </div>
-    <div class="row-cols-1 mb-5" v-if="advancedTestingFlag">
-      <div class="col-12 d-flex justify-content-center">
-        <AdvancedTestsCard v-model:advancedTests="advancedTests"></AdvancedTestsCard>
+    <Transition name="fade">
+      <div class="row-cols-1 mb-5" v-if="advancedTestingFlag">
+        <div class="col-12 d-flex justify-content-center">
+          <AdvancedTestsCard v-model:advancedTests="advancedTests"></AdvancedTestsCard>
+        </div>
       </div>
-    </div>
+    </Transition>
   </div>
 </template>
 
@@ -145,15 +147,12 @@ const submitOnlineRequest = (resourceUrl) => {
   margin-bottom: 3.5rem;
   min-height: 80vh;
 }
-
 .main-container p {
   font-size: 1.2em;
 }
-
 .row {
   margin-top: 0.5em;
 }
-
 /*
 ###########################################
 #   Styles for Advanced Testin Checkmark  #
@@ -163,15 +162,13 @@ const submitOnlineRequest = (resourceUrl) => {
 #advanced-testing-label {
   font-size: 1.2em;
 }
-
-/* Increase checkbox size */
 .form-check-input {
+  /* Increase checkbox size */
   width: 1.2em;
   height: 1.2em;
 }
-
-/* Optional: Add some styling to make it look better */
 .form-check-input {
+  /* Optional: Add some styling to make it look better */
   border-radius: 0.35em;
   transition: all 0.2s ease-in-out;
 }
@@ -183,5 +180,19 @@ const submitOnlineRequest = (resourceUrl) => {
 .form-check-input:checked {
   background-color: #0d6efd;
   border-color: #0d6efd;
+}
+
+/*
+###########################################
+#        Styles for Fade Transitions      #
+###########################################
+*/
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
