@@ -127,12 +127,13 @@ async function handleSubmit(event) {
           <!-- Section 1: General Feedback -->
           <h2 class="text-center">General Feedback</h2>
           <div class="row my-3">
-            <label class="form-label">
+            <label class="form-label" for="ease-of-use">
               How would you rate the overall ease of use of the tool?
               <span class="text-danger">*</span>
             </label>
             <select
               class="form-select"
+              id="ease-of-use"
               v-model="survey.easeOfUse"
               :class="{ 'is-invalid': !isFieldValid('easeOfUse') }"
               @change="markFieldAsTouched('easeOfUse')"
@@ -151,12 +152,13 @@ async function handleSubmit(event) {
 
           <!-- Similar modifications for all other fields -->
           <div class="row my-3">
-            <label class="form-label">
+            <label class="form-label" for="recommend">
               Would you recommend this tool to others?
               <span class="text-danger">*</span>
             </label>
             <select
               class="form-select"
+              id="recommend"
               v-model="survey.recommendation"
               :class="{ 'is-invalid': !isFieldValid('recommendation') }"
               @change="markFieldAsTouched('recommendation')"
@@ -176,12 +178,13 @@ async function handleSubmit(event) {
           <!-- Section 2: Prior Experience -->
           <h2 class="text-center">Prior Experience</h2>
           <div class="row my-3">
-            <label class="form-label">
+            <label class="form-label" for="familiarity">
               How familiar are you with FAIR data principles?
               <span class="text-danger">*</span>
             </label>
             <select
               class="form-select"
+              id="familiarity"
               v-model="survey.fairFamiliarity"
               :class="{ 'is-invalid': !isFieldValid('fairFamiliarity') }"
               @change="markFieldAsTouched('fairFamiliarity')"
@@ -197,12 +200,13 @@ async function handleSubmit(event) {
           </div>
 
           <div class="row my-3">
-            <label class="form-label">
+            <label class="form-label" for="prior-usage">
               Have you used other FAIR assessment tools before?
               <span class="text-danger">*</span>
             </label>
             <select
               class="form-select"
+              id="prior-usage"
               v-model="survey.priorUsage"
               :class="{ 'is-invalid': !isFieldValid('priorUsage') }"
               @change="markFieldAsTouched('priorUsage')"
@@ -219,13 +223,14 @@ async function handleSubmit(event) {
 
           <!-- Conditional field for prior tools -->
           <div class="row my-3" v-if="survey.priorUsage.includes('Yes')">
-            <label class="form-label">
+            <label class="form-label" for="prior-tools">
               Which FAIR assessment tools have you used?
               <span class="text-danger">*</span>
             </label>
             <input
               type="text"
               class="form-control"
+              id="prior-tools"
               v-model="survey.priorTools"
               :class="{ 'is-invalid': !isFieldValid('priorTools') }"
               @input="markFieldAsTouched('priorTools')"
@@ -238,12 +243,13 @@ async function handleSubmit(event) {
           </div>
 
           <div class="row my-3">
-            <label class="form-label">
+            <label class="form-label" for="prof-status">
               What is your Professions Status?
               <span class="text-danger">*</span>
             </label>
             <select
               class="form-select"
+              id="prof-status"
               v-model="survey.professionalStatus"
               :class="{ 'is-invalid': !isFieldValid('professionalStatus') }"
               @change="markFieldAsTouched('professionalStatus')"
@@ -260,12 +266,13 @@ async function handleSubmit(event) {
           </div>
 
           <div class="row my-3">
-            <label class="form-label">
+            <label class="form-label" for="acad-bg">
               What is your Academic Background?
               <span class="text-danger">*</span>
             </label>
             <select
               class="form-select"
+              id="acad-bg"
               v-model="survey.academicBG"
               :class="{ 'is-invalid': !isFieldValid('academicBG') }"
               @change="markFieldAsTouched('academicBG')"
@@ -286,12 +293,13 @@ async function handleSubmit(event) {
 
           <!-- Conditional field for other academic background -->
           <div class="row my-3" v-if="survey.academicBG.includes('Other')">
-            <label class="form-label">
+            <label class="form-label" for="acad-bg-other">
               Please specify what is your academic background?
               <span class="text-danger">*</span>
             </label>
             <input
               type="text"
+              id="acad-bg-other"
               class="form-control"
               v-model="survey.academicBgOther"
               :class="{ 'is-invalid': !isFieldValid('academicBgOther') }"
@@ -307,12 +315,13 @@ async function handleSubmit(event) {
           <!-- Section 3: Tool Usefulness -->
           <h2 class="text-center">Tool Usefulness</h2>
           <div class="row my-3">
-            <label class="form-label">
+            <label class="form-label" for="usefulness">
               How useful did you find the tool for FAIR assessment of your datasets?
               <span class="text-danger">*</span>
             </label>
             <select
               class="form-select"
+              id="usefulness"
               v-model="survey.usefulness"
               :class="{ 'is-invalid': !isFieldValid('usefulness') }"
               @change="markFieldAsTouched('usefulness')"
@@ -330,7 +339,7 @@ async function handleSubmit(event) {
           </div>
 
           <div class="row my-4">
-            <label class="form-label">
+            <label class="form-label" for="slider">
               How effective do you think the tool is in assessing FAIR data? Please Rate out of 10
               <span class="text-danger">*</span>
             </label>
@@ -344,6 +353,7 @@ async function handleSubmit(event) {
               <div class="input-group">
                 <input
                   type="range"
+                  id="slider"
                   class="form-range"
                   :class="{ 'is-invalid': !isFieldValid('fairRating') }"
                   min="0"
@@ -360,12 +370,13 @@ async function handleSubmit(event) {
           </div>
 
           <div class="row my-3">
-            <label class="form-label">
+            <label class="form-label" for="useful-aspect">
               Which type of Assessment(s) have you tried with the Tool?
               <span class="text-danger">*</span>
             </label>
             <select
               class="form-select"
+              id="useful-aspect"
               v-model="survey.usefulAspects"
               :class="{ 'is-invalid': !isFieldValid('usefulAspects') }"
               @change="markFieldAsTouched('usefulAspects')"
@@ -381,12 +392,13 @@ async function handleSubmit(event) {
           </div>
 
           <div class="row my-3">
-            <label class="form-label">
+            <label class="form-label" for="future-use">
               How likely are you to use this tool in the future?
               <span class="text-danger">*</span>
             </label>
             <select
               class="form-select"
+              id="future-use"
               v-model="survey.futureUsage"
               :class="{ 'is-invalid': !isFieldValid('futureUsage') }"
               @change="markFieldAsTouched('futureUsage')"
@@ -407,6 +419,7 @@ async function handleSubmit(event) {
           <div class="row my-3 justify-content-center">
             <textarea
               class="form-control"
+              id="more-comments"
               rows="5"
               placeholder="Please provide any additional comments or suggestions..."
               v-model="survey.comments"
