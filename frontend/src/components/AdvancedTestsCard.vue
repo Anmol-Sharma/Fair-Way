@@ -4,17 +4,20 @@ import { ref, watch } from "vue";
 let advancedTests = ref([{ domain: "", type: "", condition: "" }]); // Initial empty row
 const emit = defineEmits(["update:advancedTests"]);
 
+// For the very first emit when the object is defined
+emit("update:advancedTests", advancedTests);
+
 // Add Test Row to the advanced Tests
 function addTestRow() {
   advancedTests.value.push({ domain: "", type: "", condition: "" });
-  emit("update:advancedTests", advancedTests.value);
+  emit("update:advancedTests", advancedTests);
 }
 
 // Remove test row from advancedTests
 function removeTestRow(index) {
   if (advancedTests.value.length > 1) {
     advancedTests.value.splice(index, 1);
-    emit("update:advancedTests", advancedTests.value);
+    emit("update:advancedTests", advancedTests);
   }
 }
 
@@ -106,6 +109,7 @@ function getPlaceholder(type) {
               :placeholder="getPlaceholder(test.type)"
               v-model="test.condition"
               style="font-size: 0.8em"
+              maxlength="3000"
             ></textarea>
           </div>
         </div>
