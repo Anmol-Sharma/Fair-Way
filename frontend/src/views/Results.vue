@@ -64,7 +64,7 @@ onMounted(async () => {
     }
   };
   try {
-    parsedRes = await fetchResults();
+    parsedRes.value = await fetchResults();
     isProcessing.value = false;
     sessionStorage.setItem("isProcessing", "false");
     sessionStorage.removeItem("formSubmitted");
