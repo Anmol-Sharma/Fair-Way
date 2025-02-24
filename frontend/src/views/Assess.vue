@@ -81,17 +81,20 @@ function getAdvancedTests() {
 
 async function submitOfflineRequest(Files, metadataFile) {
   // send back the url to backend for processing
-  const results = getAdvancedTests();
-  if (!results.success) {
+  const advTests = getAdvancedTests();
+  if (!advTests.success) {
     // Show error messages to the user
-    alert(results.error); // Display error
+    alert(advTests.error); // Display error
     return; // Stop further execution
   }
-  // TODO: Handle response failures
-  const resp = await offlineAssessmentRequest(Files, metadataFile, toRaw(results.tests));
+  const resp = await offlineAssessmentRequest(Files, metadataFile, toRaw(advTests.tests));
+  console.log("reached here 2");
   if (!resp.success) {
-    alert("Error-" + resp.code.toString() + "\n" + resp.error);
-    return;
+    if (resp.code === 500) router.push({ name: "500" });
+    else {
+      alert("Error-" + resp.code + "\n" + resp.error);
+      return;
+    }
   }
 
   sessionStorage.setItem("formSubmitted", "true");
@@ -101,20 +104,25 @@ async function submitOfflineRequest(Files, metadataFile) {
 
 async function submitOnlineRequest(resourceUrl) {
   // send back the url to backend for processing
-  const results = getAdvancedTests();
-  if (!results.success) {
+  const advTests = getAdvancedTests();
+  if (!advTests.success) {
     // Show error messages to the user
-    alert(results.error); // Display error
+    alert(advTests.error); // Display error
     return; // Stop further execution
   }
   const resp = await onlineAssessmentRequest({
     url: resourceUrl,
-    advancedTests: toRaw(results.tests),
+    advancedTests: toRaw(advTests.tests),
   });
 
+  console.log(resp);
+
   if (!resp.success) {
-    alert("Error-" + resp.code.toString() + "\n" + resp.error);
-    return;
+    if (resp.code === 500) router.push({ name: "500" });
+    else {
+      alert("Error-" + resp.code + "\n" + resp.error);
+      return;
+    }
   }
 
   sessionStorage.setItem("formSubmitted", "true");
