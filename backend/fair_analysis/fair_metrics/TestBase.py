@@ -6,7 +6,6 @@ from typing import Sequence, Dict, Any, List
 from inspect import cleandoc
 import json
 from abc import abstractmethod
-from fair_analysis.splitter import Splitter
 from fair_analysis.model import ModelBase
 
 _env_settings = get_env_settings()
@@ -41,29 +40,25 @@ class BaseTest:
         else:
             self.__test_few_shot_examples = []
 
-        self.__content_splitter = Splitter()
-
     def perform_test(
-        self, model: ModelBase, file_type: str, file_size: str, file_content: str
+        self, model: ModelBase, file_type: str, file_chunks: str
     ) -> Dict[str, str]:
         """Method to perform the given test
         Args:
             file_type: type of file contents
-            file_size: size of the file (in Bytes)
             file_content: contents of the file
         Returns:
             test results
         """
-        file_chunks = self.__content_splitter.split_file(
-            file_type, file_size, file_content
-        )
-        if file_chunks is None:
-            raise Exception("Returned Chunks None")
+        # TODO: Decide if the file_type can be provide as additional information.
 
-        elif isinstance(file_chunks, list) and len(file_chunks) == 1:
+        # There will be a single chunk if there is no need to generate chunks
+        if isinstance(file_chunks, list) and len(file_chunks) == 1:
             return self.__perform_test_on_full_contents(
-                model, file_content=file_content
+                model, file_content=file_chunks[0]
             )
+
+        # More than one chunk, so perform operation on different chunks
         return self.__perform_test_on_chunks(model, chunks=file_chunks)
 
     def __perform_test_on_full_contents(

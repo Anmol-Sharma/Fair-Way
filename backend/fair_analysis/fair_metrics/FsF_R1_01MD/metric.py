@@ -6,7 +6,7 @@ class Metric(BaseMetric):
     def __init__(self, metric_id: str, name: str, active: bool, tests):
         super().__init__(metric_id, name, active, tests)
 
-    def execute_tests(self, model, file_content, file_size, file_type):
+    def execute_tests(self, model, file_chunks, file_type):
         results = {
             "metric_id": self.metric_id,
             "test_results": {},
@@ -15,8 +15,7 @@ class Metric(BaseMetric):
         }
         t_result = self.tests["FsF_R1_01MD-1"].perform_test(
             model=model,
-            file_content=file_content,
-            file_size=file_size,
+            file_chunks=file_chunks,
             file_type=file_type,
         )
 

@@ -4,7 +4,6 @@ from ollama import ChatResponse
 
 
 class ModelBase:
-
     def __init__(self, model_name: str, options: Dict, client_url: str) -> None:
         self.__model_name = model_name
         self.__model_options = options
