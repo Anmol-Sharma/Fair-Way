@@ -5,15 +5,15 @@ async function handlePost(response) {
   }
 
   if (response.status !== 202) {
-    return { success: false, code: response.status.toString(), error: "Data not accepted" };
+    return { success: false, code: response.status, error: "Data not accepted" };
   }
 
   // Read JSON response from server
   const jsonResponse = await response.json();
   if (jsonResponse.error === 1) {
-    return { success: false, code: response.status.toString(), error: "JSON Parsing Error" };
+    return { success: false, code: response.status, error: "JSON Parsing Error" };
   }
-  return { sucess: true, response: jsonResponse };
+  return { success: true, response: jsonResponse };
 }
 
 export async function postData(data, endpoint, headerObj = null) {
