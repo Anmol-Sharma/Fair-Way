@@ -89,7 +89,7 @@ export function computeAccList(testResults, principle) {
   for (const [key, val] of Object.entries(testResults)) {
     // Process FsF Metrics
     if (principle != "user" && val.principle === principle) {
-      const acId = renameMetricId(key);
+      const acId = renameId(key);
       const bodyContent = processTestResults(val.test_results);
       const color = determineColor(val.test_results);
       accList.push({
@@ -100,7 +100,7 @@ export function computeAccList(testResults, principle) {
       });
     } else if (principle === "user" && !("principle" in val)) {
       // Process User Metrics
-      const acId = renameMetricId(key);
+      const acId = renameId(key);
       const bodyContent = processTestResults(val.test_results);
       const color = determineColor(val.test_results);
       accList.push({
