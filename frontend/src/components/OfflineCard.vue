@@ -51,7 +51,9 @@ function offlinePreProcess(event) {
   <div class="card">
     <div class="card-body text-center">
       <h5 class="card-title">Offline / Unpublished Dataset</h5>
-      <p class="card-text">Select your Local/ Unpublished data sources.</p>
+      <p class="card-text">
+        Select your Local/ Unpublished data sources (<strong>Select Directory</strong>).
+      </p>
       <form @submit.prevent="$emit('formSubmit', Files, metadataFile)">
         <div class="d-flex justify-content-center mt-4 mb-3 ms-5" v-if="props.showOnlineFlag">
           <input type="file" webkitdirectory required @change="offlinePreProcess" />
@@ -148,7 +150,7 @@ p {
 
 .example-file-card {
   background-color: #f8f9fa;
-  padding: 12px;
+  padding: 10px;
   border-radius: 5px;
   text-align: center;
 }

@@ -32,7 +32,7 @@ const collapse_id_target = "#" + collapse_id;
       <div
         :id="collapse_id"
         class="accordion-collapse collapse"
-        aria-labelledby="headingOne"
+        :aria-labelledby="acc_head_id"
         :data-bs-parent="accordion_name_parent"
       >
         <!-- TODO: We'll have to pass different part of the results to the body for processing -->
