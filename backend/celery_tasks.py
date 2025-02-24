@@ -8,16 +8,7 @@ import logging
 from utils import clean_file_content, aggregate_results
 
 from fair_analysis.model import ModelBase
-
-from fair_analysis.fair_metrics.FsF_F1_01D.metric import M as M1
-from fair_analysis.fair_metrics.FsF_F1_02D.metric import M as M2
-from fair_analysis.fair_metrics.FsF_F2_01M.metric import M as M3
-from fair_analysis.fair_metrics.FsF_F3_01M.metric import M as M4
-from fair_analysis.fair_metrics.FsF_A1_01M.metric import M as M5
-from fair_analysis.fair_metrics.FsF_I3_01M.metric import M as M6
-from fair_analysis.fair_metrics.FsF_R1_01MD.metric import M as M7
-from fair_analysis.fair_metrics.FsF_R1_1_01M.metric import M as M8
-
+from fair_analysis.fair_analyzer import Analyzer
 from config import get_env_settings, get_global_settings
 
 env_settings = get_env_settings()
@@ -40,8 +31,6 @@ cel.conf.update(
     task_time_limit=env_settings.task_time_limit,
     worker_max_memory_per_child=env_settings.worker_max_memory_per_child,
 )
-
-all_metrics = (M1, M2, M3, M4, M5, M6, M7, M8)
 model = ModelBase(
     model_name=env_settings.llm_model,
     client_url=env_settings.ollama_url,
@@ -50,21 +39,23 @@ model = ModelBase(
         "num_cts": env_settings.num_cts,
     },
 )
+fair_analyzer = None
 
 
 @worker_process_init.connect
-def setup_logging(sender=None, **kwargs):
+def initialize_worker(sender=None, **kwargs):
     # Setup for each worker before its start some necessary settings and params
+
     # Setup logging
     log_config.setup_logging()
-    # Use the global set of metrics and model
-    global all_metrics, model
+    global model, fair_analyzer
+    fair_analyzer = Analyzer()
 
 
 @cel.task(name="analyze", ignore_result=False)
-def analyze_fair(file_type, file_content) -> Sequence[Dict[str, Any]]:
+def analyze_fair(file_type, file_content, user_tests=[]) -> Sequence[Dict[str, Any]]:
     """ """
-    global all_metrics, model
+    global model, fair_analyzer
     logger = logging.getLogger("celery")
     logger.info(f"Starting FAIR Analysis for Task:- {celery.current_task.request.id}")
 
@@ -72,7 +63,8 @@ def analyze_fair(file_type, file_content) -> Sequence[Dict[str, Any]]:
     file_content = clean_file_content(file_content)
 
     all_results = {"metrics": {}, "summary": {}}
-    for m in all_metrics:
+
+    for m in fair_analyzer.all_metrics:
         res = m.analyze_metric(
             model=model,
             file_content=file_content,
@@ -81,5 +73,23 @@ def analyze_fair(file_type, file_content) -> Sequence[Dict[str, Any]]:
         )
         all_results["metrics"][res["metric_id"]] = res
 
+    # if user_tests are defined, perform them else proceed forward
+    # if len(user_tests) > 0:
+    #     logger.info("Performing User-Defined Tests.")
+    #     # if t["type"] == "Vocabulary Check":
+    #     # elif t.type == "Standard Check":
+    #     #     # TODO: Define the test object for the standard check
+    #     #     pass
+    #     m = U_Metric(user_tests)
+    #     res = m.analyze_metric(
+    #         model=model,
+    #         file_content=file_content,
+    #         file_size=len(file_content),
+    #         file_type=file_type,
+    #     )
+    #     # TODO: Define here the id for user-metric and save
+    #     all_results["metrics"][res["metric_id"]] = res
+
+    # TODO: Aggregate here only on non-user metrics for now until scoring is defined on them.
     all_results["summary"] = aggregate_results(results=all_results["metrics"])
     return all_results
