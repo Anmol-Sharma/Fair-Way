@@ -13,6 +13,7 @@ async function handleSubmit(event) {
     feedback: feedbackText.value,
   };
 
+  // TODO: Handle with the updated postdata code setup
   try {
     // Initialize request configuration with default method and body
     const req = {

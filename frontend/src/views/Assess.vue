@@ -88,7 +88,6 @@ async function submitOfflineRequest(Files, metadataFile) {
     return; // Stop further execution
   }
   const resp = await offlineAssessmentRequest(Files, metadataFile, toRaw(advTests.tests));
-  console.log("reached here 2");
   if (!resp.success) {
     if (resp.code === 500) router.push({ name: "500" });
     else {
