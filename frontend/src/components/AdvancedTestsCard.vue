@@ -5,19 +5,19 @@ let advancedTests = ref([{ domain: "", type: "", condition: "" }]); // Initial e
 const emit = defineEmits(["update:advancedTests"]);
 
 // For the very first emit when the object is defined
-emit("update:advancedTests", advancedTests);
+emit("update:advancedTests", advancedTests.value);
 
 // Add Test Row to the advanced Tests
 function addTestRow() {
   advancedTests.value.push({ domain: "", type: "", condition: "" });
-  emit("update:advancedTests", advancedTests);
+  emit("update:advancedTests", advancedTests.value);
 }
 
 // Remove test row from advancedTests
 function removeTestRow(index) {
   if (advancedTests.value.length > 1) {
     advancedTests.value.splice(index, 1);
-    emit("update:advancedTests", advancedTests);
+    emit("update:advancedTests", advancedTests.value);
   }
 }
 
@@ -57,7 +57,8 @@ function getPlaceholder(type) {
         </ol>
         <p class="text-muted small-text-1 m-3">
           For Vocabulary Checks, define comma separated values on each line for a single property
-          where the first column represents the name and the second column the description.<br />
+          where the first column represents the name and the second column the description. Remove
+          any additional commas in the description.<br />
           For Standard Checks, mention the condition explicitly in 3–4 lines.
         </p>
       </div>
