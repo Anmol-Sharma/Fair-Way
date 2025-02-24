@@ -27,16 +27,21 @@ let Files = ref([]);
 function offlinePreProcess(event) {
   const validType = config.global["supported_metadata_file_types"];
 
-  // Emit updates instead of modifying props directly, since props are readOnly
-  emit("update:showOnlineFlag", false);
-  emit("update:showOfflineFlag", true);
-
   const allFiles = Array.from(event.target.files);
   // Filter files based on extensions and only allow supported metadata file types
   const filteredFiles = allFiles.filter((file) => {
     const extension = "." + file.name.split(".").pop().toLowerCase();
     return validType.includes(extension);
   });
+
+  if (filteredFiles.length < 1) {
+    alert("No relevant Metadata Files found, please select another directory.");
+    return;
+  }
+
+  // Emit updates instead of modifying props directly, since props are readOnly
+  emit("update:showOnlineFlag", false);
+  emit("update:showOfflineFlag", true);
 
   // Update the Files ref
   Files.value = filteredFiles;
