@@ -18,11 +18,16 @@ class ResponseFormat(BaseModel):
 
 # derive from base class and utilize
 class Test(BaseTest):
-    def __init__(self, vocab_item: dict):
-        name = "Metadata contains user defined vocabulary checks."
-        test_main_cmd = f"Your task is to help analyze the metadata provided for custom vocabulary item for the domain {vocab_item["domain"]}. The exact vocab item to check is: `{vocab_item["name"]}` and its description is: `{vocab_item["desc"]}`. Only return true if it is explicitly defined in the metadata."
-        test_instruction = f"Check if metadata includes information explicitly about `{vocab_item["name"]}`"
+    def __init__(self, standard: dict):
+        name = "Metadata satisfies user defined domain standard check."
+        test_main_cmd = f"Your task is to help analyze the metadata provided for domain specific standard check. The domain is `{standard["domain"]}`. You will be given specific condition to check. Only return true if the condition is explicitly satisfied in the metadata."
+        test_instruction = (
+            f"Check if metadata satisifies the condition `{standard["condition"]}`"
+        )
         feedback_format = ResponseFormat
+
+        print(test_main_cmd)
+        print(test_instruction)
 
         super().__init__(
             name,

@@ -12,7 +12,8 @@ from fair_analysis.model import ModelBase
 from fair_analysis.fair_analyzer import Analyzer
 from config import get_env_settings, get_global_settings
 
-from fair_analysis.fair_metrics.User_Metric.metric import Metric as U_Metric_Vocab
+from fair_analysis.fair_metrics.User_Metric.metric import V_Metric as U_Metric_Vocab
+from fair_analysis.fair_metrics.User_Metric.metric import S_Metric as U_Metric_Standard
 
 env_settings = get_env_settings()
 global_settings = get_global_settings()
@@ -92,24 +93,25 @@ def analyze_fair(file_type, file_content, user_tests=[]) -> Sequence[Dict[str, A
     # if user_tests are defined, perform them else proceed forward
     if len(user_tests) > 0:
         vocab_tests = [t for t in user_tests if t["type"] == "Vocabulary Check"]
-        # standard_tests = [t for t in user_tests if t["type"] == "Standard Check"]
+        standard_tests = [t for t in user_tests if t["type"] == "Standard Check"]
 
-        v_m = U_Metric_Vocab(vocab_tests)
-        # s_m = U_Metric_Standard(standard_tests)
+        if len(vocab_tests) > 0:
+            v_m = U_Metric_Vocab(vocab_tests)
+            v_res = v_m.analyze_metric(
+                model=model,
+                file_chunks=file_chunks,
+                file_type=file_type,
+            )
+            all_results["metrics"][v_res["metric_id"]] = v_res
 
-        v_res = v_m.analyze_metric(
-            model=model,
-            file_chunks=file_chunks,
-            file_type=file_type,
-        )
-        # s_res = s_m.analyze_metric(
-        #     model=model,
-        #     file_chunks=file_chunks,
-        #     file_type=file_type,
-        # )
-        all_results["metrics"][v_res["metric_id"]] = v_res
-        # all_results["metrics"][s_res["metric_id"]] = s_res
+        if len(standard_tests) > 0:
+            s_m = U_Metric_Standard(standard_tests)
+            s_res = s_m.analyze_metric(
+                model=model,
+                file_chunks=file_chunks,
+                file_type=file_type,
+            )
+            all_results["metrics"][s_res["metric_id"]] = s_res
 
-    # TODO: Aggregate here only on non-user metrics for now until scoring is defined on them.
     all_results["summary"] = aggregate_results(results=all_results["metrics"])
     return all_results
