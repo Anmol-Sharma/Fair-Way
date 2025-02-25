@@ -55,14 +55,16 @@ class BaseTest:
         # There will be a single chunk if there is no need to generate chunks
         if isinstance(file_chunks, list) and len(file_chunks) == 1:
             return self.__perform_test_on_full_contents(
-                model, file_content=file_chunks[0]
+                model, file_content=file_chunks[0], file_type=file_type
             )
 
         # More than one chunk, so perform operation on different chunks
-        return self.__perform_test_on_chunks(model, chunks=file_chunks)
+        return self.__perform_test_on_chunks(
+            model, chunks=file_chunks, file_type=file_type
+        )
 
     def __perform_test_on_full_contents(
-        self, model: ModelBase, file_content: str
+        self, model: ModelBase, file_content: str, file_type: str
     ) -> Dict[str, str]:
         """Helper Method to perform the test on the whole file content
         Args:
@@ -71,7 +73,7 @@ class BaseTest:
         Returns:
             test results
         """
-        messages = self.__build_messages(file_content)
+        messages = self.__build_messages(file_content, file_type)
 
         response = model.send_request(
             messages=messages, ResponseFormat=self.__test_feedback_format
@@ -112,9 +114,7 @@ class BaseTest:
         return feedback
 
     def __perform_test_on_chunks(
-        self,
-        model: ModelBase,
-        chunks: Sequence[str],
+        self, model: ModelBase, chunks: Sequence[str], file_type: str
     ) -> Dict[str, str]:
         """Helper Method to perform the test on a sequence of file chunks
         Args:
@@ -125,7 +125,7 @@ class BaseTest:
         """
         chunk_results = []
         for idx, chunk in enumerate(chunks):
-            messages = self.__build_messages(chunk)
+            messages = self.__build_messages(chunk, file_type)
             response = model.send_request(
                 messages=messages, ResponseFormat=self.__test_feedback_format
             )
@@ -135,7 +135,9 @@ class BaseTest:
         chunk_results = self.filter_chunk_results(chunk_results)
         return self.__combine_chunk_results(model, chunk_results)
 
-    def __build_messages(self, file_content: str) -> List[Dict[str, Any]]:
+    def __build_messages(
+        self, file_content: str, file_type: str
+    ) -> List[Dict[str, Any]]:
         # For the very first message add the Main CMD to the list of samples
         messages = [
             {
@@ -166,7 +168,7 @@ class BaseTest:
         messages.append(
             {
                 "role": _env_settings.role_user,
-                "content": f"""{self.__test_instruction}\n```{file_content}```""",
+                "content": f"""{self.__test_instruction}\nThe content is of type `{file_type}`.\n```{file_content}```""",
             }
         )
 
