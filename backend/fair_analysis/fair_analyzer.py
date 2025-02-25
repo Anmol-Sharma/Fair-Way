@@ -7,11 +7,9 @@ from fair_analysis.fair_metrics.FsF_I3_01M.metric import M as M6
 from fair_analysis.fair_metrics.FsF_R1_01MD.metric import M as M7
 from fair_analysis.fair_metrics.FsF_R1_1_01M.metric import M as M8
 
-# from fair_analysis.fair_metrics.User_Metric.metric import Metric as U_Metric
-
 
 class Analyzer:
     def __init__(
         self,
     ):
-        self.all_metrics = (M1, M2, M3, M4, M5, M6, M7, M8)
+        self.all_domain_agnosticd_metrics = (M1, M2, M3, M4, M5, M6, M7, M8)

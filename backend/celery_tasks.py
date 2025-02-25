@@ -12,6 +12,8 @@ from fair_analysis.model import ModelBase
 from fair_analysis.fair_analyzer import Analyzer
 from config import get_env_settings, get_global_settings
 
+from fair_analysis.fair_metrics.User_Metric.metric import Metric as U_Metric_Vocab
+
 env_settings = get_env_settings()
 global_settings = get_global_settings()
 
@@ -77,7 +79,8 @@ def analyze_fair(file_type, file_content, user_tests=[]) -> Sequence[Dict[str, A
 
     all_results = {"metrics": {}, "summary": {}}
 
-    for m in fair_analyzer.all_metrics:
+    logger.info("Performing Domain-Agnostic Metrics")
+    for m in fair_analyzer.all_domain_agnosticd_metrics:
         res = m.analyze_metric(
             model=model,
             file_chunks=file_chunks,
@@ -85,21 +88,27 @@ def analyze_fair(file_type, file_content, user_tests=[]) -> Sequence[Dict[str, A
         )
         all_results["metrics"][res["metric_id"]] = res
 
+    logger.info("Performing User-Defined Tests.")
     # if user_tests are defined, perform them else proceed forward
-    # if len(user_tests) > 0:
-    #     logger.info("Performing User-Defined Tests.")
-    #     # if t["type"] == "Vocabulary Check":
-    #     # elif t.type == "Standard Check":
-    #     #     # TODO: Define the test object for the standard check
-    #     #     pass
-    #     m = U_Metric(user_tests)
-    #     res = m.analyze_metric(
-    #         model=model,
-    #         file_chunks=file_chunks,
-    #         file_type=file_type,
-    #     )
-    #     # TODO: Define here the id for user-metric and save
-    #     all_results["metrics"][res["metric_id"]] = res
+    if len(user_tests) > 0:
+        vocab_tests = [t for t in user_tests if t["type"] == "Vocabulary Check"]
+        # standard_tests = [t for t in user_tests if t["type"] == "Standard Check"]
+
+        v_m = U_Metric_Vocab(vocab_tests)
+        # s_m = U_Metric_Standard(standard_tests)
+
+        v_res = v_m.analyze_metric(
+            model=model,
+            file_chunks=file_chunks,
+            file_type=file_type,
+        )
+        # s_res = s_m.analyze_metric(
+        #     model=model,
+        #     file_chunks=file_chunks,
+        #     file_type=file_type,
+        # )
+        all_results["metrics"][v_res["metric_id"]] = v_res
+        # all_results["metrics"][s_res["metric_id"]] = s_res
 
     # TODO: Aggregate here only on non-user metrics for now until scoring is defined on them.
     all_results["summary"] = aggregate_results(results=all_results["metrics"])
