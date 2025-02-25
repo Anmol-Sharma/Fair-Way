@@ -10,8 +10,9 @@ function sleep(ms) {
 
 function renameId(id) {
   // Helper function to convert python module name syntax Metric/ Test Ids to their actual values
-  const patternMatch = id.match(/[A-Za-z]\d_\d/g)[0];
-  if (patternMatch) {
+  const matches = id.match(/[A-Za-z]\d_\d/g);
+  if (matches && matches.length > 0) {
+    const patternMatch = matches[0];
     id = id.replace(patternMatch, patternMatch.replace("_", "."));
   }
   return id.replace(/_/g, "-");
