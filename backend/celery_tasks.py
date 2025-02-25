@@ -64,11 +64,16 @@ def analyze_fair(file_type, file_content, user_tests=[]) -> Sequence[Dict[str, A
     logger = logging.getLogger("celery")
     logger.info(f"Starting FAIR Analysis for Task:- {celery.current_task.request.id}")
 
-    # Cleanup the file content
-    file_content = clean_file_content(file_content)
+    # Cleanup the file content for text files
+    if file_type == "text/plain":
+        logger.info("Cleaning up plain text content before splitting.")
+        file_content = clean_file_content(file_content)
+
+    logger.info(len(file_content))
 
     # Perform the split operations
     file_chunks = splitter.split_file(file_type, len(file_content), file_content)
+    logger.info(f"Total Number of File Chunks: {len(file_chunks)}")
 
     all_results = {"metrics": {}, "summary": {}}
 
