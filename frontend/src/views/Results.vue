@@ -9,6 +9,7 @@ redirectValidity();
 
 // Add a flag to track if the request is still processing
 let isProcessing = ref(true);
+
 // When starting the fetch
 sessionStorage.setItem("isProcessing", "true");
 
@@ -20,6 +21,7 @@ let resourceTitle = ref("No Title Detected!");
 let totalFairScore = ref(0.0);
 let maxFairScore = ref(0.0);
 let totalMetrics = ref();
+let showUserAccordions = ref(false);
 
 // Bar Chart section
 let fPercent = ref(0.0);
@@ -99,9 +101,14 @@ onMounted(async () => {
     aAccordions = computeAccList(parsedRes["fair_assessment"]["metrics"], "accessible");
     iAccordions = computeAccList(parsedRes["fair_assessment"]["metrics"], "interoperable");
     rAccordions = computeAccList(parsedRes["fair_assessment"]["metrics"], "reusable");
+
+    // TODO: Also update the template below regarding the same to show user-defined section if and only if detected.
     userAccordions = computeAccList(parsedRes["fair_assessment"]["metrics"], "user");
+    if (userAccordions.value.length > 0) {
+      showUserAccordions.value = true;
+    }
   } catch (error) {
-    console.error("An error occurred while fetching results. Please try again later");
+    console.error("An error occurred while processing results. Please try again later");
     console.log(error);
     isProcessing.value = false;
     sessionStorage.setItem("isProcessing", "false");
@@ -326,7 +333,7 @@ onMounted(async () => {
         </div>
         <br />
 
-        <div class="container d-flex justify-content-center">
+        <div class="container d-flex justify-content-center" v-if="showUserAccordions">
           <div>
             <h3 class="display-7 text-center">User Defined Tests</h3>
             <div>
