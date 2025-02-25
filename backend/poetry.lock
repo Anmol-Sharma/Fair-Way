@@ -613,14 +613,14 @@ zookeeper = ["kazoo (>=2.8.0)"]
 
 [[package]]
 name = "langchain-core"
-version = "0.3.34"
+version = "0.3.39"
 description = "Building applications with LLMs through composability"
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "langchain_core-0.3.34-py3-none-any.whl", hash = "sha256:a057ebeddd2158d3be14bde341b25640ddf958b6989bd6e47160396f5a8202ae"},
-    {file = "langchain_core-0.3.34.tar.gz", hash = "sha256:26504cf1e8e6c310adad907b890d4e3c147581cfa7434114f6dc1134fe4bc6d3"},
+    {file = "langchain_core-0.3.39-py3-none-any.whl", hash = "sha256:00f35e15e5f21d77320b3f8b816a1bf5de0b40b7809cd625dc3813b850a87fb2"},
+    {file = "langchain_core-0.3.39.tar.gz", hash = "sha256:97d49eccb1dea057b2efadae178bcc5e6472caa69c171fa4508fa6fb45f44c0e"},
 ]
 
 [package.dependencies]
@@ -652,14 +652,14 @@ langchain-core = ">=0.3.34,<1.0.0"
 
 [[package]]
 name = "langsmith"
-version = "0.3.8"
+version = "0.3.10"
 description = "Client library to connect to the LangSmith LLM Tracing and Evaluation Platform."
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "langsmith-0.3.8-py3-none-any.whl", hash = "sha256:fbb9dd97b0f090219447fca9362698d07abaeda1da85aa7cc6ec6517b36581b1"},
-    {file = "langsmith-0.3.8.tar.gz", hash = "sha256:97f9bebe0b7cb0a4f278e6ff30ae7d5ededff3883b014442ec6d7d575b02a0f1"},
+    {file = "langsmith-0.3.10-py3-none-any.whl", hash = "sha256:2f1f9e27c4fc6dd605557c3cdb94465f4f33464ab195c69ce599b6ee44d18275"},
+    {file = "langsmith-0.3.10.tar.gz", hash = "sha256:7c05512d19a7741b348879149f4b7ef6aa4495abd12ad2e9418243664559b521"},
 ]
 
 [package.dependencies]
@@ -1024,14 +1024,14 @@ typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
 
 [[package]]
 name = "pydantic-settings"
-version = "2.7.1"
+version = "2.8.0"
 description = "Settings management using Pydantic"
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "pydantic_settings-2.7.1-py3-none-any.whl", hash = "sha256:590be9e6e24d06db33a4262829edef682500ef008565a969c73d39d5f8bfb3fd"},
-    {file = "pydantic_settings-2.7.1.tar.gz", hash = "sha256:10c9caad35e64bfb3c2fbf70a078c0e25cc92499782e5200747f942a065dec93"},
+    {file = "pydantic_settings-2.8.0-py3-none-any.whl", hash = "sha256:c782c7dc3fb40e97b238e713c25d26f64314aece2e91abcff592fcac15f71820"},
+    {file = "pydantic_settings-2.8.0.tar.gz", hash = "sha256:88e2ca28f6e68ea102c99c3c401d6c9078e68a5df600e97b43891c34e089500a"},
 ]
 
 [package.dependencies]
