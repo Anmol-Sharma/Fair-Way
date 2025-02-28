@@ -44,8 +44,10 @@ const handleSubmit = () => {
   <div class="card assess-card">
     <div class="card-body text-center">
       <h5 class="card-title">Online / Published Dataset</h5>
-      <p>Enter Valid DOI of dataset from defined Data Repositories above.</p>
-      <!-- TODO: Add support for hugging face datasets -->
+      <p>
+        Enter Valid DOI of dataset either from Zenodo or Dryad OR<br />
+        Enter a Valid URL of a Hugging Face Dataset.
+      </p>
       <form @submit.prevent="handleSubmit">
         <div class="my-4 d-flex justify-content-center">
           <div class="input-group w-75">
