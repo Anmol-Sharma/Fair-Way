@@ -19,13 +19,17 @@ const handleSubmit = () => {
   const dryadPattern =
     /^(https?:\/\/)datadryad\.org\/stash\/dataset\/doi:10\.\d+\/dryad\.[a-zA-Z0-9-]+$/;
 
+  const huggingFacePattern =
+    /^(https?:\/\/)huggingface\.co\/(?:api\/)?datasets\/[\w-]+(?:\/[\w-]+)*$/;
+
   if (
     !doiPattern.test(resourceUrl.value) &&
     !zenodoPattern.test(resourceUrl.value) &&
-    !dryadPattern.test(resourceUrl.value)
+    !dryadPattern.test(resourceUrl.value) &&
+    !huggingFacePattern.test(resourceUrl.value)
   ) {
     alert(
-      "Invalid Record. Only valid DOIs published by Zenodo or Dryad accepted or Enter valid url of a Zenodo or Dryad Record."
+      "Invalid Record.\nOnly valid DOIs published by Zenodo or Dryad accepted or Enter valid url of a Zenodo or Dryad Record.\nOr Enter a url of a hugging face dataset."
     );
     return;
   } else {
