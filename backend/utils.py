@@ -44,6 +44,8 @@ logger = logging.getLogger("fastapi")
 
 DRYAD_REMOVABLE_KEYS = ["id", "lastModificationDate"]
 
+HUGGING_FACE_REMOVABLE_KEYS = ["sha", "downloads", "likes", "_id"]
+
 
 async def fetch_zenodo_record(record_num: str) -> Tuple[bool, Dict]:
     """Helper Function to fetch Metadata for a dataset from Zenodo
@@ -141,6 +143,39 @@ async def fetch_doi(id: str) -> Tuple[bool, Dict]:
     except Exception as e:
         logger.warning(
             f"Error occurred during fetching DOI record: {id}, error: {str(e)}"
+        )
+        return False, {"error": str(e)}
+
+
+async def fetch_hugging_face_dataset(dataset_id: str) -> Tuple[bool, Dict]:
+    """Helper Function to fetch Metadata for a dataset from Hugging Face
+
+    Args:
+        dataset_id: id of the dataset
+
+    Returns:
+        Tuple Containing operation Success and the received JSON metadata.
+    """
+    logger.info(f"Fetching Hugging Face Dataset: {dataset_id}")
+    global HUGGING_FACE_REMOVABLE_KEYS
+    try:
+        Client = HttpClient.get_client()
+        response = await Client.get(
+            f"{env_settings.base_hugging_face_resolver}{dataset_id}"
+        )
+        response.raise_for_status()
+        resp = json.loads(response.text)
+        for key in HUGGING_FACE_REMOVABLE_KEYS:
+            resp.pop(key, None)
+        return True, resp
+    except httpx.HTTPStatusError as exc:
+        logger.warning(
+            f"HTTP Error occurred during fetching Hugging Face record: {dataset_id}, response code: {exc.response.status_code}"
+        )
+        return False, {"error": f"HTTP error occurred: {exc.response.status_code}"}
+    except Exception as e:
+        logger.warning(
+            f"Error occurred during fetching Hugging Face record: {dataset_id}, error: {str(e)}"
         )
         return False, {"error": str(e)}
 

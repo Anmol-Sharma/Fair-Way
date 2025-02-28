@@ -23,6 +23,7 @@ from utils import (
     fetch_zenodo_record,
     fetch_doi,
     fetch_dryad_record,
+    fetch_hugging_face_dataset,
     init_db,
     save_feedback,
     save_survey,
@@ -85,6 +86,9 @@ async def handle_published(data: OnlineResource):
         # Check if zenodo url or dryad record or doi
         pattern_zenodo = r"^(https?://)?zenodo\.org/records/\d+$"
         pattern_dryad = r"^(https?://)datadryad\.org/stash/dataset/doi:10\.\d+/dryad\.[a-zA-Z0-9-]+$"
+        pattern_hugging_face = (
+            r"^(https?:\/\/)huggingface\.co\/(?:api\/)?datasets\/[\w-]+(?:\/[\w-]+)*$"
+        )
 
         if re.match(pattern_zenodo, data.url):
             _record_num = data.url.split("/")[-1]
@@ -106,7 +110,7 @@ async def handle_published(data: OnlineResource):
                     detail=f"Could not resolve Zenodo Record {_record_num}",
                 )
             file_content = json.dumps(dry_rec, separators=(",", ":"))
-        else:
+        elif "doi" in data.url:
             # Send the doi to doi resolver to check for validity
             doi = "/".join(data.url.split("/")[-2:])
             logger.info(f"Processing DOI: {doi}")
@@ -134,6 +138,24 @@ async def handle_published(data: OnlineResource):
                         detail=f"Could not resolve Zenodo Record {_record_num}",
                     )
                 file_content = json.dumps(dry_rec, separators=(",", ":"))
+        elif re.match(pattern_hugging_face, data.url):
+            d_id = "/".join(data.url.split("/")[-2:])
+            res, hf_rec = await fetch_hugging_face_dataset(d_id)
+            if not res:
+                logger.warning(
+                    f"Could not resolve hugging face record for the url: {data.url}"
+                )
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Could not resolve Hugging Face {_record_num}",
+                )
+            file_content = json.dumps(hf_rec, separators=(",", ":"))
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Could not resolve Zenodo Record {_record_num}",
+            )
+
         task_id = __add_to_queue(
             file_type="application/json",
             file_content=file_content,

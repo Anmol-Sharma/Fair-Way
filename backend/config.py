@@ -33,6 +33,7 @@ class EnvSettings(BaseSettings):
     base_doi_resolver: str
     base_zenodo_resolver: str
     base_dryad_resolver: str
+    base_hugging_face_resolver: str
 
     # Acess tokens
     zenodo_access_token: str
