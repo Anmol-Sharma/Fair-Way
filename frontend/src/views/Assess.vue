@@ -143,9 +143,10 @@ async function submitOnlineRequest(resourceUrl) {
           Programatically check FAIRness of research data sets. You have two options available
           below.
           <br />
-          You can either enter a DOI url or a URL from following supported data repositories:
-          <strong>Dryad</strong>, <strong>Zenodo</strong>, <strong>Hugging Face</strong> OR you can
-          upload your local metadata files for assessment.
+          You can either enter a URL from a repository with Embedded Metadata on Datasets (Ex.
+          <strong>Dryad</strong>, <strong>Zenodo</strong>), or <strong>Hugging Face</strong> dataset
+          URL.<br />
+          OR you can upload your local metadata files for assessment.
         </p>
       </div>
     </div>

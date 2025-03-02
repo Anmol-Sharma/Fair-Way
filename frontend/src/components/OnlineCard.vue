@@ -44,10 +44,7 @@ const handleSubmit = () => {
   <div class="card assess-card">
     <div class="card-body text-center">
       <h5 class="card-title">Online / Published Dataset</h5>
-      <p>
-        Enter Valid DOI of dataset either from Zenodo or Dryad OR<br />
-        Enter a Valid URL of a Hugging Face Dataset.
-      </p>
+      <p>Enter Valid URL of a dataset based on Supported Conditions Defined above.</p>
       <form @submit.prevent="handleSubmit">
         <div class="my-4 d-flex justify-content-center">
           <div class="input-group w-75">
@@ -55,7 +52,7 @@ const handleSubmit = () => {
               type="text"
               class="form-control"
               aria-describedby="basic-addon3 basic-addon4"
-              placeholder="DOI of the dataset"
+              placeholder="Valid URL of the dataset"
               style="text-align: center"
               id="dataset_url"
               required
