@@ -16,8 +16,7 @@ sessionStorage.clear();
         Power of LLMs.
         <br />
         Read more about the tool and its working in the
-        <RouterLink class="link-primary" to="/About">About</RouterLink> and
-        <RouterLink class="link-primary" to="/Docs">Docs</RouterLink> Sections.
+        <RouterLink class="link-primary" to="/About">About</RouterLink> Section.
       </p>
       <div class="d-flex justify-content-center">
         <button

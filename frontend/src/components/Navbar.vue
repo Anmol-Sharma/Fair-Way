@@ -34,9 +34,6 @@
             <RouterLink class="nav-link" to="/Enrichment">Enrichment</RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" to="/Docs">Docs</RouterLink>
-          </li>
-          <li class="nav-item">
             <RouterLink class="nav-link" to="/Feedback">General Feedback</RouterLink>
           </li>
           <li class="nav-item">
