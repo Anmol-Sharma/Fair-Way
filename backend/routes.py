@@ -89,11 +89,16 @@ async def handle_published(data: OnlineResource):
             )
 
         # Convert metadata to JSON string
-        file_content = json.dumps(metadata, separators=(",", ":"))
+        if metadata["source"] != "rdf/xml":
+            file_content = json.dumps(metadata, separators=(",", ":"))
+            file_type = "application/ld+json"
+        else:
+            file_content = metadata["metadata"]
+            file_type = "application/rdf+xml"
 
         # Add to processing queue
         task_id = __add_to_queue(
-            file_type="application/json",
+            file_type=file_type,
             file_content=file_content,
             user_tests=data.advancedTests,
         )

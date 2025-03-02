@@ -5,6 +5,7 @@ import extruct
 from w3lib.html import get_base_url
 import logging
 import re
+from bs4 import BeautifulSoup
 
 from typing import Tuple, Dict
 from config import get_env_settings
@@ -57,13 +58,13 @@ async def fetch_metadata_from_url(
     """Extract metadata from any URL, regardless of repository type."""
     logger.info(f"Attempting to extract metadata from URL: {url}")
 
+    # Try to identify repository type and record ID from URL
+    repository_type, record_id = identify_repository_and_id(url)
+
     # Try generic metadata extraction first
     success, metadata = await extract_embedded_metadata(url)
     if success:
-        return True, metadata.get("metadata", {})
-
-    # Try to identify repository type and record ID from URL
-    repository_type, record_id = identify_repository_and_id(url)
+        return True, metadata
 
     if record_id:
         logger.info(f"Identified as {repository_type} with record_id: {record_id}")
@@ -99,21 +100,23 @@ def identify_repository_and_id(url: str) -> Tuple[str, str]:
 
 
 async def extract_embedded_metadata(url: str) -> Tuple[bool, Dict]:
-    """Extract embedded metadata from a URL, with manual handling for HTTP 301 redirects."""
+    """Extract embedded metadata from a URL, with manual handling for HTTP 301/302 redirects."""
     try:
         client = HttpClient.get_client()
-        # Disable automatic redirection to handle 301 manually
+        # Disable automatic redirection to handle 301/302 manually
         response = await client.get(url, follow_redirects=False)
-        if response.status_code == 301:
+        if response.status_code in (301, 302):
             new_location = response.headers.get("location")
             if new_location:
                 logger.info(
-                    f"Received 301 redirect, fetching from new location: {new_location}"
+                    f"Received {response.status_code} redirect, fetching from new location: {new_location}"
                 )
                 response = await client.get(new_location, follow_redirects=False)
         response.raise_for_status()
 
+        logger.info("Reading local html example for reference and testing")
         html_content = response.text
+
         base_url = get_base_url(html_content, str(response.url))
         metadata = extruct.extract(
             html_content,
@@ -122,9 +125,17 @@ async def extract_embedded_metadata(url: str) -> Tuple[bool, Dict]:
             syntaxes=["json-ld", "microdata", "rdfa", "dublincore"],
         )
 
+        rdf_data = None
         # Check if we have any metadata
         if not any(metadata.values()):
-            return False, {"error": "No embedded metadata found"}
+            # Check if any embedded rdfs/xml data is embedded in the page.
+            logger.info("Checking for embedded Rdf/XML data")
+            soup = BeautifulSoup(html_content, "html.parser")
+            # Step 3: Find RDF/XML data inside <script> or <iframe> tags
+            for tag in soup.find_all("script", type="application/rdf+xml"):
+                rdf_data = tag.string  # Extract RDF content
+            if not rdf_data:
+                return False, {"error": "No embedded metadata found"}
 
         # Try metadata formats in order of preference
         for format_type in ["json-ld", "microdata", "rdfa", "dublincore"]:
@@ -134,6 +145,13 @@ async def extract_embedded_metadata(url: str) -> Tuple[bool, Dict]:
                     "source": format_type,
                     "metadata": data[0] if isinstance(data, list) and data else data,
                 }
+
+        # Step 4: Return Back RDF/XML Data if detected
+        if rdf_data:
+            return True, {
+                "source": "rdf/xml",
+                "metadata": rdf_data,
+            }
 
         return False, {"error": "Could not process embedded metadata"}
 
@@ -201,18 +219,18 @@ def clean_metadata(metadata: Dict, repository_type: str) -> Dict:
 async def fetch_repository_api(
     repository_type: str, record_id: str
 ) -> Tuple[bool, Dict]:
-    """Fetch metadata from repository-specific API, handling HTTP 301 redirects."""
+    """Fetch metadata from repository-specific API, handling HTTP 301/302 redirects."""
     try:
         client = HttpClient.get_client()
         url = construct_repository_url(repository_type, record_id)
         logger.info(f"Fetching from {repository_type} API: {url}")
-        # Disable automatic redirects to manually process 301 status
+        # Disable automatic redirects to manually process 301/302 status
         response = await client.get(url, follow_redirects=False)
-        if response.status_code == 301:
+        if response.status_code in (301, 302):
             new_location = response.headers.get("location")
             if new_location:
                 logger.info(
-                    f"Received 301 redirect for API, fetching from new URL: {new_location}"
+                    f"Received {response.status_code} redirect for API, fetching from new URL: {new_location}"
                 )
                 response = await client.get(new_location, follow_redirects=False)
         response.raise_for_status()
