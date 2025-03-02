@@ -5,7 +5,7 @@ from celery import Celery
 from celery.signals import worker_process_init
 import log_config
 import logging
-from utils import clean_file_content, aggregate_results
+from utils.basic_utils import clean_file_content, aggregate_results
 from fair_analysis.splitter import Splitter
 
 from fair_analysis.model import ModelBase

@@ -2,8 +2,6 @@ import json
 import logging
 import log_config
 
-import re
-
 from fastapi import APIRouter, HTTPException, status, Form, UploadFile
 from celery.result import AsyncResult
 
@@ -19,11 +17,8 @@ from resp_models import (
     Survey,
     ResourceAcceptFeedback,
 )
-from utils import (
-    fetch_zenodo_record,
-    fetch_doi,
-    fetch_dryad_record,
-    fetch_hugging_face_dataset,
+from utils.network_utils import fetch_metadata_from_url
+from utils.db_utils import (
     init_db,
     save_feedback,
     save_survey,
@@ -45,8 +40,8 @@ def __add_to_queue(file_type: str, file_content: str, user_tests: Dict) -> str:
 
     Args:
         file_type: type of file contents
-        file_size: size of the file (in Bytes)
         file_content: contents of the file
+        user_tests: user-defined tests configuration
 
     Returns:
         task_id of the created Task
@@ -67,10 +62,11 @@ def __add_to_queue(file_type: str, file_content: str, user_tests: Dict) -> str:
     response_model=ResourceAcceptAssessment,
 )
 async def handle_published(data: OnlineResource):
-    """Endpoint to handle online published datasets from zenodo and dryad (doi)
+    """Endpoint to handle online published datasets from various repositories
+    or any webpage with embedded metadata
 
     Args:
-        item (OnlineResource): The url/ doi of the datasets
+        data (OnlineResource): The url/doi of the datasets or any webpage with metadata
 
     Returns:
         ResourceAcceptResponse: Response indicating successful upload and task ID
@@ -79,88 +75,29 @@ async def handle_published(data: OnlineResource):
         HTTPException: If there's an error processing the item, with status code 500
     """
     try:
-        # make the get request based on either dryad or zenodo
-        # Fow now only metadata and raise the request to perform analysis on the request
         logger.info(f"Request initiated for online resource: {data.url}")
 
-        # Check if zenodo url or dryad record or doi
-        pattern_zenodo = r"^(https?://)?zenodo\.org/records/\d+$"
-        pattern_dryad = r"^(https?://)datadryad\.org/stash/dataset/doi:10\.\d+/dryad\.[a-zA-Z0-9-]+$"
-        pattern_hugging_face = (
-            r"^(https?:\/\/)huggingface\.co\/(?:api\/)?datasets\/[\w-]+(?:\/[\w-]+)*$"
-        )
+        # Use the more generic fetch_metadata_from_url function
+        # which can extract metadata from any URL
+        success, metadata = await fetch_metadata_from_url(data.url)
 
-        if re.match(pattern_zenodo, data.url):
-            _record_num = data.url.split("/")[-1]
-            res, zen_rec = await fetch_zenodo_record(_record_num)
-            if not res:
-                logger.warning(f"Could not resolve DOI for the url: {data.url}")
-                raise HTTPException(
-                    status_code=400,
-                    detail=f"Could not resolve Zenodo Record {_record_num}",
-                )
-            file_content = json.dumps(zen_rec, separators=(",", ":"))
-        elif re.match(pattern_dryad, data.url):
-            doi = "/".join(data.url.split("/")[-2:])
-            res, dry_rec = await fetch_dryad_record(doi)
-            if not res:
-                logger.warning(f"Could not resolve DOI for the url: {data.url}")
-                raise HTTPException(
-                    status_code=400,
-                    detail=f"Could not resolve Zenodo Record {_record_num}",
-                )
-            file_content = json.dumps(dry_rec, separators=(",", ":"))
-        elif "doi" in data.url:
-            # Send the doi to doi resolver to check for validity
-            doi = "/".join(data.url.split("/")[-2:])
-            logger.info(f"Processing DOI: {doi}")
-            res, doi_resp = await fetch_doi(doi)
-            if not res:
-                logger.warning(f"Could not resolve DOI for the url: {data.url}")
-                raise HTTPException(status_code=400, detail="Could not resolve DOI")
-            if "zenodo" in data.url:
-                _record_num = doi_resp["value"].split("/")[-1]
-                res, zen_rec = await fetch_zenodo_record(_record_num)
-                if not res:
-                    logger.warning(f"Could not resolve DOI for the url: {data.url}")
-                    raise HTTPException(
-                        status_code=400,
-                        detail=f"Could not resolve Zenodo Record {_record_num}",
-                    )
-                file_content = json.dumps(zen_rec, separators=(",", ":"))
-            elif "dryad" in data.url:
-                doi = "/".join(doi_resp["value"].split("/")[-2:])
-                res, dry_rec = await fetch_dryad_record(doi)
-                if not res:
-                    logger.warning(f"Could not resolve DOI for the url: {data.url}")
-                    raise HTTPException(
-                        status_code=400,
-                        detail=f"Could not resolve Zenodo Record {_record_num}",
-                    )
-                file_content = json.dumps(dry_rec, separators=(",", ":"))
-        elif re.match(pattern_hugging_face, data.url):
-            d_id = "/".join(data.url.split("/")[-2:])
-            res, hf_rec = await fetch_hugging_face_dataset(d_id)
-            if not res:
-                logger.warning(
-                    f"Could not resolve hugging face record for the url: {data.url}"
-                )
-                raise HTTPException(
-                    status_code=400,
-                    detail=f"Could not resolve Hugging Face {_record_num}",
-                )
-            file_content = json.dumps(hf_rec, separators=(",", ":"))
-        else:
+        if not success:
+            logger.warning(f"Could not extract metadata from URL: {data.url}")
             raise HTTPException(
                 status_code=400,
-                detail=f"Could not resolve Zenodo Record {_record_num}",
+                detail=f"Could not extract metadata from URL: {data.url}. Error: {metadata.get('error', 'Unknown error')}",
             )
 
+        # Convert metadata to JSON string
+        file_content = json.dumps(metadata, separators=(",", ":"))
+
+        # Add to processing queue
         task_id = __add_to_queue(
             file_type="application/json",
             file_content=file_content,
             user_tests=data.advancedTests,
         )
+
         return {
             "success": True,
             "comment": "Assessment is being processed",
@@ -184,6 +121,7 @@ async def handle_unpublished(
 
     Args:
         file (UploadFile): The uploaded file containing the resource metadata
+        advanced_tests (str): JSON string of advanced test configurations
 
     Returns:
         ResourceAcceptResponse: Response indicating successful upload and task ID
@@ -206,7 +144,7 @@ async def handle_unpublished(
         task_id = __add_to_queue(file_type, file_content, user_tests=tests)
         return {
             "success": True,
-            "comment": "File succesfully uploaded",
+            "comment": "File successfully uploaded",
             "task_id": task_id,
         }
     except Exception as e:
@@ -263,9 +201,7 @@ async def get_results(task_id: str):
     try:
         res = AsyncResult(task_id)
         if not res or not res.ready():
-            logger.warning(
-                f"Status request sent for Task: {task_id} which is not found"
-            )
+            logger.warning(f"Results requested for Task: {task_id} which is not ready")
             raise HTTPException(status_code=102, detail="Being Processed")
         return {"success": True, "fair_assessment": res.get(), "task_id": task_id}
     except Exception as e:
@@ -279,7 +215,17 @@ async def get_results(task_id: str):
     response_model=ResourceAcceptFeedback,
 )
 async def feedback(feedback_data: Feedback):
-    # Save the feedback
+    """Endpoint to handle user feedback
+
+    Args:
+        feedback_data (Feedback): The feedback data from the user
+
+    Returns:
+        ResourceAcceptFeedback: Response indicating successful feedback submission
+
+    Raises:
+        HTTPException: If there's an error saving the feedback
+    """
     success = save_feedback(feedback_data)
     if not success:
         raise HTTPException(
@@ -295,7 +241,17 @@ async def feedback(feedback_data: Feedback):
     response_model=ResourceAcceptFeedback,
 )
 async def survey(survey_data: Survey):
-    # Save the feedback
+    """Endpoint to handle user survey
+
+    Args:
+        survey_data (Survey): The survey data from the user
+
+    Returns:
+        ResourceAcceptFeedback: Response indicating successful survey submission
+
+    Raises:
+        HTTPException: If there's an error saving the survey
+    """
     success = save_survey(survey_data)
 
     if not success:
