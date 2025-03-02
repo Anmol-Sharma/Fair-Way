@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-  <div class="container-fluid main-container" id="about-section">
+  <div class="container-fluid main-container justify-content-center p-5" id="about-section">
     <h1>About</h1>
     <section id="overview">
       <h2>Overview</h2>

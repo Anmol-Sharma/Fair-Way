@@ -19,7 +19,6 @@ def clean_file_content(content):
     content = "\n".join(line.strip() for line in content.split("\n"))
     # Step 4: Condense multiple spaces within lines to a single space
     content = " ".join(content.split())
-
     return content
 
 

@@ -5,7 +5,7 @@ sessionStorage.clear();
 
 <template>
   <div class="main-container container-fluid d-flex justify-content-center align-items-center">
-    <div class="d-flex flex-column align-items-center p-3">
+    <div class="d-flex flex-column align-items-center p-5">
       <div class="d-flex align-items-center">
         <img src="../assets/llama_fair.jpg" alt="Logo" width="192" height="192" class="me-4" />
         <h1>FAIR-Way</h1>
