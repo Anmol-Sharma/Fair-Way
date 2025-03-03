@@ -10,11 +10,12 @@ services:
     hostname: redis
     volumes:
       - ./redis.conf:/usr/local/etc/redis/redis.conf
+      - /home/asharma/Data/Logs/redis_logs:/var/log/redis
+      - /home/asharma/Data/Redis:/data
     expose:
       - "6379"
     networks:
       - fairway-app-network
-    user: "1014:1014"
 
   backend:
     build:

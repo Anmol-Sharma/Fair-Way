@@ -60,6 +60,7 @@ FROM redis:alpine AS redis_base
 # Add user asharma with specific UID/GID and create needed directories
 RUN adduser -D -u 1014 -G root asharma && \
     mkdir -p /usr/local/etc/redis /var/log/redis /data && \
+    touch /var/log/redis/redis.log && \
     chown -R asharma:root /usr/local/etc/redis /var/log/redis /data
 
 FROM redis_base AS redis_prod
