@@ -34,6 +34,10 @@ def aggregate_results(results):
         summary["title"] = results["FsF_F2_01M"]["test_results"]["FsF_F2_01M-1"][
             "result"
         ]["title"]
+
+        summary["identifier"] = results["FsF_F1_02D"]["test_results"]["FsF_F1_02D-1"][
+            "result"
+        ]["identifier"]
     except KeyError:
         logger.error("Key-Error while parsing results for title")
         summary["title"] = ""

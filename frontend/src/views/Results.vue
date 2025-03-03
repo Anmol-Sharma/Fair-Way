@@ -18,6 +18,8 @@ let parsedRes = ref();
 
 // Summary section variables
 let resourceTitle = ref("No Title Detected!");
+let resourceIdentifier = ref("No Identifier Detected!");
+let llmInUse = ref();
 let totalFairScore = ref(0.0);
 let maxFairScore = ref(0.0);
 let totalMetrics = ref();
@@ -75,7 +77,9 @@ onMounted(async () => {
 
     // get title
     resourceTitle.value = parsedRes["fair_assessment"]["summary"]["title"];
+    resourceIdentifier.value = parsedRes["fair_assessment"]["summary"]["identifier"];
     totalMetrics.value = parsedRes["fair_assessment"]["summary"]["total_metrics"];
+    llmInUse.value = parsedRes["fair_assessment"]["summary"]["LLM"];
 
     // get the total fair score
     const _scores = parsedRes["fair_assessment"]["summary"]["score_summary"]["score"];
@@ -158,11 +162,15 @@ onMounted(async () => {
                 </tr>
                 <tr>
                   <th>Detected Resource PID/URL:</th>
-                  <td class="text-break">(TODO: Modify Logic)</td>
+                  <td class="text-break">{{ resourceIdentifier }}</td>
                 </tr>
                 <tr>
                   <th>Software version:</th>
                   <td>1.0</td>
+                </tr>
+                <tr>
+                  <th>LLM Used:</th>
+                  <td>{{ llmInUse }}</td>
                 </tr>
                 <tr>
                   <th>Total Metrics Measured:</th>

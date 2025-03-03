@@ -125,4 +125,5 @@ def analyze_fair(file_type, file_content, user_tests=[]) -> Sequence[Dict[str, A
             all_results["metrics"][s_res["metric_id"]] = s_res
 
     all_results["summary"] = aggregate_results(results=all_results["metrics"])
+    all_results["summary"]["LLM"] = env_settings.llm_model.split(":")[0]
     return all_results
