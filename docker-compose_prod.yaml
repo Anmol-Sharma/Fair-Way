@@ -87,7 +87,7 @@ services:
     networks:
       - fairway-app-network
     user: "1014:1014"
-  fariway_ollama:
+  fairway_ollama:
     build:
       context: .
       dockerfile: dockerfile_prod
