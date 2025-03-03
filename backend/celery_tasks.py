@@ -82,11 +82,22 @@ def analyze_fair(file_type, file_content, user_tests=[]) -> Sequence[Dict[str, A
 
     logger.info("Performing Domain-Agnostic Metrics")
     for m in fair_analyzer.all_domain_agnosticd_metrics:
-        res = m.analyze_metric(
-            model=model,
-            file_chunks=file_chunks,
-            file_type=file_type,
-        )
+        # For certain types of metrics use the full file content and not just chunks.
+        if m.metric_id in ("FsF_I3_01M"):
+            logger.info("Performing test on whole file contents.")
+            res = m.analyze_metric(
+                model=model,
+                file_chunks=[
+                    file_content,
+                ],
+                file_type=file_type,
+            )
+        else:
+            res = m.analyze_metric(
+                model=model,
+                file_chunks=file_chunks,
+                file_type=file_type,
+            )
         all_results["metrics"][res["metric_id"]] = res
 
     logger.info("Performing User-Defined Tests.")

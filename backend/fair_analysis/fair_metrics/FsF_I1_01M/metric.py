@@ -13,17 +13,17 @@ class Metric(BaseMetric):
             "metric_name": self.name,
             "principle": "interoperable",
         }
-        t_result = self.tests["FsF_I3_01M-1"].perform_test(
+        t_result = self.tests["FsF_I1_01M-1"].perform_test(
             model=model,
             file_chunks=file_chunks,
             file_type=file_type,
         )
 
         score = 0.0
-        if len(t_result["entities"]) > 1:
+        if t_result["success"]:
             score = 1.0
 
-        results["test_results"]["FsF_I3_01M-1"] = {
+        results["test_results"]["FsF_I1_01M-1"] = {
             "result": t_result,
             "score": score,
             "out_of": 1,
@@ -33,8 +33,8 @@ class Metric(BaseMetric):
 
 
 M = Metric(
-    metric_id="FsF_I3_01M",
+    metric_id="FsF_I1_01M",
     name="Metadata represented using a formal knowledge representation language.",
     active=True,
-    tests={"FsF_I3_01M-1": t1},
+    tests={"FsF_I1_01M-1": t1},
 )

@@ -50,7 +50,6 @@ class BaseTest:
         Returns:
             test results
         """
-        # TODO: Decide if the file_type can be provide as additional information.
 
         # There will be a single chunk if there is no need to generate chunks
         if isinstance(file_chunks, list) and len(file_chunks) == 1:
@@ -168,7 +167,7 @@ class BaseTest:
         messages.append(
             {
                 "role": _env_settings.role_user,
-                "content": f"""{self.__test_instruction}\nThe content is of type `{file_type}`.\n```{file_content}```""",
+                "content": f"""{self.__test_instruction}\nThe provided file is of type `{file_type}` and here are its contents.\n```{file_content}```""",
             }
         )
 
