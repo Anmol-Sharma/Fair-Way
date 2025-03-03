@@ -288,11 +288,11 @@ onMounted(async () => {
           id="disclaimer2"
         >
           <p>
-            The Following Metrics are based on
+            The Domain Agnostic Metrics are based on
             <a
               class="link-primary"
               href="https://www.fairsfair.eu/fairsfair-data-object-assessment-metrics-request-comments"
-              >FAIRsFAIR Data Object Assessment Metrics</a
+              >FAIRsFAIR Data Object Assessment Metrics (v0.5)</a
             >
           </p>
         </div>
