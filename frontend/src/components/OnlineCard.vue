@@ -17,7 +17,7 @@ const handleSubmit = () => {
   const doiPattern = /^(?:https?:\/\/)?doi\.org\/10\.\d+\/(?:dryad|zenodo)(?:\.[\w-]+)*$/;
   const zenodoPattern = /^(https?:\/\/)?zenodo\.org\/records\/\d+$/;
   const dryadPattern =
-    /^(https?:\/\/)datadryad\.org\/stash\/dataset\/doi:10\.\d+\/dryad\.[a-zA-Z0-9-]+$/;
+    /^(https?:\/\/)datadryad\.org(?:\/stash)?\/dataset\/doi:10\.\d+\/dryad\.[a-zA-Z0-9-]+$/;
 
   const huggingFacePattern =
     /^(https?:\/\/)huggingface\.co\/(?:api\/)?datasets\/[\w-]+(?:\/[\w-]+)*$/;
