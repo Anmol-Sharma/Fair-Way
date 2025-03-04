@@ -1,6 +1,10 @@
 import logging
+from typing import Tuple
+from inspect import cleandoc
+from pydantic import BaseModel
+import json
 
-logger = logging.getLogger("fastapi")
+logger = logging.getLogger("celery")
 
 
 def clean_file_content(content):
@@ -87,3 +91,27 @@ def aggregate_results(results):
             )
 
     return summary
+
+
+def combined_results(model, results) -> Tuple[str, str]:
+    """
+    Helper function to send LLM results to be combined together
+    """
+    # Check the length of keys of metadata to decide the next step
+
+    messages = [
+        {
+            "role": "system",
+            "content": """Your Task is to combine the results from two separate fair assessment test. Both will have the same json structure however they are on different metadata sources (eg. embedded or retrieved through metadata harvest). Your task is to combine them together. Check carefully if a test succeeds in one of them, then the final result should reflect that. Only fail the test which doesn't succeed in both. Only answer back in the provided data format of the test since you are interacting with a backend api and not a human. Also provide metadata without additional indentation since it will be handled by explicitly programmed logic.""",
+        },
+        {
+            "role": "user",
+            "content": cleandoc(
+                f"""Combine the two test items. First Test Result.\n```{str(results[0])}```\nSecond Test Result```{str(results[1])}```"""
+            ),
+        },
+    ]
+    # Metadata from multiple sources
+    response = model.send_request(messages=messages, ResponseFormat=None)
+    logger.info("Model Combined Result:-", response["message"]["content"])
+    return json.loads(response["message"]["content"])

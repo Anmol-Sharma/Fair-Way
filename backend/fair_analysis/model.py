@@ -1,6 +1,8 @@
 from typing import Dict
 from ollama import Client
 from ollama import ChatResponse
+from typing import Optional
+from pydantic import BaseModel
 
 
 class ModelBase:
@@ -9,16 +11,19 @@ class ModelBase:
         self.__model_options = options
         self.__client = Client(host=client_url)
 
-    def send_request(self, ResponseFormat, messages, available_functions=[]):
+    def send_request(self, ResponseFormat: Optional[BaseModel], messages):
         """
-        Steps:-
-          3. Once Test finishes create final summary either on chunks or full contents
+        Helper function to send requests to the LLM model
         """
-        response: ChatResponse = self.__client.chat(
-            model=self.__model_name,
-            messages=messages,
-            options=self.__model_options,
-            format=ResponseFormat.model_json_schema(),
-            tools=available_functions,
-        )
+        if ResponseFormat:
+            response: ChatResponse = self.__client.chat(
+                model=self.__model_name,
+                messages=messages,
+                options=self.__model_options,
+                format=ResponseFormat.model_json_schema(),
+            )
+        else:
+            response: ChatResponse = self.__client.chat(
+                model=self.__model_name, messages=messages, options=self.__model_options
+            )
         return response

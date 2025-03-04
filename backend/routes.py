@@ -5,7 +5,7 @@ import log_config
 from fastapi import APIRouter, HTTPException, status, Form, UploadFile
 from celery.result import AsyncResult
 
-from typing import Dict
+from typing import Dict, Optional
 
 from celery_tasks import analyze_fair
 from resp_models import (
@@ -17,7 +17,7 @@ from resp_models import (
     Survey,
     ResourceAcceptFeedback,
 )
-from utils.network_utils import fetch_metadata_from_url
+from utils.network_utils import fetch_metadata_using_url
 from utils.db_utils import (
     init_db,
     save_feedback,
@@ -35,21 +35,21 @@ log_config.setup_logging()
 logger = logging.getLogger("fastapi")
 
 
-def __add_to_queue(file_type: str, file_content: str, user_tests: Dict) -> str:
+def __add_to_queue(
+    metadata, file_type: Optional[str] = None, user_tests: Optional[Dict] = None
+) -> str:
     """Method to create a task for FAIR analysis in the Celery Queue
 
     Args:
         file_type: type of file contents
-        file_content: contents of the file
+        metadata: contents of the file
         user_tests: user-defined tests configuration
 
     Returns:
         task_id of the created Task
     """
     try:
-        Task = analyze_fair.apply_async(
-            (file_type, file_content, user_tests), countdown=1
-        )
+        Task = analyze_fair.apply_async((metadata, file_type, user_tests), countdown=1)
         logger.info(f"Successfully created Task with ID: {Task.task_id}")
         return Task.task_id
     except Exception as e:
@@ -77,29 +77,24 @@ async def handle_published(data: OnlineResource):
     try:
         logger.info(f"Request initiated for online resource: {data.url}")
 
-        # Use the more generic fetch_metadata_from_url function
-        # which can extract metadata from any URL
-        success, metadata = await fetch_metadata_from_url(data.url)
+        # Using the given the url try to fetch metadata from different sources.
+        success, metadata = await fetch_metadata_using_url(data.url)
 
         if not success:
-            logger.warning(f"Could not extract metadata from URL: {data.url}")
+            logger.warning(
+                f"Could not extract any related metadata from URL : {data.url}"
+            )
             raise HTTPException(
                 status_code=400,
-                detail=f"Could not extract metadata from URL: {data.url}. Error: {metadata.get('error', 'Unknown error')}",
+                detail=f"Could not extract any related metadata from URL : {data.url}. Error: {metadata.get('error', 'Unknown error')}",
             )
 
-        # Convert metadata to JSON string
-        if metadata["source"] != "rdf/xml":
-            file_content = json.dumps(metadata, separators=(",", ":"))
-            file_type = "application/ld+json"
-        else:
-            file_content = metadata["metadata"]
-            file_type = "application/rdf+xml"
+        # Provide the extracted metadata from all sources to the celery task
+        # And let it handle the merging of all metadata sources.
 
         # Add to processing queue
         task_id = __add_to_queue(
-            file_type=file_type,
-            file_content=file_content,
+            metadata=metadata,
             user_tests=data.advancedTests,
         )
 
@@ -146,7 +141,9 @@ async def handle_unpublished(
         # Load the user defined tests
         tests = json.loads(advanced_tests)
 
-        task_id = __add_to_queue(file_type, file_content, user_tests=tests)
+        task_id = __add_to_queue(
+            metadata=file_content, file_type=file_type, user_tests=tests
+        )
         return {
             "success": True,
             "comment": "File successfully uploaded",

@@ -97,13 +97,13 @@ class Splitter:
             list of chunks of content based defined limits and file type
         """
         chunks = None
-        if file_type == "application/json" or file_type == "application/ld+json":
+        if file_type in ("application/json", "application/ld+json", "json", "json-ld"):
             chunks = self.JSONSplitter.split_json(json_data=json.loads(file_content))
 
-        elif file_type == "text/html":
+        elif file_type in ("text/html", "html"):
             chunks = self.HTMLSplitter.split_text(text=file_content)
 
-        elif file_type == "text/xml":
+        elif file_type in ("text/xml", "xml", "rdf/xml"):
             chunks = self.__split_xml(
                 xml_content=file_content,
                 min_size=global_settings["XML_MIN_CHUNK_SIZE"],
