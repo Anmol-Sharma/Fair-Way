@@ -6,6 +6,7 @@ from typing import Dict, Any, List
 from inspect import cleandoc
 import json
 from pydantic import create_model
+import random
 
 
 class BaseMetric:
@@ -47,13 +48,18 @@ class BaseMetric:
 
     def combine_multi_metric_results(self, model, results):
         messages = []
-        Base_MSG = """Your Task is to combine the results from separate fair assessment tests. All will have the same json structure however they are on different metadata sources (eg. embedded or retrieved through metadata harvest). Your task is to combine them together. Check carefully if a test succeeds in one of them, then the final result should reflect that. Only fail the test which doesn't succeed in both. Only answer back in the common json data format of both the test results with no comments or explanation since you are interacting with an api and not a human and the json results need to be parsed. Combine the test items given below.\n"""
+        Base_MSG = """Your Task is to combine the results from separate data extraction tests. All will have the same json structure however they are on different metadata sources. Your task is to combine them together. Key Steps to follow are :-
+        1. Check carefully if and extracted key is present in one of them, then the final result should reflect that by including all the necessary keys from the succeeded test.
+        2. Only fail the test which doesn't succeed in both.
+        3. If there are partial results in both, select the one with more details. The returned feedback should look like an actual or real test result to the user and not just a direct combination of two test.
+        4. Select the source for each extracted key and its source of results (eg. Embedded or Harvested) by adding a `source` key to the final results for each key.
+        5. Also, ONLY answer back in the common json data format of both the test results with no comments or explanation since you are interacting with an api and not a human and the json results need to be parsed. Combine the test items given below.\n"""
         self.logger.info(
             f"Combining the Result Results for the metric :- {self.metric_id}"
         )
 
-        for idx, result in enumerate(results):
-            msg = f"""Result {idx + 1}\n```{json.dumps(result, separators=(',', ':'))}```"""
+        for k, result in results.items():
+            msg = f"""Result source: '{k}'\n```{json.dumps(result, separators=(',', ':'))}```"""
             Base_MSG = "\n".join([Base_MSG, msg])
         messages.append(
             {
@@ -62,9 +68,13 @@ class BaseMetric:
             }
         )
 
+        # TODO: I Might have to use 2-shot example for reference.
+        # Select a random key (both have the same structure)
+        random_key = random.choice(list(results.keys()))
+
         # create a Dynamic Model with Test Results to be supplied to LLM to output results
         DynamicModel = create_model(
-            "DynamicModel", **{k: (type(v), v) for k, v in results[0].items()}
+            "DynamicModel", **{k: (type(v), v) for k, v in results[random_key].items()}
         )
         response = model.send_request(messages=messages, ResponseFormat=DynamicModel)
         return json.loads(response["message"]["content"])
@@ -75,12 +85,19 @@ class BaseMetric:
         )
         # Perform the relevant test on each of the metadata items and combine them together
         # Scoring will take of that
-        All_Results = []
+        All_Results = {}
         for k in metadata.keys():
             res = self.execute_tests(
                 model, metadata[k]["metadata_chunks"], metadata[k]["source"]
             )
-            All_Results.append(res)
+            name = ""
+            if k == "api":
+                name = "Harvested Metadata"
+            elif k == "embedded":
+                name = "Embedded Metadata"
+            else:
+                name = "Uploaded Metadata File"
+            All_Results[name] = res
 
         combined_results = self.combine_multi_metric_results(model, All_Results)
         return self.score_test_results(combined_results)
