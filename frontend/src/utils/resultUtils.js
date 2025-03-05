@@ -123,7 +123,7 @@ export async function fetchResults() {
       throw new Error("No initiated task found in sessionStorage");
     }
     const initiated_task = JSON.parse(initiatedTask);
-    let delay = 40000; // Start with 40 seconds
+    let delay = 60000; // Start with 60 seconds
     const startTime = Date.now();
     const timeout = 1800000; // 30 minutes in milliseconds
 
@@ -161,7 +161,7 @@ export async function fetchResults() {
       } else {
         console.log("Awaiting Results");
         // Update delay for next iteration check for status update
-        delay = Math.max(delay / 2, 5000);
+        delay = Math.max(delay / 3, 4000);
         await sleep(delay);
       }
     }
