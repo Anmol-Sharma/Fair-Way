@@ -35,9 +35,7 @@ log_config.setup_logging()
 logger = logging.getLogger("fastapi")
 
 
-def __add_to_queue(
-    metadata, file_type: Optional[str] = None, user_tests: Optional[Dict] = None
-) -> str:
+def __add_to_queue(metadata, user_tests: Optional[Dict] = None) -> str:
     """Method to create a task for FAIR analysis in the Celery Queue
 
     Args:
@@ -49,7 +47,7 @@ def __add_to_queue(
         task_id of the created Task
     """
     try:
-        Task = analyze_fair.apply_async((metadata, file_type, user_tests), countdown=1)
+        Task = analyze_fair.apply_async((metadata, user_tests), countdown=1)
         logger.info(f"Successfully created Task with ID: {Task.task_id}")
         return Task.task_id
     except Exception as e:
@@ -142,7 +140,8 @@ async def handle_unpublished(
         tests = json.loads(advanced_tests)
 
         task_id = __add_to_queue(
-            metadata=file_content, file_type=file_type, user_tests=tests
+            metadata={"file": {"metadata": file_content, "source": file_type}},
+            user_tests=tests,
         )
         return {
             "success": True,
