@@ -5,7 +5,7 @@ from celery import Celery
 from celery.signals import worker_process_init
 import log_config
 import logging
-from utils.basic_utils import clean_file_content, aggregate_results, combined_results
+from utils.basic_utils import clean_file_content, aggregate_results
 from fair_analysis.splitter import Splitter
 
 from fair_analysis.model import ModelBase
@@ -61,95 +61,41 @@ def initialize_worker(sender=None, **kwargs):
 
 
 @cel.task(name="analyze", ignore_result=False)
-def analyze_fair(metadata, file_type, user_tests=[]) -> Sequence[Dict[str, Any]]:
+def analyze_fair(metadata, user_tests=[]) -> Sequence[Dict[str, Any]]:
     """ """
     global model, fair_analyzer, splitter
     logger = logging.getLogger("celery")
     logger.info(f"Starting FAIR Analysis for Task:- {celery.current_task.request.id}")
-
-    # Depending on the provided type of metadata, decide the next steps
-    if isinstance(metadata, dict):
-        # Online case
-        # logger.info(metadata["api"]["metadata"])
-        # logger.info(metadata["embedded"]["metadata"])
-        pass
-
-        # metadata = metadata["embedded"]["metadata"]
-        # file_type = metadata["embedded"]["source"]
-
-        # combined = combined_metadata(model, metadata=metadata)
-        # file_type, metadata = combined["metadata_type"], combined["combined_metadata"]
-        # logger.info("-" * 80)
-        # logger.info(f"Combined Metadata Format:- {file_type}")
-        # logger.info(f"Combined Metadata:- {metadata}")
-
-    elif isinstance(metadata, str):
-        # Local / Offline Case
-        # Cleanup the file content for text files
-        # if file_type and file_type == "text/plain":
-        #     logger.info("Cleaning up plain text content before splitting.")
-        #     metadata = clean_file_content(metadata)
-        pass
-    else:
-        # Handle this case later on: Code should never be here
-        pass
-
-    # logger.info(f"Length of the final Metadata: {len(metadata)}")
-    # file_type = file_type.lower()
-
-    # Perform the split operations
-    file_type_0 = metadata["api"]["source"]
-    file_chunks_0 = splitter.split_file(
-        metadata["api"]["source"],
-        len(metadata["api"]["metadata"]),
-        metadata["api"]["metadata"],
-    )
-    file_type_1 = metadata["embedded"]["source"]
-    file_chunks_1 = splitter.split_file(
-        metadata["embedded"]["source"],
-        len(metadata["embedded"]["metadata"]),
-        metadata["embedded"]["metadata"],
-    )
-
     all_results = {"metrics": {}, "summary": {}}
+
+    # Cleanup the file content for text files
+    if "file" in metadata.keys():
+        if metadata["file"]["source"] == "text/plain":
+            logger.info("Cleaning up plain text content before splitting.")
+            metadata["file"]["metadata"] = clean_file_content(
+                metadata["file"]["metadata"]
+            )
+
+    # Perform split operation on each harvested metdata
+    for k in metadata.keys():
+        metadata[k]["metadata_chunks"] = splitter.split_file(
+            metadata[k]["source"], len(metadata[k]["metadata"]), metadata[k]["metadata"]
+        )
 
     logger.info("Performing Domain-Agnostic Metrics")
     for m in fair_analyzer.all_domain_agnosticd_metrics:
-        # For certain types of metrics use the full file content and not just chunks.
-        # if file_type and file_type == "text/plain":
-        #     logger.info("Cleaning up plain text content before splitting.")
-        #     metadata = clean_file_content(metadata)
-        #     file_chunks = splitter.split_file(file_type, len(metadata), metadata)
-        # else:
-        #     pass
-        results = []
-        for file_type, metadata, original_metadata in (
-            (file_type_0, file_chunks_0, metadata["api"]["metadata"]),
-            (file_type_1, file_chunks_1, metadata["embedded"]["metadata"]),
-        ):
-            logger.info(
-                f"Performing analysis on metric: {m.metric_id} with file type: {file_type}"
-            )
-            file_chunks = metadata
-            if m.metric_id in ("FsF_I3_01M"):
-                logger.info("Performing test on whole file contents.")
-                file_chunks = [
-                    original_metadata,
-                ]
-            res = m.analyze_metric(
-                model=model,
-                file_chunks=file_chunks,
-                file_type=file_type,
-            )
-            results.append(res)
+        logger.info(
+            f"Performing analysis on metric: {m.metric_id} with file types: {[x["source"] for x in metadata.values()]}"
+        )
+        res = m.analyze_metric(
+            model=model,
+            metadata=metadata,
+        )
+        all_results["metrics"][res["metric_id"]] = res
 
-        # Combine together the results using LLM
-        combined_res = combined_results(model, results)
-        all_results["metrics"][res["metric_id"]] = combined_res
-
-    logger.info("Performing User-Defined Tests.")
     # if user_tests are defined, perform them else proceed forward
     if len(user_tests) > 0:
+        logger.info("Performing User-Defined Tests.")
         vocab_tests = [t for t in user_tests if t["type"] == "Vocabulary Check"]
         standard_tests = [t for t in user_tests if t["type"] == "Standard Check"]
 
@@ -157,8 +103,7 @@ def analyze_fair(metadata, file_type, user_tests=[]) -> Sequence[Dict[str, Any]]
             v_m = U_Metric_Vocab(vocab_tests)
             v_res = v_m.analyze_metric(
                 model=model,
-                file_chunks=file_chunks,
-                file_type=file_type,
+                metadata=metadata,
             )
             all_results["metrics"][v_res["metric_id"]] = v_res
 
@@ -166,8 +111,7 @@ def analyze_fair(metadata, file_type, user_tests=[]) -> Sequence[Dict[str, Any]]
             s_m = U_Metric_Standard(standard_tests)
             s_res = s_m.analyze_metric(
                 model=model,
-                file_chunks=file_chunks,
-                file_type=file_type,
+                metadata=metadata,
             )
             all_results["metrics"][s_res["metric_id"]] = s_res
 
