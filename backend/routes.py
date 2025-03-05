@@ -78,6 +78,11 @@ async def handle_published(data: OnlineResource):
         # Using the given the url try to fetch metadata from different sources.
         success, metadata = await fetch_metadata_using_url(data.url)
 
+        # Remove empty metadata sources
+        for k in metadata.keys():
+            if not metadata[k]:
+                del metadata[k]
+
         if not success:
             logger.warning(
                 f"Could not extract any related metadata from URL : {data.url}"
