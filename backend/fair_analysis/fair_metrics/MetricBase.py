@@ -84,7 +84,6 @@ class BaseMetric:
             f"Analyzing Metric: {self.metric_id}-{self.name} for task: {current_task.request.id}"
         )
         # Perform the relevant test on each of the metadata items and combine them together
-        # Scoring will take of that
         All_Results = {}
         for k in metadata.keys():
             res = self.execute_tests(
@@ -99,5 +98,8 @@ class BaseMetric:
                 name = "Uploaded Metadata File"
             All_Results[name] = res
 
-        combined_results = self.combine_multi_metric_results(model, All_Results)
-        return self.score_test_results(combined_results)
+        if len(metadata.keys()) <= 1:
+            return All_Results.values()[0]
+        else:
+            combined_results = self.combine_multi_metric_results(model, All_Results)
+            return self.score_test_results(combined_results)
