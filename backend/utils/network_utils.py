@@ -191,7 +191,7 @@ async def extract_embedded_metadata(url: str) -> Tuple[bool, Dict]:
                             if isinstance(metadata[format_type], list)
                             else metadata[format_type]
                         ),
-                        indent=2,
+                        separators=(",", ":"),
                     )
                 else:
                     # For other formats, use str() representation
@@ -240,14 +240,14 @@ def clean_metadata(metadata: Dict, repository_type: str) -> Dict:
     if not metadata:
         return {}
 
-    cleaned = json.loads(json.dumps(metadata))
+    cleaned = json.loads(json.dumps(metadata, separators=(",", ":")))
     keys_to_remove = REMOVABLE_KEYS.get(repository_type, [])
 
     for key in keys_to_remove:
         if key in cleaned:
             cleaned.pop(key, None)
 
-    return json.dumps(cleaned)
+    return json.dumps(cleaned, separators=(",", ":"))
 
 
 async def fetch_repository_api(
