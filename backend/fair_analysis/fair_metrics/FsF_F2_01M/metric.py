@@ -1,22 +1,17 @@
 from fair_analysis.fair_metrics.MetricBase import BaseMetric
 from fair_analysis.fair_metrics.FsF_F2_01M.fair_tests.T2 import t21, t22, t23
+from typing import Dict
 
 
 class Metric(BaseMetric):
-    # super()
     # For this particular test we have split up the single test into multiple chunks.
     # So define scoring function here and set the score value in individual test to 0
-    def __init__(self, metric_id: str, name: str, active: bool, tests):
-        super().__init__(metric_id, name, active, tests)
+    def __init__(
+        self, metric_id: str, name: str, active: bool, tests: Dict, principle: str
+    ):
+        super().__init__(metric_id, name, active, tests, principle)
 
     def execute_tests(self, model, file_chunks, file_type):
-        results = {
-            "metric_id": self.metric_id,
-            "test_results": {},
-            "metric_name": self.name,
-            "principle": "findable",
-        }
-
         t21_result = self.tests["1"].perform_test(
             model=model,
             file_chunks=file_chunks,
@@ -33,13 +28,9 @@ class Metric(BaseMetric):
             file_type=file_type,
         )
 
-        results = self.determine_score(
-            t21_result, t22_result, t23_result, final_results=results
-        )
+        return (t21_result, t22_result, t23_result)
 
-        return results
-
-    def determine_score(self, t21_result, t22_result, t23_result, final_results):
+    def score_test_results(self, t21_result, t22_result, t23_result):
         """
         Score values :-
             * Some - 0.5
@@ -53,7 +44,7 @@ class Metric(BaseMetric):
                 # Atleast one non-null entity
                 SCORE_RECEIVED = 0.5
                 break
-        final_results["test_results"]["FsF_F2_01M-1"] = {
+        self.results["test_results"]["FsF_F2_01M-1"] = {
             "result": {**t21_result, **t22_result, **t23_result},
             "score": SCORE_RECEIVED,
             "out_of": 0.5,
@@ -68,7 +59,7 @@ class Metric(BaseMetric):
                     break
             else:
                 SCORE_RECEIVED = 1
-        final_results["test_results"]["FsF_F2_01M-2"] = {
+        self.results["test_results"]["FsF_F2_01M-2"] = {
             "result": {**t21_result, **t22_result, **t23_result},
             "score": SCORE_RECEIVED,
             "out_of": 1,
@@ -82,13 +73,14 @@ class Metric(BaseMetric):
                     break
             else:
                 SCORE_RECEIVED = 2
-        final_results["test_results"]["FsF_F2_01M-3"] = {
+
+        self.results["test_results"]["FsF_F2_01M-3"] = {
             "result": {**t21_result, **t22_result, **t23_result},
             "score": SCORE_RECEIVED,
             "out_of": MAIN_SCORE,
         }
 
-        return final_results
+        return self.results
 
 
 M = Metric(
@@ -96,4 +88,5 @@ M = Metric(
     name="Metadata includes descriptive core elements to support data findability",
     active=True,
     tests={"1": t21, "2": t22, "3": t23},
+    principle="findable",
 )
