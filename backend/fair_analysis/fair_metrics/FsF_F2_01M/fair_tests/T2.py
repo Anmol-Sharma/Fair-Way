@@ -51,7 +51,7 @@ t21 = Test(
     name="Metadata provides metadata core description items 'creator' and 'title'",
     feedback_format=ResponseFormat_21,
     test_main_cmd="Your task is to help analyze the metadata provided at the end for creator and title/ name and extract them from the data.",
-    test_instruction="Check if metadata below has 'creator' and 'title' information. Check carefully as different vocabulary could have been used for both.",
+    test_instruction="Check if metadata below has 'creator' and 'title' information. Analyze carefully as different vocabulary terms could have been used for both.",
     few_shot_samples=FEW_SHOT_SAMPLES_21,
 )
 
@@ -59,7 +59,7 @@ t22 = Test(
     name="Metadata provides metadata core description items 'publisher' and 'publication_date'",
     feedback_format=ResponseFormat_22,
     test_main_cmd="Your task is to help analyze the metadata provided at the end for publisher and publication date and extract them from the data.",
-    test_instruction="Check if metadata below has 'publisher' and 'publication_date' information. Check carefully as different vocabulary could have been used for both.",
+    test_instruction="Check if metadata below has 'publisher' and 'publication_date' information. Analyze carefully as different vocabulary terms could have been used for both.",
     few_shot_samples=FEW_SHOT_SAMPLES_22,
 )
 
@@ -67,6 +67,6 @@ t23 = Test(
     name="Metadata provides metadata core description items 'summary' and 'keywords'",
     feedback_format=ResponseFormat_23,
     test_main_cmd="Your task is to help analyze the metadata provided at the end for summary/ description and keywords and extract them from the data.",
-    test_instruction="Check if metadata below has 'summary' and 'keywords' information. Check carefully as different vocabulary could have been used for both.",
+    test_instruction="Check if metadata below has 'summary' and 'keywords' information. Analyze carefully as different vocabulary terms could have been used for both.",
     few_shot_samples=FEW_SHOT_SAMPLES_23,
 )

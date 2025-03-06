@@ -37,7 +37,9 @@ class Test(BaseTest):
 t1 = Test(
     name="Data is assigned global unique identifier",
     feedback_format=ResponseFormat,
-    test_main_cmd="Your task is to help analyze the metadata and carefully check and extract if Data is assigned a global unique identifier. The unique identifier should be for data and not metadata and should follow a unique identifier syntax. Examples of unique identifiers of data are Internationalized Resource Identifier (IRI), URL, Digital Object Identifier (DOI), ORCID etc. Records associated with Zenodo or Dryad Data repositories are also globally unique. Furthermore, if detect either a DOI or URL or URN or IRI check if they follow the defined syntax for those.",
+    test_main_cmd="""Your task is to help analyze the metadata and carefully check and extract if Data is assigned a global unique identifier. The unique identifier should be mentioned explicitly for data and not metadata and should follow a unique identifier syntax. Examples of unique identifiers of data are Internationalized Resource Identifier (IRI), URL, Digital Object Identifier (DOI), ORCID etc. Records associated with data repositories like Zenodo or Dryad are also globally unique. Key Steps :-
+    1. Check for a GUID like a DOI or URL or URN or IRI etc.
+    2. Also check carefully if they follow the defined syntax for each of those individual GUID.""",
     test_instruction="Check carefully if metadata below has a globally unique identifier for data or not.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )

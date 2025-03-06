@@ -42,7 +42,11 @@ class Test(BaseTest):
 t1 = Test(
     name="Metadata identifier information about data for its size, type and files",
     feedback_format=ResponseFormat,
-    test_main_cmd="Your task is to help analyze the metadata provided at the end for `file names`, `dataset size` and `type of files` and extract them from the data. Only extract information that is explicitly mentioned in the metadata.",
-    test_instruction="Check if metadata below has file names, sizes and type information. Check carefully as different vocabulary could have been used for them.",
+    test_main_cmd="""Your task is to help analyze the metadata provided at the end for `file names`, `dataset size` and `type of files` and extract them from the data. Key Steps:-
+    1. Check carefully if any information regarding file names or file types or dataset size is mentioned.
+    2. Analyze file names carefully and reject any false positives. For eg. special characters like `:` or '}' as single characters cannot be valid file names.
+    3. File Types which you select should reflect actual file types as well.
+    Only extract information that is explicitly mentioned in the metadata and if that information is not found leave the field as empty""",
+    test_instruction="Check if metadata below has file names, sizes and type information. Analyze carefully as different vocabulary terms could have been used for them.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )

@@ -92,7 +92,10 @@ class BaseTest:
         chunk_results,
         export_chunk_results: bool = False,
     ) -> Dict[str, str]:
-        combine_prompt = f"Here are some results for the test: '{self.test_name}' detected by you on different chunks of a metadata file. Combine them together in a single result. Carefully analyze results, remove duplicate results and answer as precisely as possible. Avoid returning generic statements and rather return back precise results and answer in the provided JSON format."
+        combine_prompt = f"""Here are some results for the test: '{self.test_name}' detected by you on different split sections of a metadata file. Combine them together in a single result. Key Steps:-
+        1. Carefully analyze results, remove duplicate results and answer as precisely as possible which reflect the final result.
+        2. If a test succeeded in one of the chunks, be sure to include that in the final result. If a test failed in all such sections only then the result of the test should look false.
+        3. Avoid returning generic statements return back precise results and answer in the provided JSON format."""
         chunk_results = self.filter_chunk_results(chunk_results)
         messages = [
             {
