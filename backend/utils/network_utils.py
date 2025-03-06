@@ -55,8 +55,6 @@ async def fetch_metadata_using_url(
     url: str, force_api: bool = False
 ) -> Tuple[bool, Dict]:
     """Extract metadata from any URL, combining embedded and API metadata as needed."""
-    logger.info(f"Attempting to extract metadata from URL: {url}")
-
     # Identify repository type and record ID from URL
     repository_type, record_id = identify_repository_and_id(url)
 
@@ -74,6 +72,7 @@ async def fetch_metadata_using_url(
             else:
                 return succ, meta
 
+    logger.info(f"Attempting to extract metadata from URL: {url}")
     # First, attempt to extract embedded metadata from the landing page
     success_embedded, embedded_metadata = await extract_embedded_metadata(url)
 
@@ -119,7 +118,7 @@ def identify_repository_and_id(url: str) -> Tuple[str, Optional[str]]:
         ),
         "dryad": (
             # Include "doi:" in the captured group so that it remains part of the record ID
-            r"^(?:https?://)?datadryad\.org/stash/dataset/(doi:10\.\d+/dryad\.[a-zA-Z0-9-]+)$",
+            r"^(?:https?://)?datadryad\.org(?:/stash)?/dataset/(doi:10\.\d+/dryad\.[a-zA-Z0-9-]+)$",
             lambda m: ("dryad", m.group(1)),
         ),
         "huggingface": (
@@ -127,7 +126,7 @@ def identify_repository_and_id(url: str) -> Tuple[str, Optional[str]]:
             lambda m: ("huggingface", m.group(1)),
         ),
         "doi": (
-            r"(10\.\d+\/\S+)",
+            r"^(?:https?://)?(?:doi\.org|dx\.doi\.org)/(?:api/handles/)?(10\.\d+\/\S+)$",
             lambda m: ("doi", m.group(1)),
         ),
     }
@@ -289,9 +288,7 @@ async def fetch_repository_api(
                 }
 
             logger.info(
-                "Detected URL:",
-                data["values"][1]["data"]["value"],
-                "from the given DOI URL.",
+                f"Detected URL: {data["values"][1]["data"]["value"]} from the given DOI URL."
             )
             # Determine the actual Repository hosting the dataset
             return await fetch_metadata_using_url(data["values"][1]["data"]["value"])
