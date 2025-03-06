@@ -9,7 +9,7 @@ class ModelBase:
     def __init__(self, model_name: str, options: Dict, client_url: str) -> None:
         self.__model_name = model_name
         self.__model_options = options
-        self.__client = Client(host=client_url, timeout=25.0)
+        self.__client = Client(host=client_url, timeout=50.0)
 
     def send_request(self, ResponseFormat: Optional[BaseModel], messages):
         """

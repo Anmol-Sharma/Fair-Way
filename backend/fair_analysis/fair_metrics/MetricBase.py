@@ -34,16 +34,18 @@ class BaseMetric:
     @abstractmethod
     def execute_tests(self, model, file_chunks: List[str], file_type: str):
         """
-        Define this down in derived classes for order and interdependence of tests
-        Also define the test score logic inside and return an object with test results and scores
+        Define this down in derived classes for interdependence of tests.
+
+        NOTE: To perform test on the whole file contents, simply provide a single chunk with complete file contents.
         """
         pass
 
     @abstractmethod
     def score_test_results(self, t_results):
         """
-        Define this down in derived classes for order and interdependence of combining test scores
+        Define this down in derived classes to compute test score based on result of different tests.
         """
+        # If there are multiple test results the scoring function will handle it.
         pass
 
     def combine_multi_metric_results(self, model, results):
@@ -69,17 +71,23 @@ class BaseMetric:
         )
 
         # TODO: I Might have to use 2-shot example for reference.
+
         # Select a random key (both have the same structure)
         random_key = random.choice(list(results.keys()))
 
         # create a Dynamic Model with Test Results to be supplied to LLM to output results
+        # Create the Dynamic Model with only the structure (types) but no default values
         DynamicModel = create_model(
-            "DynamicModel", **{k: (type(v), v) for k, v in results[random_key].items()}
+            "DynamicModel",
+            **{k: (type(v), ...) for k, v in results[random_key].items()},
         )
         response = model.send_request(messages=messages, ResponseFormat=DynamicModel)
         return json.loads(response["message"]["content"])
 
     def analyze_metric(self, model, metadata):
+        """
+        Default method to analyze metric on chunks. Override in derived if any custom logic is required.
+        """
         self.logger.info(
             f"Analyzing Metric: {self.metric_id}-{self.name} for task: {current_task.request.id}"
         )
