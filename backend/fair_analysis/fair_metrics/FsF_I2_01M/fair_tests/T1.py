@@ -37,7 +37,7 @@ class Test(BaseTest):
 t1 = Test(
     name="Namespaces of known semantic resources can be identified in metadata.",
     feedback_format=ResponseFormat,
-    test_main_cmd="Your task is to help analyze the metadata provided at the end and check if any known vocabulary namespace URIs are found. There are certain default namespaces like rdf, rdfs, owl, xsd, schema.org etc. You can ignore these since these are common namspaces. Some examples of other uncommon semantic resources include `bioportal`, `bartoc`, `linked open vocabularies (lov)`, purl linked vocabularies (eg. purl.org/net/VideoGameOntology), `ontohub` etc. You don't have to include all, only include the ones which are present in the metadata. Carefully check and answer back.",
+    test_main_cmd="Your task is to help analyze the metadata provided at the end and check if any known vocabulary namespace URIs are found. There are certain default namespaces like rdf, rdfs, owl, xsd, schema.org etc. You can ignore these since these are common namspaces. Some examples of other uncommon semantic resources include `bioportal`, `bartoc`, `linked open vocabularies (lov)`, purl linked vocabularies (eg. purl.org/net/VideoGameOntology), `ontohub` etc. You don't have to include all, only include the ones which are present in the metadata. Carefully check and answer back. If there is no detected semantic resources, success cannot be true, so make sure to check that.",
     test_instruction="Check if metadata includes information about related semantic resources.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )

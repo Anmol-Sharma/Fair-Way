@@ -41,7 +41,7 @@ class Test(BaseTest):
 t1 = Test(
     name="Metadata contains provenance information about creators of the data.",
     feedback_format=ResponseFormat,
-    test_main_cmd="Your task is to help analyze the metadata provided at the end for provenance information about data. Carefully check if metadata contains information about all the following elements:- `creator`, `contributors`, `date of curation`, `version information`, `modification date` and `source`. Return True if and only if all these elements are present except contributor (it is optional), else return false.",
+    test_main_cmd="Your task is to help analyze the metadata provided at the end for provenance information about data. Carefully check if metadata contains information about all the following elements:- `creator`, `contributors`, `date of curation`, `version information`, `modification date` and `source`. Return True if and only if all these elements are present except contributor (it is optional), else return success as false.",
     test_instruction="Check if metadata includes provenance information about data.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )

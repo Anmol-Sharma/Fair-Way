@@ -39,7 +39,8 @@ t1 = Test(
     feedback_format=ResponseFormat,
     test_main_cmd="""Your task is to help analyze the metadata and carefully check and extract if Data is assigned a persistent identifier. Examples of persistent identifiers are Digital Object Identifier (DOI), arXiv ID, orcid id (orcid.org), handle system (handle.net), ARK (Archival Resource Key). Many metadata items also follow common vocabulary syntaxes like Schema.org Dataset keys have explicit keys like `pid` to reflect that. Key Steps:-
     1. Check for a persistent identifier.
-    2. Also check carefully if they follow the defined syntax for each of those individual Persistent Identifiers.""",
+    2. Also check carefully if they follow the defined syntax for each of those individual Persistent Identifiers.
+    3. If there is no detected identifier, success cannot be true, so make sure to check that.""",
     test_instruction="Check if metadata below has a persistent identifier for data.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )
