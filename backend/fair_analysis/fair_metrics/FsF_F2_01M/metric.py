@@ -28,9 +28,9 @@ class Metric(BaseMetric):
             file_type=file_type,
         )
 
-        return (t21_result, t22_result, t23_result)
+        return {**t21_result, **t22_result, **t23_result}
 
-    def score_test_results(self, t21_result, t22_result, t23_result):
+    def score_test_results(self, t_results):
         """
         Score values :-
             * Some - 0.5
@@ -39,43 +39,34 @@ class Metric(BaseMetric):
         """
         SCORE_RECEIVED = 0.0
         MAIN_SCORE = 2
-        for k, v in {**t21_result, **t22_result, **t23_result}.items():
+        for k, v in t_results.items():
             if v != "":
                 # Atleast one non-null entity
                 SCORE_RECEIVED = 0.5
                 break
-        self.results["test_results"]["FsF_F2_01M-1"] = {
-            "result": {**t21_result, **t22_result, **t23_result},
-            "score": SCORE_RECEIVED,
-            "out_of": 0.5,
-        }
-
         if SCORE_RECEIVED > 0.0:
             # Check for data cite core
-            for k, v in {**t21_result, **t22_result}.items():
-                if v == "":
-                    # Atleast one null entity
-                    SCORE_RECEIVED = 0.5
-                    break
+            for k, v in t_results.items():
+                if k in ("creator", "title", "publisher", "publication_date"):
+                    if v == "" or v.lower() == "none" or v.lower() == "null":
+                        # Atleast one null entity
+                        SCORE_RECEIVED = 0.5
+                        break
             else:
                 SCORE_RECEIVED = 1
-        self.results["test_results"]["FsF_F2_01M-2"] = {
-            "result": {**t21_result, **t22_result, **t23_result},
-            "score": SCORE_RECEIVED,
-            "out_of": 1,
-        }
 
         # Check for core descriptive if core data cite there
         if SCORE_RECEIVED == 1:
-            for _, v in t23_result.items():
-                if v == "":
-                    SCORE_RECEIVED = 1
-                    break
+            for k, v in t_results.items():
+                if k in ("summary", "keywords"):
+                    if v == "" or v.lower() == "none" or v.lower() == "null":
+                        SCORE_RECEIVED = 1
+                        break
             else:
                 SCORE_RECEIVED = 2
 
-        self.results["test_results"]["FsF_F2_01M-3"] = {
-            "result": {**t21_result, **t22_result, **t23_result},
+        self.results["test_results"]["FsF_F2_01M-1"] = {
+            "result": t_results,
             "score": SCORE_RECEIVED,
             "out_of": MAIN_SCORE,
         }

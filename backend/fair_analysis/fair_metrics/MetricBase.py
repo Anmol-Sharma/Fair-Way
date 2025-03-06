@@ -70,7 +70,7 @@ class BaseMetric:
             }
         )
 
-        # TODO: I Might have to use 2-shot example for reference.
+        # TODO: We Might have to use 2-shot example for reference.
 
         # Select a random key (both have the same structure)
         random_key = random.choice(list(results.keys()))
