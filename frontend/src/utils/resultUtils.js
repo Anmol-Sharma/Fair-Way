@@ -38,11 +38,12 @@ function determineColor(testResults) {
   let anyPassed = false;
 
   for (const test of Object.values(testResults)) {
+    if (test.score > 0) {
+      anyPassed = true;
+    }
     if (test.score < test.out_of) {
       allPassed = false;
       continue;
-    } else if (test.score > 0) {
-      anyPassed = true;
     }
   }
 
@@ -161,7 +162,7 @@ export async function fetchResults() {
       } else {
         console.log("Awaiting Results");
         // Update delay for next iteration check for status update
-        delay = Math.max(delay / 3, 4000);
+        delay = Math.max(delay / 2, 3000);
         await sleep(delay);
       }
     }
