@@ -65,11 +65,9 @@ class Metric(BaseMetric):
             else:
                 SCORE_RECEIVED = 2
 
-        self.results["test_results"]["FsF_F2_01M-1"] = {
-            "result": t_results,
-            "score": SCORE_RECEIVED,
-            "out_of": MAIN_SCORE,
-        }
+        self.results["test_results"]["FsF_F2_01M-1-2-3"] = t_results
+        self.results["score"] = SCORE_RECEIVED
+        self.results["out_of"] = MAIN_SCORE
 
         return self.results
 

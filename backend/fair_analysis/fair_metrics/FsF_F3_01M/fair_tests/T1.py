@@ -31,9 +31,13 @@ class Test(BaseTest):
     def filter_chunk_results(self, chunk_results):
         # If all empty, return false, full empty (return chunks as empty)
         _r = []
-        for ch_res in chunk_results:
-            unique = list(set(ch_res.values()))
-            if len(unique) == 1 and unique[0] == "":
+        print(chunk_results)
+        for ch_res in chunk_results["file_list"]:
+            if (
+                ch_res["size"].strip() == ""
+                or ch_res["file_name"].strip == ""
+                or ch_res["d_type"].strip() == ""
+            ):
                 continue
             _r.append(ch_res)
         return _r
@@ -42,11 +46,13 @@ class Test(BaseTest):
 t1 = Test(
     name="Metadata identifier information about data for its size, type and files",
     feedback_format=ResponseFormat,
-    test_main_cmd="""Your task is to help analyze the metadata provided at the end for `file names`, `dataset size` and `type of files` and extract them from the data. Key Steps:-
-    1. Check carefully if any information regarding file names or file types or dataset size is mentioned.
+    test_main_cmd="""Your task is to help analyze the metadata provided at the end for `file name`, `file size` and `data type of file` and extract them from the data. Key Steps:-
+    1. Check carefully if any information regarding file name or file type or file size is mentioned.
     2. Analyze file names carefully and reject any false positives. For eg. special characters like `:` or '}' as single characters cannot be valid file names.
     3. File Types which you select should reflect actual file types as well.
+    4. Correctly match the information for each file including its name, type and size.
+    5. Answer back in the provided response format.
     Only extract information that is explicitly mentioned in the metadata and if that information is not found leave the field as empty""",
-    test_instruction="Check if metadata below has file names, sizes and type information. Analyze carefully as different vocabulary terms could have been used for them.",
+    test_instruction="Check if metadata below has information about files.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )

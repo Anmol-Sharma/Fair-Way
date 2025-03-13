@@ -1,0 +1,41 @@
+from fair_analysis.fair_metrics.MetricBase import BaseMetric
+from fair_analysis.fair_metrics.FsF_R1_3_02D.fair_tests.T1 import t1
+from typing import Dict
+
+
+class Metric(BaseMetric):
+    def __init__(
+        self, metric_id: str, name: str, active: bool, tests: Dict, principle: str
+    ):
+        super().__init__(metric_id, name, active, tests, principle)
+
+    def execute_tests(self, model, file_chunks, file_type):
+        if len(file_chunks) > 1:
+            t_result = self.tests["FsF_R1_3_02D-1"].perform_test(
+                model=model,
+                file_chunks=file_chunks,
+                file_type=file_type,
+            )
+        else:
+            t_result = {"success": False, "comment": "No File information found"}
+        return t_result
+
+    def score_test_results(self, t_results):
+        score = 0.0
+        if t_results["success"]:
+            score = 1.0
+
+        self.results["test_results"]["FsF_R1_3_02D-1"] = t_results
+        self.results["score"] = score
+        self.results["out_of"] = 1
+
+        return self.results
+
+
+M = Metric(
+    metric_id="FsF_R1_3_02D",
+    name="Data is available in a file format recommended by the target research community.",
+    active=True,
+    tests={"FsF_R1_3_02D-1": t1},
+    principle="reusable",
+)

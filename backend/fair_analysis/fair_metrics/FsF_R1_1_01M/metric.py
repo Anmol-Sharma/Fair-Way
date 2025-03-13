@@ -21,11 +21,9 @@ class Metric(BaseMetric):
         score = 0
         if t_results["license"] != "":
             score = 1
-        self.results["test_results"]["FsF_R1_1_01M-1"] = {
-            "result": t_results,
-            "score": score,
-            "out_of": 1,
-        }
+        self.results["test_results"]["FsF_R1_1_01M-1"] = t_results
+        self.results["score"] = score
+        self.results["out_of"] = 1
 
         return self.results
 

@@ -87,10 +87,25 @@ def analyze_fair(metadata, user_tests=[]) -> Sequence[Dict[str, Any]]:
         logger.info(
             f"Performing analysis on metric: {m.metric_id} with file types: {[x["source"] for x in metadata.values()]}"
         )
-        res = m.analyze_metric(
-            model=model,
-            metadata=metadata,
-        )
+        if m.metric_id == "FsF_R1_3_02D":
+            # Feed the results of already detected files.
+            meta = {
+                "Harvested Metadata": {
+                    "metadata_chunks": all_results["metrics"]["FsF_R1_01MD"][
+                        "test_results"
+                    ]["FsF_R1_01MD-1"]["files"],
+                    "source": "json",
+                }
+            }
+            res = m.analyze_metric(
+                model=model,
+                metadata=meta,
+            )
+        else:
+            res = m.analyze_metric(
+                model=model,
+                metadata=metadata,
+            )
         all_results["metrics"][res["metric_id"]] = res
 
     # if user_tests are defined, perform them else proceed forward

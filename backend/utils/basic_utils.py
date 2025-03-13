@@ -32,15 +32,19 @@ def aggregate_results(results):
     summary = {}
     try:
         summary["title"] = results["FsF_F2_01M"]["test_results"]["FsF_F2_01M-1"][
-            "result"
-        ]["title"]
-
-        summary["identifier"] = results["FsF_F1_02D"]["test_results"]["FsF_F1_02D-1"][
-            "result"
-        ]["identifier"]
+            "title"
+        ]
     except KeyError:
         logger.error("Key-Error while parsing results for title")
         summary["title"] = ""
+
+    try:
+        summary["identifier"] = results["FsF_F1_02D"]["test_results"]["FsF_F1_02D-1"][
+            "identifier"
+        ]
+    except KeyError:
+        logger.error("Key-Error while parsing results for detected identifier")
+        summary["identifier"] = ""
 
     summary["total_metrics"] = len(results)
 
@@ -50,21 +54,10 @@ def aggregate_results(results):
         "score_percent": {"F": 0, "A": 0, "I": 0, "R": 0},
     }
 
-    def get_max_result_vals(test_results):
-        max_score = 0
-        max_out_of = 0
-        for res in test_results:
-            if test_results[res]["score"] > max_score:
-                max_score = test_results[res]["score"]
-            if test_results[res]["out_of"] > max_out_of:
-                max_out_of = test_results[res]["out_of"]
-        return max_score, max_out_of
-
     # Compute total score per principle, then sum them later for full score
     for metric_id, res in results.items():
         # TODO: Remove this if condition later on and compute the max results for all.
-        if "FsF" in metric_id:
-            val, total = get_max_result_vals(results[metric_id]["test_results"])
+        val, total = results[metric_id]["score"], results[metric_id]["out_of"]
         if "FsF_F" in metric_id:
             summary["score_summary"]["score"]["F"] += val
             summary["score_summary"]["score_out_of"]["F"] += total

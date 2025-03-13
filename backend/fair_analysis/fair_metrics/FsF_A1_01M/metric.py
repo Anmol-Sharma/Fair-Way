@@ -19,14 +19,13 @@ class Metric(BaseMetric):
 
     def score_test_results(self, t_results):
         score = 0
-        if t_results["access_condition"] != "":
+        if t_results["access_condition"].strip() != "":
             score = 0.5
 
-        self.results["test_results"]["FsF_A1_01M-1"] = {
-            "result": t_results,
-            "score": score,
-            "out_of": 0.5,
-        }
+        self.results["test_results"]["FsF_A1_01M-1"] = t_results
+        self.results["score"] = score
+        self.results["out_of"] = 0.5
+
         return self.results
 
 

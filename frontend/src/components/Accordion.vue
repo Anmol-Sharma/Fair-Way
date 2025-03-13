@@ -35,24 +35,22 @@ const collapse_id_target = "#" + collapse_id;
         :aria-labelledby="acc_head_id"
         :data-bs-parent="accordion_name_parent"
       >
-        <!-- TODO: We'll have to pass different part of the results to the body for processing -->
         <div class="accordion-body border rounded-3 border-1">
-          <!--  -->
-          <div v-for="(value, test) in acc.test_analysis">
-            <div class="row mb-2">
-              <div class="col-md-2"><b>Test ID:</b></div>
-              <div class="col-md-10">{{ test }}</div>
+          <div class="row mb-2">
+            <div class="col-md-2"><b>Score:</b></div>
+            <div class="col-md-10">
+              {{ acc.metric_analysis.score }} out of {{ acc.metric_analysis.out_of }}
             </div>
-
-            <div class="row mb-2">
-              <div class="col-md-2"><b>Score:</b></div>
-              <div class="col-md-10">{{ value.score }} out of {{ value.out_of }}</div>
-            </div>
-
+          </div>
+          <div class="col-md-2"><b>Test Results:</b></div>
+          <br />
+          <div v-for="(value, test) in acc.metric_analysis.test_results">
             <div class="row mb-3">
-              <div class="col-md-2"><b>Test Result:</b></div>
-              <div class="col-md-10">
-                <pre class="text-muted"><code>{{ value.result }}</code></pre>
+              <div class="col-2">
+                <i>{{ test }}</i>
+              </div>
+              <div class="col-10">
+                <pre class="text-muted"><code>{{ value }}</code></pre>
               </div>
             </div>
           </div>

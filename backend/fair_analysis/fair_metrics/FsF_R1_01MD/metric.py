@@ -32,11 +32,9 @@ class Metric(BaseMetric):
                 score += len(t_results["variables"])
                 counter += len(t_results["variables"])
 
-        self.results["test_results"]["FsF_R1_01MD-1"] = {
-            "result": t_results,
-            "score": score,
-            "out_of": counter,
-        }
+        self.results["test_results"]["FsF_R1_01MD-1"] = t_results
+        self.results["score"] = score
+        self.results["out_of"] = counter
 
         return self.results
 

@@ -1,8 +1,7 @@
 from fair_analysis.fair_metrics.MetricBase import BaseMetric
 from typing import Dict
 from fair_analysis.fair_metrics.FsF_F1_01D.fair_tests.T1 import t1
-
-# from fair_analysis.fair_metrics.FsF_F1_01D.Tests.T2 import t2
+from fair_analysis.fair_metrics.FsF_F1_01D.fair_tests.T2 import t2
 
 
 class Metric(BaseMetric):
@@ -12,33 +11,43 @@ class Metric(BaseMetric):
         super().__init__(metric_id, name, active, tests, principle)
 
     def execute_tests(self, model, file_chunks, file_type):
-        t_result = self.tests["FsF_F1_01D-1"].perform_test(
+        t_result_1 = self.tests["FsF_F1_01D-1"].perform_test(
             model=model,
             file_chunks=file_chunks,
             file_type=file_type,
         )
-        return t_result
+        return t_result_1
 
     def score_test_results(self, t_results):
         score = 0
         if t_results["success"]:
             score = 0.5
 
-        self.results["test_results"]["FsF_F1_01D-1"] = {
-            "result": t_results,
-            "score": score,
-            "out_of": 0.5,
-        }
+        if t_results["success"]:
+            t_results_2 = self.tests["FsF_F1_01D-2"].perform_test(
+                t_results["identifier"]
+            )
+        else:
+            t_results_2 = {"success": False, "comment": "Identifier unresolvable"}
+
+        if score > 0.0 and t_results_2["success"]:
+            score = 1.0
+
+        self.results["test_results"]["FsF_F1_01D-1"] = t_results
+        self.results["test_results"]["FsF_F1_01D-2"] = t_results_2
+        self.results["score"] = score
+        self.results["out_of"] = 1
 
         return self.results
 
-
-# TODO: Define test for resolvable/ web-accessible
 
 M = Metric(
     metric_id="FsF_F1_01D",
     name="Data is assigned a globally unique identifier",
     active=True,
-    tests={"FsF_F1_01D-1": t1},
+    tests={
+        "FsF_F1_01D-1": t1,
+        "FsF_F1_01D-2": t2,
+    },
     principle="findable",
 )

@@ -19,32 +19,29 @@ function renameId(id) {
 }
 
 // Helper function to process test results and generate Body content for each test.
-function processTestResults(testResults) {
-  const bodyContent = {};
-  for (const [testKey, result] of Object.entries(testResults)) {
+function processMetricResults(metricResults) {
+  const bodyContent = {
+    score: metricResults.score,
+    out_of: metricResults.out_of,
+    test_results: {},
+  };
+  for (const [testKey, result] of Object.entries(metricResults.test_results)) {
     const testId = renameId(testKey);
-    bodyContent[testId] = {
-      result: result.result,
-      score: result.score,
-      out_of: result.out_of,
-    };
+    bodyContent.test_results[testId] = result;
   }
   return bodyContent;
 }
 
-function determineColor(testResults) {
+function determineColor(metricResults) {
   // Determine color based on test results
   let allPassed = true;
   let anyPassed = false;
 
-  for (const test of Object.values(testResults)) {
-    if (test.score > 0) {
-      anyPassed = true;
-    }
-    if (test.score < test.out_of) {
-      allPassed = false;
-      continue;
-    }
+  if (metricResults.score > 0) {
+    anyPassed = true;
+  }
+  if (metricResults.score < metricResults.out_of) {
+    allPassed = false;
   }
 
   let color;
@@ -92,19 +89,19 @@ export function computeAccList(testResults, principle) {
     // Process FsF Metrics
     if (principle != "user" && val.principle === principle) {
       const acId = renameId(key);
-      const bodyContent = processTestResults(val.test_results);
-      const color = determineColor(val.test_results);
+      const bodyContent = processMetricResults(val);
+      const color = determineColor(val);
       accList.push({
         title: `${acId}: ${val.metric_name}`,
         id: acId,
-        test_analysis: bodyContent,
+        metric_analysis: bodyContent,
         color: color,
       });
     } else if (principle === "user" && !("principle" in val)) {
       // Process User Metrics
       const acId = renameId(key);
-      const bodyContent = processTestResults(val.test_results);
-      const color = determineColor(val.test_results);
+      const bodyContent = processMetricResults(val);
+      const color = determineColor(val);
       accList.push({
         title: `${acId}: ${val.metric_name}`,
         id: acId,

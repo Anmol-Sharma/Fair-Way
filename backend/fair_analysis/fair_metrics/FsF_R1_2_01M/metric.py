@@ -22,11 +22,9 @@ class Metric(BaseMetric):
         if (len(t_results["entities"]) > 1) and (t_results["success"]):
             score = 1.0
 
-        self.results["test_results"]["FsF_R1_2_01M-1"] = {
-            "result": t_results,
-            "score": score,
-            "out_of": 1,
-        }
+        self.results["test_results"]["FsF_R1_2_01M-1"] = t_results
+        self.results["score"] = score
+        self.results["out_of"] = 1
 
         return self.results
 
