@@ -35,7 +35,6 @@ services:
       - fairway-app-network
     expose:
       - "8000"
-    user: "1014:1014"
 
   # Celery Workers
   celery_workers:
@@ -54,7 +53,6 @@ services:
       - backend
     networks:
       - fairway-app-network
-    user: "1014:1014"
 
   # TODO: Handle this later on
   # flower:
@@ -84,7 +82,6 @@ services:
       - "80:80"
     networks:
       - fairway-app-network
-    user: "1014:1014"
 
 networks:
   fairway-app-network:
