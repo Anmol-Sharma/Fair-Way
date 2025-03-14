@@ -58,18 +58,18 @@ async function handleSubmit(event) {
         <p class="card-text my-4">Please provide your feedback below.</p>
         <form @submit.prevent="handleSubmit($event)">
           <div class="row my-3">
-            <div class="col-2 text-end">
+            <div class="col-md-2 col-12 text-md-end text-start mb-2 mb-md-0">
               <label for="userName" class="col-form-label">Name</label>
             </div>
-            <div class="col">
+            <div class="col-md-10 col-12">
               <input type="text" class="form-control" required id="userName" v-model="userName" />
             </div>
           </div>
           <div class="row my-3">
-            <div class="col-2 text-end">
+            <div class="col-md-2 col-12 text-md-end text-start mb-2 mb-md-0">
               <label for="mailId" class="col-form-label">Email (Optional)</label>
             </div>
-            <div class="col">
+            <div class="col-md-10 col-12">
               <input
                 type="email"
                 class="form-control"
@@ -80,10 +80,10 @@ async function handleSubmit(event) {
             </div>
           </div>
           <div class="row my-3">
-            <div class="col-2 text-end">
+            <div class="col-md-2 col-12 text-md-end text-start mb-2 mb-md-0">
               <label for="feedbackText" class="col-form-label">Feedback</label>
             </div>
-            <div class="col">
+            <div class="col-md-10 col-12">
               <textarea
                 class="form-control"
                 id="feedbackText"
@@ -94,7 +94,7 @@ async function handleSubmit(event) {
               ></textarea>
             </div>
           </div>
-          <div class="text-center">
+          <div class="text-center mt-4">
             <button type="submit" class="btn btn-primary">Submit Feedback</button>
           </div>
         </form>
@@ -106,27 +106,64 @@ async function handleSubmit(event) {
 <style scoped>
 .main-container {
   background-color: #ffffff;
+  width: 100%;
+  padding: 0 15px;
+}
+
+.card {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.card-body {
+  width: 100%;
+  min-height: 30rem;
+  padding: 1.5rem;
 }
 
 .form-control {
-  width: 80%;
+  width: 100%;
 }
 
 .card-title {
   font-size: 2.5rem;
+  text-align: center;
+}
+
+@media (max-width: 992px) {
+  .card-title {
+    font-size: 1.8rem;
+  }
+
+  .card-text {
+    font-size: 1rem;
+  }
+
+  .card-body {
+    min-height: auto;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-title {
+    font-size: 1.5rem;
+  }
 }
 
 .card-text {
   font-size: 1.2rem;
   margin: 5px;
+  text-align: center;
 }
 
 .btn {
   position: relative;
 }
 
-.card-body {
-  min-width: 70rem;
-  min-height: 30rem;
+.row {
+  margin-right: 0;
+  margin-left: 0;
+  width: 100%;
 }
 </style>

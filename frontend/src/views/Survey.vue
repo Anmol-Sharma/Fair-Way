@@ -112,7 +112,7 @@ async function handleSubmit(event) {
   >
     <div class="card">
       <div class="card-body">
-        <h1 class="card-title">FAIR-Way Survey</h1>
+        <h1 class="card-title">Fair-Way Survey</h1>
         <p class="card-text my-4">
           Your valuable feedback helps us improve this tool even further.<br />
         </p>
@@ -234,7 +234,6 @@ async function handleSubmit(event) {
               v-model="survey.priorTools"
               :class="{ 'is-invalid': !isFieldValid('priorTools') }"
               @input="markFieldAsTouched('priorTools')"
-              style="width: 60%"
               placeholder="Please list the tools you've used separated by comma"
             />
             <div v-if="shouldShowError('priorTools')" class="invalid-feedback">
@@ -304,7 +303,6 @@ async function handleSubmit(event) {
               v-model="survey.academicBgOther"
               :class="{ 'is-invalid': !isFieldValid('academicBgOther') }"
               @input="markFieldAsTouched('academicBgOther')"
-              style="width: 60%"
               placeholder=""
             />
             <div v-if="shouldShowError('academicBgOther')" class="invalid-feedback">
@@ -439,19 +437,49 @@ async function handleSubmit(event) {
 <style scoped>
 .main-container {
   background-color: #ffffff;
-  max-width: 85vw;
+  max-width: 100%;
+  width: 100%;
+  padding: 0 15px;
+}
+
+.card {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.card-body {
+  width: 100%;
+  min-height: 30rem;
+  padding: 1.5rem;
 }
 
 .main-container h1 {
-  font-size: 3em;
+  font-size: 2.5em;
 }
 
-.form-control {
-  width: 80%;
+@media (max-width: 992px) {
+  .main-container h1 {
+    font-size: 2em;
+  }
+
+  .card-title {
+    font-size: 1.8rem;
+  }
+
+  .card-text {
+    font-size: 1rem;
+  }
+}
+
+.form-control,
+.form-select {
+  width: 100%;
+  max-width: 100%;
 }
 
 .card-title {
   font-size: 2.5rem;
+  text-align: center;
 }
 
 .card-text {
@@ -463,14 +491,9 @@ async function handleSubmit(event) {
   position: relative;
 }
 
-.card-body {
-  min-width: 70rem;
-  min-height: 30rem;
-}
-
 .slider-container {
   position: relative;
-  width: 80%;
+  width: 100%;
   padding-top: 2rem;
   padding-bottom: 1rem;
 }
@@ -506,5 +529,11 @@ async function handleSubmit(event) {
   margin-top: 0.25rem;
   font-size: 0.875em;
   color: #dc3545;
+}
+
+.row {
+  margin-right: 0;
+  margin-left: 0;
+  width: 100%;
 }
 </style>

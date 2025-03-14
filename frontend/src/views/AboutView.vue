@@ -6,7 +6,7 @@
     <section id="overview">
       <h2>Overview</h2>
       <p>
-        Welcome to <strong>FAIR-Way</strong>, an advanced web service designed to automatically
+        Welcome to <strong>Fair-Way</strong>, an advanced web service designed to automatically
         assess the FAIRness of digital research datasets. Leveraging the power of Large Language
         Models (LLMs), our platform performs a comprehensive series of tests on your datasets and
         combines their results to provide a detailed and accurate FAIRness summary. <br />

@@ -9,7 +9,7 @@
           height="30"
           class="d-inline-block me-2"
         />
-        FAIR-Way
+        Fair-Way
       </RouterLink>
       <button
         class="navbar-toggler"

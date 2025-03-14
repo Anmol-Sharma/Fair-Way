@@ -188,6 +188,7 @@ async function submitOnlineRequest(resourceUrl) {
 
 <style scoped>
 .main-container {
+  margin-top: 1.5rem;
   margin-bottom: 3.5rem;
   min-height: 80vh;
 }
@@ -233,7 +234,7 @@ async function submitOnlineRequest(resourceUrl) {
 */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0.3s ease;
 }
 .fade-enter-from,
 .fade-leave-to {
