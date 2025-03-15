@@ -437,14 +437,13 @@ async function handleSubmit(event) {
 <style scoped>
 .main-container {
   background-color: #ffffff;
-  max-width: 100%;
-  width: 100%;
-  padding: 0 15px;
+  max-width: 85vw;
+  padding: 0 12px;
 }
 
 .card {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px;
 }
 
 .card-body {
