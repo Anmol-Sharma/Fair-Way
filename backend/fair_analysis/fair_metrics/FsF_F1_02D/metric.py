@@ -2,6 +2,7 @@ from fair_analysis.fair_metrics.MetricBase import BaseMetric
 from typing import Dict
 from fair_analysis.fair_metrics.FsF_F1_02D.fair_tests.T1 import t1
 from fair_analysis.fair_metrics.FsF_F1_02D.fair_tests.T2 import t2
+import re
 
 
 class Metric(BaseMetric):
@@ -23,7 +24,10 @@ class Metric(BaseMetric):
         if t_results["success"]:
             score = 0.5
 
-        if t_results["success"]:
+        if t_results["success"] and re.match(
+            "^(https?:\/\/)?([\w\-]+\.)+[\w]{2,}(:\d+)?(\/[^\s]*)?$",
+            t_results["identifier"],
+        ):
             t_results_2 = self.tests["FsF_F1_02D-2"].perform_test(
                 t_results["identifier"]
             )

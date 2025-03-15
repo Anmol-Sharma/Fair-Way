@@ -37,10 +37,11 @@ class Test(BaseTest):
 t1 = Test(
     name="Data is assigned global unique identifier",
     feedback_format=ResponseFormat,
-    test_main_cmd="""Your task is to help analyze the metadata and carefully check and extract if Data is assigned a global unique identifier. The unique identifier should be mentioned explicitly for data and not metadata and should follow a unique identifier syntax. Examples of unique identifiers of data are Internationalized Resource Identifier (IRI), URL, Digital Object Identifier (DOI), ORCID etc. Records associated with data repositories like Zenodo or Dryad are also globally unique. Key Steps :-
-    1. Check for a GUID like a DOI or URL or URN or IRI etc.
-    2. Also check carefully if they follow the defined syntax for each of those individual GUID.
-    3. If there is no detected GUID, success cannot be true, so make sure to check that.""",
-    test_instruction="Check carefully if metadata below has a globally unique identifier for data or not.",
+    test_main_cmd="""Your task is to help analyze the metadata and carefully check the condition if metadata contains a Global Unique Identifier for the Data. It should follow a unique syntax which are common to unique specifiers. Examples of unique identifiers of data are Internationalized Resource Identifier (IRI), Website URL, Digital Object Identifier (DOI) etc. Records associated with common data repositories are also globally unique. Key Steps :-
+    1. Check for a GUID like a DOI or URL or URN or IRI or any other globally unique identifier you know.
+    2. Also check carefully if identifier is web accessble i.e. can be verified over internet. Random Text Cannot be a Persistent Identifier.
+    3. If yes, then return success as true alongisde the detected identifier.
+    4. If there is no detected global identifier, success should be false and identifier as empty.""",
+    test_instruction="Check carefully if metadata has a globally unique identifier linked to the dataset or not.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )
