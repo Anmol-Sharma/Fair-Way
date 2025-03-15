@@ -19,7 +19,7 @@ class OllamaModel:
         """
         Helper function to send requests to the LLM model
         """
-        if (ResponseFormat is not None) and isinstance(ResponseFormat, BaseModel):
+        if ResponseFormat is not None:
             ResponseFormat = ResponseFormat.model_json_schema()
         try:
             response: ChatResponse = self.__client.chat(
