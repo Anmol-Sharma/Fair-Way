@@ -8,7 +8,7 @@ import logging
 from utils.basic_utils import clean_file_content, aggregate_results
 from fair_analysis.splitter import Splitter
 
-from fair_analysis.model import ModelBase
+from fair_analysis.model import OllamaModel
 from fair_analysis.fair_analyzer import Analyzer
 from config import get_env_settings, get_global_settings
 
@@ -35,7 +35,7 @@ cel.conf.update(
     task_time_limit=env_settings.task_time_limit,
     worker_max_memory_per_child=env_settings.worker_max_memory_per_child,
 )
-model = ModelBase(
+model = OllamaModel(
     model_name=env_settings.llm_model,
     client_url=env_settings.ollama_url,
     options={

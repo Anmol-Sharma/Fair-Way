@@ -6,7 +6,7 @@ from typing import Sequence, Dict, Any, List
 from inspect import cleandoc
 import json
 from abc import abstractmethod
-from fair_analysis.model import ModelBase
+from fair_analysis.model import OllamaModel
 
 _env_settings = get_env_settings()
 _global_settings = get_global_settings()
@@ -41,7 +41,7 @@ class BaseTest:
             self.__test_few_shot_examples = []
 
     def perform_test(
-        self, model: ModelBase, file_type: str, file_chunks: str
+        self, model: OllamaModel, file_type: str, file_chunks: str
     ) -> Dict[str, str]:
         """Method to perform the given test
         Args:
@@ -63,7 +63,7 @@ class BaseTest:
         )
 
     def __perform_test_on_full_contents(
-        self, model: ModelBase, file_content: str, file_type: str
+        self, model: OllamaModel, file_content: str, file_type: str
     ) -> Dict[str, str]:
         """Helper Method to perform the test on the whole file content
         Args:
@@ -88,7 +88,7 @@ class BaseTest:
 
     def __combine_chunk_results(
         self,
-        model: ModelBase,
+        model: OllamaModel,
         chunk_results,
         export_chunk_results: bool = False,
     ) -> Dict[str, str]:
@@ -116,7 +116,7 @@ class BaseTest:
         return feedback
 
     def __perform_test_on_chunks(
-        self, model: ModelBase, chunks: Sequence[str], file_type: str
+        self, model: OllamaModel, chunks: Sequence[str], file_type: str
     ) -> Dict[str, str]:
         """Helper Method to perform the test on a sequence of file chunks
         Args:
