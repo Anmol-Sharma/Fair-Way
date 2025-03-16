@@ -15,7 +15,7 @@ _global_settings = get_global_settings()
 # Test Base Class
 class BaseTest:
     SystemPrompt: str = (
-        """You are a helpful assistant who will help with FAIR data assessment and metadata improvements. You will be given metadata in various formats like json, json-ld, rdfs/xml and even plaintext or markdown and specific instructions on the task like analysis and information extraction will be provided. Analyze carefully and make sure to answer using json ONLY as you are interacting with a programming API and not a human. The format of the response JSON to be returned is provided to you explicitly."""
+        """You are a helpful assistant who will help with FAIR data assessment and metadata analysis. You will be given metadata in various formats like json, json-ld, rdfs/xml and even plaintext or markdown and specific instructions on the tasks. Analyze carefully and make sure to answer using json ONLY as you are interacting with a programming API and not a human. The format of the response JSON to be returned will be provided to you explicitly and there may or may not be some examples for reference."""
     )
 
     def __init__(

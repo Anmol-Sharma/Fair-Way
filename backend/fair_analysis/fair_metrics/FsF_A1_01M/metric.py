@@ -29,8 +29,6 @@ class Metric(BaseMetric):
         return self.results
 
 
-# TODO: Decide what to do for 2nd test. F-UJI checks for 2nd test against a closed set of vocabs.
-
 M = Metric(
     metric_id="FsF_A1_01M",
     name="Metadata contains access level and access conditions of the data",

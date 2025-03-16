@@ -37,7 +37,7 @@ class Test(BaseTest):
 t1 = Test(
     name="Parsable, structured metadata (JSON-LD, RDFa) is embedded in the landing page XHTML/HTML code.",
     feedback_format=ResponseFormat,
-    test_main_cmd="""Your task is to help analyze the metadata provided at the end and check if the provided file format alongside the given metadata is represented using a formal knowledge representation language. A formal language representation format are structured metadata formats with certain vocabulary rules. Examples include OWL, RDFa, JSON-LD ('@context' keyword) , RDF/XML ('rdf' defined vocabulary terms), Turtle etc. which make them suitable for machine readability. File content and formats like plain-text and markdown are not them and similarly plain json or plain xml syntaxes are also not formal representation formation.
+    test_main_cmd="""Your task is to analyze the metadata provided and check if the provided file format alongside the given metadata is represented using a formal knowledge representation language. A formal language representation format are structured metadata formats with certain vocabulary rules. Examples include OWL, RDFa, JSON-LD ('@context' keyword) , RDF/XML ('rdf' defined vocabulary terms), Turtle etc. which make them suitable for machine readability. File content and formats like plain-text and markdown are not formal representations. Similarly normal json or normal xml syntaxes are also not formal representation formation.
     Key Steps to follow:-
     1. Check the metadata to see if it represented using a structured data format. Any sort of plain text or raw text like markdown etc. are not those.
     2. If a structured format is detected, check syntax.

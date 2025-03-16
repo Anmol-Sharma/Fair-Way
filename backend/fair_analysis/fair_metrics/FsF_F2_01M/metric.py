@@ -4,14 +4,13 @@ from typing import Dict
 
 
 class Metric(BaseMetric):
-    # For this particular test we have split up the single test into multiple chunks.
-    # So define scoring function here and set the score value in individual test to 0
     def __init__(
         self, metric_id: str, name: str, active: bool, tests: Dict, principle: str
     ):
         super().__init__(metric_id, name, active, tests, principle)
 
     def execute_tests(self, model, file_chunks, file_type):
+        # For this particular metric we have split up the main test into multiple parts for validation.
         t21_result = self.tests["1"].perform_test(
             model=model,
             file_chunks=file_chunks,

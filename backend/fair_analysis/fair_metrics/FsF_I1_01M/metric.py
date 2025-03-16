@@ -41,7 +41,7 @@ class Metric(BaseMetric):
             All_Results[name] = res
 
         if len(metadata.keys()) <= 1:
-            return All_Results.values()[0]
+            return self.score_test_results(list(All_Results.values())[0])
         else:
             combined_results = self.combine_multi_metric_results(model, All_Results)
             return self.score_test_results(combined_results)

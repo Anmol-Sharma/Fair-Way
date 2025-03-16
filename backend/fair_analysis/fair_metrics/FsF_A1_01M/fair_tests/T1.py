@@ -39,7 +39,13 @@ class Test(BaseTest):
 t1 = Test(
     name="Metadata contains access level and access conditions of the data",
     feedback_format=ResponseFormat,
-    test_main_cmd="Your task is to help analyze the metadata provided for data access conditions and extract them. Data access conditions can be `public` where data is available with open licence and available without any restrictions. Access condition can be `embargoed` if it is available after a time period or `restricted` where data is available only under certain conditions. Another access condition can be `metadata-only` where users can only have access to metadata",
-    test_instruction="Check the data access conditions carefully. If there is no information about the same, return back empty value for the access condition. Analyze carefully as different vocabulary terms could have been used for it.",
+    test_main_cmd="""Your task is to help analyze the metadata provided for data access conditions and extract them. Data access conditions can be `public` where data is available with open licence and available without any restrictions. Access condition can be `embargoed` if it is available after a time period or `restricted` where data is available only under certain conditions or only to certain people. Another access condition can also be `metadata-only` where users can only have access to metadata. Key Steps:-
+    1. Check if access condition is mentioned in the metadata.
+    2. If the condition is embargoed, check for date.
+    3. If it is restricted, check for the condition for restricted.
+    4. If there is no information about access, return back empty value for the access_condition variable.
+    Answer in the provide JSON format.
+    """,
+    test_instruction="Check if metadata contains access conditions about data.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )
