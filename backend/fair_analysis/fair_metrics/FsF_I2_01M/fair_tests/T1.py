@@ -37,7 +37,12 @@ class Test(BaseTest):
 t1 = Test(
     name="Namespaces of known semantic resources can be identified in metadata.",
     feedback_format=ResponseFormat,
-    test_main_cmd="Your task is to help analyze the metadata provided at the end and check if any known vocabulary namespace URIs are found. There are certain default namespaces like rdf, rdfs, owl, xsd, schema.org etc. You can ignore these since these are common namspaces. Some examples of other uncommon semantic resources include `bioportal`, `bartoc`, `linked open vocabularies (lov)`, purl linked vocabularies (eg. purl.org/net/VideoGameOntology), `ontohub` etc. You don't have to include all, only include the ones which are present in the metadata. Carefully check and answer back. If there is no detected semantic resources, success cannot be true, so make sure to check that.",
-    test_instruction="Check if metadata includes information about related semantic resources.",
+    test_main_cmd="""Your task is to help analyze the metadata provided and detect if any known vocabulary namespace URIs are found. Key Tasks:-
+    1. Check if metadata container any URI(Univeral Resource Identifiers) and extract them.
+    2. Check if extracted URI belong to either 'rdf', 'rdfs', 'owl', 'xsd', 'schema.org'. These are common and you can ignore them.
+    3. From the pending detected URIs check for examples like `bioportal`, `bartoc`, `linked open vocabularies (lov)`, purl linked vocabularies (eg. with url purl.org), `ontohub` etc. The metadata should explicilty list these with a distinct URI.
+    4. Normal URLs or Universal Identifiers like DOI are NOT vocabulary namespace URIs.
+    5. If there is no detected vocabulary namespaces, success should be false, and resources field as empty.""",
+    test_instruction="Check if metadata includes information about used vocabulary namespace URIs.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )
