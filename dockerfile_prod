@@ -48,7 +48,7 @@ RUN poetry install --without dev
 # Run the backend service
 FROM backend_base AS backend
 USER asharma
-CMD ["poetry", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]
+CMD ["poetry", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
 
 # Run the celery service
 FROM backend_base AS celery
