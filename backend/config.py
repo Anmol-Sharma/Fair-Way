@@ -1,10 +1,13 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from functools import lru_cache
 import json
+from typing import Optional
+from pydantic import model_validator
 
 
 class EnvSettings(BaseSettings):
-    ollama_url: str
+    service: str
+    ollama_url: Optional[str] = None
     role_user: str
     role_model: str
 
@@ -36,12 +39,34 @@ class EnvSettings(BaseSettings):
     base_hugging_face_resolver: str
 
     # Acess tokens
-    zenodo_access_token: str
+    zenodo_access_token: Optional[str] = None
 
     # feedback db
     feedback_db_path: str
 
+    # Keys
+    openai_key: Optional[str] = None
+
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+
+    @model_validator(mode="after")
+    def check_conditional_requirements(self):
+        # Example: If llm_model is 'gpt-4' or starts with 'gpt', openai_key must be provided
+        if self.service.lower() == "ollama":
+            if not self.ollama_url:
+                raise ValueError(
+                    "You selected ollama as the llm service. Provide its end point URL"
+                )
+        elif self.service.lower() == "openai":
+            if not self.openai_key:
+                raise ValueError(
+                    "You selected openai as the llm service. Provide its API Key"
+                )
+        else:
+            raise ValueError(
+                "Only OLLAMA and OPENAI as LLM service providers supported"
+            )
+        return self
 
 
 @lru_cache

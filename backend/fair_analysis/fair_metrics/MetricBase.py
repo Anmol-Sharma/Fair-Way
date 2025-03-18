@@ -2,11 +2,9 @@
 from abc import abstractmethod
 import logging
 from celery import current_task
-from typing import Dict, Any, List
+from typing import List, Any, Dict
 from inspect import cleandoc
 import json
-from pydantic import create_model
-import random
 
 
 class BaseMetric:
@@ -37,6 +35,8 @@ class BaseMetric:
         Define this down in derived classes for interdependence of tests.
 
         NOTE: To perform test on the whole file contents, simply provide a single chunk with complete file contents.
+
+        Should return back the results as well as a response format to be used for combining results
         """
         pass
 
@@ -48,7 +48,7 @@ class BaseMetric:
         # If there are multiple test results the scoring function will handle it.
         pass
 
-    def combine_multi_metric_results(self, model, results):
+    def combine_multi_metric_results(self, model, results, response_format):
         messages = []
         Base_MSG = """Your Task is to combine the results from separate data extraction tests. All will have the same json structure however they are on different metadata sources. Your task is to combine them together. Key Steps to follow are :-
         1. Check carefully if and extracted key is present in one of them, then the final result should reflect that by including all the necessary keys from the succeeded test.
@@ -60,6 +60,8 @@ class BaseMetric:
             f"Combining the Result Results for the metric :- {self.metric_id}"
         )
 
+        self.logger.info(response_format.schema())
+
         for k, result in results.items():
             msg = f"""Result source: '{k}'\n```{json.dumps(result, separators=(',', ':'))}```"""
             Base_MSG = "\n".join([Base_MSG, msg])
@@ -70,19 +72,8 @@ class BaseMetric:
             }
         )
 
-        # TODO: We Might have to use 2-shot example for reference.
-
-        # Select a random key (both have the same structure)
-        random_key = random.choice(list(results.keys()))
-
-        # create a Dynamic Model with Test Results to be supplied to LLM to output results
-        # Create the Dynamic Model with only the structure (types) but no default values
-        DynamicModel = create_model(
-            "DynamicModel",
-            **{k: (type(v), ...) for k, v in results[random_key].items()},
-        )
-        response = model.send_request(messages=messages, ResponseFormat=DynamicModel)
-        return json.loads(response["message"]["content"])
+        response = model.send_request(messages=messages, ResponseFormat=response_format)
+        return json.loads(response)
 
     def analyze_metric(self, model, metadata):
         """
@@ -93,8 +84,9 @@ class BaseMetric:
         )
         # Perform the relevant test on each of the metadata items and combine them together
         All_Results = {}
+        resp_format = None
         for k in metadata.keys():
-            res = self.execute_tests(
+            res, fmt = self.execute_tests(
                 model, metadata[k]["metadata_chunks"], metadata[k]["source"]
             )
             name = ""
@@ -105,9 +97,13 @@ class BaseMetric:
             else:
                 name = "Uploaded Metadata File"
             All_Results[name] = res
+            if fmt is not None:
+                resp_format = fmt
 
         if len(metadata.keys()) <= 1:
             return self.score_test_results(list(All_Results.values())[0])
         else:
-            combined_results = self.combine_multi_metric_results(model, All_Results)
+            combined_results = self.combine_multi_metric_results(
+                model, All_Results, response_format=resp_format
+            )
             return self.score_test_results(combined_results)

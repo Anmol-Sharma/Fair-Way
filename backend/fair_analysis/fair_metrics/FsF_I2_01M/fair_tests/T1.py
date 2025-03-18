@@ -41,7 +41,7 @@ t1 = Test(
     1. Check if metadata container any URI(Univeral Resource Identifiers) and extract them.
     2. Check if extracted URI belong to either 'rdf', 'rdfs', 'owl', 'xsd', 'schema.org'. These are common and you can ignore them.
     3. From the pending detected URIs check for examples like `bioportal`, `bartoc`, `linked open vocabularies (lov)`, purl linked vocabularies (eg. with url purl.org), `ontohub` etc. The metadata should explicilty list these with a distinct URI.
-    4. Normal URLs or Universal Identifiers like DOI are NOT vocabulary namespace URIs.
+    4. Normal URLs or Universal Identifiers like DOI are NOT vocabulary namespace URIs. Similarly random names like `namespace1` or `namespace2` are not actual namespaces. Only include namespace with given URI explicitly part of metadata.
     5. If there is no detected vocabulary namespaces, success should be false, and resources field as empty.""",
     test_instruction="Check if metadata includes information about used vocabulary namespace URIs.",
     few_shot_samples=FEW_SHOT_SAMPLES,

@@ -1,6 +1,16 @@
 from fair_analysis.fair_metrics.MetricBase import BaseMetric
 from fair_analysis.fair_metrics.FsF_F2_01M.fair_tests.T2 import t21, t22, t23
 from typing import Dict
+from pydantic import BaseModel
+
+
+class ResponseFormat(BaseModel):
+    creator: str
+    title: str
+    publisher: str
+    publication_date: str
+    summary: str
+    keywords: str
 
 
 class Metric(BaseMetric):
@@ -27,7 +37,7 @@ class Metric(BaseMetric):
             file_type=file_type,
         )
 
-        return {**t21_result, **t22_result, **t23_result}
+        return {**t21_result, **t22_result, **t23_result}, ResponseFormat
 
     def score_test_results(self, t_results):
         """

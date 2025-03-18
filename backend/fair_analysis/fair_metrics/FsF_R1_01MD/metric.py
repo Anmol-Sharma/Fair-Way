@@ -15,7 +15,7 @@ class Metric(BaseMetric):
             file_chunks=file_chunks,
             file_type=file_type,
         )
-        return t_result
+        return t_result, self.tests["FsF_R1_01MD-1"].test_feedback_format
 
     def score_test_results(self, t_results):
         score = 0.0
@@ -38,6 +38,8 @@ class Metric(BaseMetric):
 
         return self.results
 
+
+# TODO: Finish updating the prompts for this when scoring mechanism is reviewed
 
 M = Metric(
     metric_id="FsF_R1_01MD",

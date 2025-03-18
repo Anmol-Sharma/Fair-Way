@@ -31,7 +31,7 @@ class BaseTest:
         self.test_name = name
         self.test_active = active
         self.__test_main_cmd = test_main_cmd
-        self.__test_feedback_format = feedback_format
+        self.test_feedback_format = feedback_format
         self.__test_instruction = test_instruction
         self.use_few_shot_prompting = use_few_shot_prompting
 
@@ -75,7 +75,7 @@ class BaseTest:
         messages = self.__build_messages(file_content, file_type)
 
         response = model.send_request(
-            messages=messages, ResponseFormat=self.__test_feedback_format
+            messages=messages, ResponseFormat=self.test_feedback_format
         )
 
         return self.__parse_response(response=response)
@@ -105,7 +105,7 @@ class BaseTest:
         ]
 
         response = model.send_request(
-            messages=messages, ResponseFormat=self.__test_feedback_format
+            messages=messages, ResponseFormat=self.test_feedback_format
         )
         feedback = self.__parse_response(response)
 
@@ -129,7 +129,7 @@ class BaseTest:
         for idx, chunk in enumerate(chunks):
             messages = self.__build_messages(chunk, file_type)
             response = model.send_request(
-                messages=messages, ResponseFormat=self.__test_feedback_format
+                messages=messages, ResponseFormat=self.test_feedback_format
             )
             chunk_results.append(self.__parse_response(response))
 
@@ -184,7 +184,7 @@ class BaseTest:
             parsed json response
         """
         try:
-            feedback = json.loads(response["message"]["content"])
+            feedback = json.loads(response)
             return feedback
         except Exception as e:
             print(f"Error parsing the json response from the model: {response}")

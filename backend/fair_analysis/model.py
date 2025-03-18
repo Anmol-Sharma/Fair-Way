@@ -4,6 +4,7 @@ from typing import Optional, List, Dict
 from httpx import ReadTimeout
 from pydantic import BaseModel
 import logging
+from openai import OpenAI
 
 
 class OllamaModel:
@@ -27,7 +28,7 @@ class OllamaModel:
                 messages=messages,
                 format=ResponseFormat,
             )
-            return response
+            return response["message"]["content"]
         except ReadTimeout:
             # Retry request if failed
             self.__logger.warning("Request Timedout Retrying!")
@@ -36,7 +37,35 @@ class OllamaModel:
                 messages=messages,
                 format=ResponseFormat,
             )
-            return response
+            return response["message"]["content"]
         except Exception as e:
             self.__logger.warning("Something Unexpected happened!")
             raise e
+
+
+class OpenAiModel:
+    def __init__(self, model_name: str, openai_key: str) -> None:
+        self.__model_name = model_name
+        self.__client = OpenAI(api_key=openai_key)
+        self.__logger = logging.getLogger("celery")
+
+    def send_request(self, messages, ResponseFormat: Optional[BaseModel] = None):
+        """
+        Helper function to send requests to the LLM model
+        """
+        try:
+            response = self.__client.beta.chat.completions.parse(
+                model=self.__model_name,
+                messages=messages,
+                response_format=ResponseFormat,
+            )
+            return response.choices[0].message.content
+        except Exception:
+            # Retry request if failed
+            self.__logger.warning("Something went wrong. Retrying!")
+            response = self.__client.beta.chat.completions.parse(
+                model=self.__model_name,
+                messages=messages,
+                response_format=ResponseFormat,
+            )
+            return response.choices[0].message.content

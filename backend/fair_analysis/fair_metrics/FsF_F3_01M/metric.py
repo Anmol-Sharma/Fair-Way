@@ -22,7 +22,7 @@ class Metric(BaseMetric):
                 "file_name": t_result["file_list"][idx]["file_name"].strip(),
                 "d_type": t_result["file_list"][idx]["d_type"].strip(),
             }
-        return t_result
+        return t_result, self.tests["FsF_F3_01M-1"].test_feedback_format
 
     def score_test_results(self, t_results):
         # Custom score rules for this, if all mentioned then 0.5 else 0.25 if anything mentionec

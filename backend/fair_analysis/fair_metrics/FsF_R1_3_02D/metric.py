@@ -18,7 +18,7 @@ class Metric(BaseMetric):
             )
         else:
             t_result = {"success": False, "comment": "No File information found"}
-        return t_result
+        return t_result, self.tests["FsF_R1_3_02D-1"].test_feedback_format
 
     def score_test_results(self, t_results):
         score = 0.0

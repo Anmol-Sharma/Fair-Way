@@ -15,11 +15,11 @@ class Metric(BaseMetric):
             file_chunks=file_chunks,
             file_type=file_type,
         )
-        return t_result
+        return t_result, self.tests["FsF_I2_01M-1"].test_feedback_format
 
     def score_test_results(self, t_results):
         score = 0.0
-        if (len(t_results["resources"]) > 1) and (t_results["success"]):
+        if (len(t_results["resources"]) >= 1) and (t_results["success"]):
             score = 1.0
 
         self.results["test_results"]["FsF_I2_01M-1"] = t_results

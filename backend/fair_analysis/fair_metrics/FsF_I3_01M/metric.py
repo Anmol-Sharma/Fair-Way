@@ -1,6 +1,7 @@
 from fair_analysis.fair_metrics.MetricBase import BaseMetric
 from fair_analysis.fair_metrics.FsF_I3_01M.fair_tests.T1 import t1
 from typing import Dict
+from celery import current_task
 
 
 class Metric(BaseMetric):
@@ -17,9 +18,39 @@ class Metric(BaseMetric):
         )
         return t_result
 
+    def analyze_metric(self, model, metadata):
+        self.logger.info(
+            f"Analyzing Metric: {self.metric_id}-{self.name} for task: {current_task.request.id}"
+        )
+        All_Results = {}
+        resp_format = self.tests["FsF_I3_01M-1"].test_feedback_format
+        for k in metadata.keys():
+            # Perform the test on complete metadata
+            res = self.execute_tests(
+                model,
+                (metadata[k]["metadata"],),  # Single complete chunk --> full metadata
+                metadata[k]["source"],
+            )
+            name = ""
+            if k == "api":
+                name = "Harvested Metadata"
+            elif k == "embedded":
+                name = "Embedded Metadata"
+            else:
+                name = "Uploaded Metadata File"
+            All_Results[name] = res
+
+        if len(metadata.keys()) <= 1:
+            return self.score_test_results(list(All_Results.values())[0])
+        else:
+            combined_results = self.combine_multi_metric_results(
+                model, All_Results, resp_format
+            )
+            return self.score_test_results(combined_results)
+
     def score_test_results(self, t_results):
         score = 0.0
-        if len(t_results["entities"]) > 1:
+        if len(t_results["entities"]) >= 1:
             score = 1.0
 
         self.results["test_results"]["FsF_I3_01M-1"] = t_results
@@ -28,8 +59,6 @@ class Metric(BaseMetric):
 
         return self.results
 
-
-# TODO: Add test for valid spdx licence test.
 
 M = Metric(
     metric_id="FsF_I3_01M",

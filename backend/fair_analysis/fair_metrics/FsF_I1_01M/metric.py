@@ -24,6 +24,7 @@ class Metric(BaseMetric):
         )
         # Perform the relevant test on each of the metadata items and combine them together
         All_Results = {}
+        resp_format = self.tests["FsF_I1_01M-1"].test_feedback_format
         for k in metadata.keys():
             # Perform the test on complete metadata
             res = self.execute_tests(
@@ -43,7 +44,9 @@ class Metric(BaseMetric):
         if len(metadata.keys()) <= 1:
             return self.score_test_results(list(All_Results.values())[0])
         else:
-            combined_results = self.combine_multi_metric_results(model, All_Results)
+            combined_results = self.combine_multi_metric_results(
+                model, results=All_Results, response_format=resp_format
+            )
             return self.score_test_results(combined_results)
 
     def score_test_results(self, t_results):

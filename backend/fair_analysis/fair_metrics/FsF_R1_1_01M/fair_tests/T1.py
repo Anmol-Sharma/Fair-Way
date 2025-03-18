@@ -37,7 +37,7 @@ class Test(BaseTest):
 t1 = Test(
     name="Metadata includes license information under which data can be reused.",
     feedback_format=ResponseFormat,
-    test_main_cmd="Your task is to help analyze the metadata provided at the end for licence associated with the data and extract that information. Make sure the licence extracted is a valid licence else leave the field empty.",
-    test_instruction="Check if metadata includes licence information about the data reuse. Check carefully as different vocabulary could have been used for it.",
+    test_main_cmd="Your task is to help analyze given metadata for licence information about the dataset. Carefully analyze the metadata and check if licence information is explicitly mentioned in the metadata. Make sure the licence extracted is a valid licence else leave the field empty.",
+    test_instruction="Check if metadata includes licence information about the data reuse.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )
