@@ -23,10 +23,12 @@ class Metric(BaseMetric):
         score = 0.0
         if (t_results["success"]) and (len(t_results["entities"].values()) > 1):
             score = 1.0
+            if t_results["formal_vocab"]:
+                score = 2.0
 
         self.results["test_results"]["FsF_R1_2_01M-1"] = t_results
         self.results["score"] = score
-        self.results["out_of"] = 1
+        self.results["out_of"] = 2
 
         return self.results
 
