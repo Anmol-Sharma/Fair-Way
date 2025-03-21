@@ -1,5 +1,5 @@
 from fair_analysis.fair_metrics.TestBase import BaseTest
-from fair_analysis.fair_metrics.FsF_R1_3_02D.fair_tests.t1_samples import (
+from fair_analysis.fair_metrics.FsF_R1_3_02D.fair_tests.t2_samples import (
     FEW_SHOT_SAMPLES,
     ResponseFormat,
 )
@@ -32,22 +32,21 @@ class Test(BaseTest):
         # If all empty, return false, full empty (return chunks as empty)
         _r = []
         for ch_res in chunk_results:
-            if not ch_res["success"]:
+            if not ch_res["scientific_fmt"]:
                 continue
             _r.append(ch_res)
         return _r
 
 
-t1 = Test(
-    name="Metadata format is an open file format.",
+t2 = Test(
+    name="Metadata format is a scientific file format.",
     feedback_format=ResponseFormat,
-    test_main_cmd="""Your task is to help analyze the provided metadata and check if data files listed used open data file formats. An open file format is format which can be used by anyone royalty free. Key Tasks :-
+    test_main_cmd="""Your task is to help analyze the provided metadata and check if data files listed used formats suitable for scientific usage. An scientific file format is format which can be used by anyone and generally used by a particular scientific community. Key Tasks :-
     1. Check if file formats information is listed in the metadata.
-    2. If yes, check if the formats formats are open. You are given a list for open formats.
-    3. If any format is not open, return success as false. Also KEEP the comment as brief.
+    2. If yes, check if the formats formats are scientific. You are given a list of some example scientific file formats. Also KEEP the info as brief.
     List of some open formats:-
     ```
-    'apng', 'av1', 'flif', 'gif', 'jpeg', jpeg-'xl', 'png', 'webp', 'svg', 'xpm', 'alac', 'flac', 'mp3', 'ogg', 'vorbis', 'av1', 'webm', 'plaintext', 'csv', 'html', 'markdown', 'epub', 'latex', 'OpenXPS', 'Office_Open_XML', 'PDF' (open since v1.7), 'XHTML', '7z', 'bzip2', 'lzip', 'gzip', 'sqx', 'tar', 'xz', 'zip', 'css', 'hdf', 'json', 'netcdf', 'nzb', 'rss', 'xml', 'yaml', 'DjVu'
+    '.fits', 'Silo', 'SPC', 'EOSSA', 'CCP4', 'SDF', 'CSDM', 'NetCDF', 'HDR/HDF', 'FMF', 'GRIB'(Meteorology), 'CML'(Chemical markup Lang), '.mol', '.g6', 'AB1'(DNA Sequencing), 'BCF', 'CRAM', 'DDBJ', 'FASTQ', 'GFF', 'PLN' (Protein Line notation), 'SCF', 'SRA', 'VCF', 'MINC', 'EDF', 'NPY', 'NPZ', 'MATLAB', 'GeoTIFF' etc.
     ```
     """,
     test_instruction="Check if data file in listed in the metadat use open data file formats.",

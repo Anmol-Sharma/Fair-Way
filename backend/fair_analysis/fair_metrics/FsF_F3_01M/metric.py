@@ -15,30 +15,13 @@ class Metric(BaseMetric):
             file_chunks=file_chunks,
             file_type=file_type,
         )
-        self.logger.info(t_result)
-        for idx, _ in enumerate(t_result["file_list"]):
-            t_result["file_list"][idx] = {
-                "size": t_result["file_list"][idx]["size"].strip(),
-                "file_name": t_result["file_list"][idx]["file_name"].strip(),
-                "d_type": t_result["file_list"][idx]["d_type"].strip(),
-            }
         return t_result, self.tests["FsF_F3_01M-1"].test_feedback_format
 
     def score_test_results(self, t_results):
-        # Custom score rules for this, if all mentioned then 0.5 else 0.25 if anything mentionec
         score = 0
-        if len(t_results["file_list"]) > 1:
-            for file_info in t_results:
-                # Check if all present
-                if (
-                    file_info["size"] == ""
-                    or file_info["file_name"] == ""
-                    or file_info["d_type"] == ""
-                ):
-                    break
-            else:
-                # proper file information present
-                score = 0.5
+        if t_results["success"]:
+            if t_results["identifier"].strip() != "":
+                score = 1.0
 
         self.results["test_results"]["FsF_F3_01M-1"] = t_results
         self.results["score"] = score
