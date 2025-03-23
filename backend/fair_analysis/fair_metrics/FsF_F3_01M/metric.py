@@ -22,6 +22,13 @@ class Metric(BaseMetric):
         if t_results["success"]:
             if t_results["identifier"].strip() != "":
                 score = 1.0
+        else:
+            if (
+                (t_results["file_name"].strip() != "")
+                or (t_results["file_size"].strip() != "")
+                or (t_results["file_type"].strip() != "")
+            ):
+                score = 0.5
 
         self.results["test_results"]["FsF_F3_01M-1"] = t_results
         self.results["score"] = score

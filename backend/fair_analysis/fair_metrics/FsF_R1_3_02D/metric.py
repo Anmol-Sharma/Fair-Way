@@ -32,7 +32,10 @@ class Metric(BaseMetric):
             )
         else:
             t_result = {"success": False, "comment": "No File information found"}
-            t_result_2 = {"scientific_fmt": False, "info": "No File information found"}
+            t_result_2 = {
+                "scientific_fmt": False,
+                "info": "No File information found, cannot check for scientific format",
+            }
         return ({**t_result, **t_result_2}, ResponseFormat)
 
     def score_test_results(self, t_results):

@@ -46,6 +46,7 @@ t1 = Test(
     test_main_cmd="""Your task is to help analyze the metadata provided for data files and detect identifiers to access them i.e. detect URLs or identifying information to download content. Key Steps:-
     1. Check carefully if any information regarding file name or file type or file size is mentioned.
     2. Check all the listed urls and which one is explicitly used to identify where the data is stored. Persistent Identifiers or landing page can be useful ones. Similarly some special keywords like `/download` or `/files` or `/package`, `/content` can be useful to narrow down useful urls.
+    3. Detect and update the keys for file name, size and type if provided in the given metadata.
     Only extract information that is explicitly mentioned in the metadata. Also make sure to detect identifiers ONLY for data and not any other entitiy like contributor etc. If that information is not found leave the field as empty and success as false.""",
     test_instruction="Check if metadata below has information about files.",
     few_shot_samples=FEW_SHOT_SAMPLES,

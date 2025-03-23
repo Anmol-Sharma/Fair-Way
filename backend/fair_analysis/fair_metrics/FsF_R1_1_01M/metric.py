@@ -39,8 +39,13 @@ class Metric(BaseMetric):
             score = 1
             if t_results["success"]:
                 score = 2
-        del t_results["success"]
-        self.results["test_results"]["FsF_R1_1_01M-1"] = t_results
+        self.results["test_results"]["FsF_R1_1_01M-1"] = {
+            "license": t_results["license"]
+        }
+        self.results["test_results"]["FsF_R1_1_01M-2"] = {
+            "success": t_results["success"],
+            "comment": t_results["comment"],
+        }
         self.results["score"] = score
         self.results["out_of"] = 2
 

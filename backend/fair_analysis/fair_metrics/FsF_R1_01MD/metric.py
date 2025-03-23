@@ -19,27 +19,28 @@ class Metric(BaseMetric):
 
     def score_test_results(self, t_results):
         score = 0.0
-        counter = 1
-        if len(t_results["files"]) > 1 or len(t_results["variables"]) > 1:
+        if len(t_results["files"]) >= 1 or len(t_results["variables"]) >= 1:
             score = 1.0
-        # For each file and variable increase score
         if score > 0.0:
             if len(t_results["files"]) > 1:
-                score += len(t_results["files"])
-                counter += len(t_results["files"])
+                for file_info in t_results["files"]:
+                    if (
+                        (file_info["name"].strip() != "")
+                        and (file_info["f_type"].strip() != "")
+                        and (file_info["size"].strip() != "")
+                    ):
+                        score += 1.0
+                        break
 
             if len(t_results["variables"]) > 1:
-                score += len(t_results["variables"])
-                counter += len(t_results["variables"])
+                score += 1.0
 
         self.results["test_results"]["FsF_R1_01MD-1"] = t_results
         self.results["score"] = score
-        self.results["out_of"] = counter
+        self.results["out_of"] = 4
 
         return self.results
 
-
-# TODO: Finish updating the prompts for this when scoring mechanism is reviewed
 
 M = Metric(
     metric_id="FsF_R1_01MD",
