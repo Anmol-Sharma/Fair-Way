@@ -7,10 +7,14 @@ const emit = defineEmits(["update:advancedTests"]);
 // For the very first emit when the object is defined
 emit("update:advancedTests", advancedTests.value);
 
+const TestRows = 5;
+
 // Add Test Row to the advanced Tests
 function addTestRow() {
-  advancedTests.value.push({ domain: "", type: "", condition: "" });
-  emit("update:advancedTests", advancedTests.value);
+  if (advancedTests.value.length < TestRows) {
+    advancedTests.value.push({ domain: "", type: "", condition: "" });
+    emit("update:advancedTests", advancedTests.value);
+  }
 }
 
 // Remove test row from advancedTests
@@ -49,7 +53,7 @@ function getPlaceholder(type) {
         <p class="text-muted small-text-1 m-3">
           LLMs can assist with checking your domain specific Vocabulary and Other Standards if
           carefully provided with instructions.<br />
-          Use the following section to test:-
+          Use the following section to define any of the following <strong>(max. FIVE)</strong>:-
         </p>
         <ol class="text-muted small-text-1 text-center">
           <li>Vocabulary Checks</li>
@@ -117,7 +121,14 @@ function getPlaceholder(type) {
       </div>
       <!-- Add new test row button -->
       <div class="mt-3">
-        <button type="button" class="btn btn-outline-primary" @click="addTestRow">+</button>
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          @click="addTestRow"
+          :disabled="advancedTests.length >= TestRows"
+        >
+          +
+        </button>
       </div>
     </div>
   </div>
