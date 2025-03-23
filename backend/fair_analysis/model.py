@@ -65,6 +65,8 @@ class OpenAiModel:
                     messages=messages,
                     response_format=ResponseFormat,
                 )
+                # Necessary sleep to still avoid 429
+                sleep(2.5)
                 return response.choices[0].message.content
             except openai.RateLimitError:
                 # Handle rate limit error

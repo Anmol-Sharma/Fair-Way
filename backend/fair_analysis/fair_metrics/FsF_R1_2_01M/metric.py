@@ -10,8 +10,6 @@ class Metric(BaseMetric):
         super().__init__(metric_id, name, active, tests, principle)
 
     def execute_tests(self, model, file_chunks, file_type):
-        self.logger.info(self.tests["FsF_R1_2_01M-1"].test_feedback_format.schema())
-
         t_result = self.tests["FsF_R1_2_01M-1"].perform_test(
             model=model,
             file_chunks=file_chunks,
