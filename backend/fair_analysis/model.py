@@ -5,6 +5,8 @@ from httpx import ReadTimeout
 from pydantic import BaseModel
 import logging
 from openai import OpenAI
+from time import sleep
+import openai
 
 
 class OllamaModel:
@@ -53,19 +55,31 @@ class OpenAiModel:
         """
         Helper function to send requests to the LLM model
         """
-        try:
-            response = self.__client.beta.chat.completions.parse(
-                model=self.__model_name,
-                messages=messages,
-                response_format=ResponseFormat,
-            )
-            return response.choices[0].message.content
-        except Exception:
-            # Retry request if failed
-            self.__logger.warning("Something went wrong. Retrying!")
-            response = self.__client.beta.chat.completions.parse(
-                model=self.__model_name,
-                messages=messages,
-                response_format=ResponseFormat,
-            )
-            return response.choices[0].message.content
+        retries = 3  # Set number of retries
+        backoff = 5  # Initial backoff time in seconds
+
+        for attempt in range(retries):
+            try:
+                response = self.__client.beta.chat.completions.parse(
+                    model=self.__model_name,
+                    messages=messages,
+                    response_format=ResponseFormat,
+                )
+                return response.choices[0].message.content
+            except openai.RateLimitError:
+                # Handle rate limit error
+                self.__logger.warning(
+                    f"Rate limit exceeded. Attempt {attempt + 1} of {retries}. Retrying in {backoff} seconds..."
+                )
+                sleep(backoff)
+                backoff *= 2
+            except Exception as e:
+                # Handle other exceptions
+                self.__logger.warning(
+                    f"Something went wrong. Retrying! Error: {str(e)}"
+                )
+                sleep(2)  # Fixed wait time for errors
+
+        # If we exhaust all retries, we raise an exception to indicate failure
+        self.__logger.error("Max retries reached. Could not complete the request.")
+        raise Exception("Max retries reached. Could not complete the request.")

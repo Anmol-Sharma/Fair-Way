@@ -28,9 +28,13 @@ class Metric(BaseMetric):
             "^(https?:\/\/)?([\w\-]+\.)+[\w]{2,}(:\d+)?(\/[^\s]*)?$",
             t_results["identifier"],
         ):
-            t_results_2 = self.tests["FsF_F1_02D-2"].perform_test(
-                t_results["identifier"]
-            )
+            try:
+                t_results_2 = self.tests["FsF_F1_02D-2"].perform_test(
+                    t_results["identifier"]
+                )
+            except:
+                self.logger.info("Couldn't resolve the GUI")
+                t_results_2 = {"success": False, "comment": "Identifier unresolvable"}
         else:
             t_results_2 = {"success": False, "comment": "Identifier unresolvable"}
 

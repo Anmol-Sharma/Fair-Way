@@ -29,9 +29,13 @@ class Metric(BaseMetric):
             t_results["identifier"],
         ):
             self.logger.info(f"Detect GUID:-{t_results}")
-            t_results_2 = self.tests["FsF_F1_01D-2"].perform_test(
-                t_results["identifier"]
-            )
+            try:
+                t_results_2 = self.tests["FsF_F1_01D-2"].perform_test(
+                    t_results["identifier"]
+                )
+            except:
+                self.logger.info("Couldn't resolve the GUI")
+                t_results_2 = {"success": False, "comment": "Identifier unresolvable"}
         else:
             t_results_2 = {"success": False, "comment": "Identifier unresolvable"}
 

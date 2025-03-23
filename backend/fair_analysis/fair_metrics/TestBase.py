@@ -15,7 +15,7 @@ _global_settings = get_global_settings()
 # Test Base Class
 class BaseTest:
     SystemPrompt: str = (
-        """You are a helpful assistant who will help with FAIR data assessment and metadata analysis. You will be given metadata in various formats like json, json-ld, rdfs/xml and even plaintext or markdown and specific instructions on the tasks. Analyze carefully and make sure to answer using json ONLY as you are interacting with a programming API and not a human. The format of the response JSON to be returned will be provided to you explicitly and there may or may not be some examples for reference."""
+        """You are a helpful assistant who will help with FAIR data assessment and metadata analysis. You are given metadata in various formats like json, json-ld, rdfs/xml and even plaintext or markdown and specific instructions on the tasks below. Analyze carefully and make sure to answer using given json format ONLY as you are interacting with a programming API and not a human. The format of the response to be returned will be provided to you explicitly and there may or may not be some examples for reference on how to perform a given Task."""
     )
 
     def __init__(
@@ -94,8 +94,9 @@ class BaseTest:
     ) -> Dict[str, str]:
         combine_prompt = f"""Here are some results for the test: '{self.test_name}' detected by you on different split sections of a metadata file. Combine them together in a single result. Key Steps:-
         1. Carefully analyze results, remove duplicate results and answer as precisely as possible which reflect the final result.
-        2. If a test succeeded in one of the chunks, be sure to include that in the final result. If a test failed in all such sections only then the result of the test should look false.
-        3. Avoid returning generic statements return back precise results and answer in the provided JSON format."""
+        2. If a test succeeded in one of the chunks, then the final result should be successful. If a test failed in all chunks ONLY then the result of the test should be false.
+        3. Similarly if a key is empty in all but one chunk, then the test is a success and return the given key value.
+        4. Avoid returning generic statements return back precise results and answer in the provided JSON format."""
         chunk_results = self.filter_chunk_results(chunk_results)
         messages = [
             {

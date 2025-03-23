@@ -59,9 +59,6 @@ class BaseMetric:
         self.logger.info(
             f"Combining the Result Results for the metric :- {self.metric_id}"
         )
-
-        self.logger.info(response_format.schema())
-
         for k, result in results.items():
             msg = f"""Result source: '{k}'\n```{json.dumps(result, separators=(',', ':'))}```"""
             Base_MSG = "\n".join([Base_MSG, msg])

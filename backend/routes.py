@@ -1,6 +1,5 @@
 import json
 import logging
-import log_config
 
 from fastapi import APIRouter, HTTPException, status, Form, UploadFile
 from celery.result import AsyncResult
@@ -24,6 +23,8 @@ from utils.db_utils import (
     save_survey,
 )
 
+from config import setup_logging
+
 
 # Define router to be imported
 app_router = APIRouter()
@@ -31,7 +32,7 @@ app_router = APIRouter()
 init_db()
 
 # Setup logging method
-log_config.setup_logging()
+setup_logging()
 logger = logging.getLogger("fastapi")
 
 
@@ -74,7 +75,6 @@ async def handle_published(data: OnlineResource):
     """
     try:
         logger.info(f"Request initiated for online resource: {data.url}")
-
         # Using the given the url try to fetch metadata from different sources.
         success, metadata = await fetch_metadata_using_url(data.url)
 
@@ -177,7 +177,7 @@ async def status_update(task_id: str):
         res = AsyncResult(task_id)
         if not res:
             logger.warning(
-                f"Status request sent for Task: {task_id} which is not found"
+                f"Status request sent for Task: {task_id} and task not found!"
             )
             raise HTTPException(status_code=404, detail="Task not found")
         logger.info(f"Status for task {task_id}: {res.status}")
@@ -207,7 +207,7 @@ async def get_results(task_id: str):
     try:
         res = AsyncResult(task_id)
         if not res or not res.ready():
-            logger.warning(f"Results requested for Task: {task_id} which is not ready")
+            logger.warning(f"Results requested for Task: {task_id} which are not ready")
             raise HTTPException(status_code=102, detail="Being Processed")
         return {"success": True, "fair_assessment": res.get(), "task_id": task_id}
     except Exception as e:

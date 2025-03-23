@@ -3,14 +3,13 @@ from typing import Sequence, Any, Dict
 import celery
 from celery import Celery
 from celery.signals import worker_process_init
-import log_config
 import logging
 from utils.basic_utils import clean_file_content, aggregate_results
 from fair_analysis.splitter import Splitter
 
 from fair_analysis.model import OllamaModel, OpenAiModel
 from fair_analysis.fair_analyzer import Analyzer
-from config import get_env_settings, get_global_settings
+from config import get_env_settings, get_global_settings, setup_logging
 
 from fair_analysis.fair_metrics.User_Metric.metric import V_Metric as U_Metric_Vocab
 from fair_analysis.fair_metrics.User_Metric.metric import S_Metric as U_Metric_Standard
@@ -63,7 +62,7 @@ def initialize_worker(sender=None, **kwargs):
     # Setup for each worker before its start some necessary settings and params
 
     # Setup logging
-    log_config.setup_logging()
+    setup_logging()
 
     # Setup the necessary variables
     global model, fair_analyzer, splitter
@@ -88,6 +87,7 @@ def analyze_fair(metadata, user_tests=[]) -> Sequence[Dict[str, Any]]:
             )
 
     # Perform split operation on each harvested metdata
+    logger.info("Creating metadata file chunks")
     for k in metadata.keys():
         metadata[k]["metadata_chunks"] = splitter.split_file(
             metadata[k]["source"], len(metadata[k]["metadata"]), metadata[k]["metadata"]
@@ -96,7 +96,7 @@ def analyze_fair(metadata, user_tests=[]) -> Sequence[Dict[str, Any]]:
     logger.info("Performing Domain-Agnostic Metrics")
     for m in fair_analyzer.all_domain_agnosticd_metrics:
         logger.info(
-            f"Performing analysis on metric: {m.metric_id} with file types: {[x["source"] for x in metadata.values()]}"
+            f"Performing analysis on metric: {m.metric_id} on metadata from source: {[x["source"] for x in metadata.values()]}"
         )
         if m.metric_id == "FsF_R1_3_02D":
             # Feed the results of already detected files.
@@ -126,6 +126,7 @@ def analyze_fair(metadata, user_tests=[]) -> Sequence[Dict[str, Any]]:
         standard_tests = [t for t in user_tests if t["type"] == "Standard Check"]
 
         if len(vocab_tests) > 0:
+            logger.info("Performing Domain Specific Vocabulary Tests")
             v_m = U_Metric_Vocab(vocab_tests)
             v_res = v_m.analyze_metric(
                 model=model,
@@ -134,6 +135,7 @@ def analyze_fair(metadata, user_tests=[]) -> Sequence[Dict[str, Any]]:
             all_results["metrics"][v_res["metric_id"]] = v_res
 
         if len(standard_tests) > 0:
+            logger.info("Performing Domain Specific Standard Tests")
             s_m = U_Metric_Standard(standard_tests)
             s_res = s_m.analyze_metric(
                 model=model,

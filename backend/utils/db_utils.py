@@ -57,6 +57,7 @@ def init_db():
         """
         )
         conn.commit()
+        logger.info("Databases Initialized")
 
 
 def save_feedback(feedback: Feedback) -> bool:
@@ -69,6 +70,7 @@ def save_feedback(feedback: Feedback) -> bool:
                 (feedback.name, feedback.email, feedback.feedback),
             )
             conn.commit()
+            logger.info("Feedback Successfully Saved")
             return True
         except sqlite3.Error as e:
             logger.error(f"Error saving feedback: {e}")
@@ -102,6 +104,7 @@ def save_survey(survey: Survey) -> bool:
                 ),
             )
             conn.commit()
+            logger.info("Survey Successfully Saved")
             return True
         except sqlite3.Error as e:
             logger.error(f"Error saving survey: {e}")

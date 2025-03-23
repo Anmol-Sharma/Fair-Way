@@ -72,19 +72,16 @@ async def fetch_metadata_using_url(
             else:
                 return succ, meta
 
-    logger.info(f"Attempting to extract metadata from URL: {url}")
+    logger.info(f"Attempting to extract embedded metadata from URL: {url}")
     # First, attempt to extract embedded metadata from the landing page
     success_embedded, embedded_metadata = await extract_embedded_metadata(url)
 
     # For Zenodo and Dryad, also fetch API metadata and combine
     if repository_type in ["zenodo", "dryad"] and record_id:
-        logger.info(
-            f"Detected {repository_type} URL. Fetching both embedded and API metadata."
-        )
+        logger.info(f"Detected {repository_type} URL. Fetching API metadata as well.")
         success_api, api_metadata = await fetch_repository_api(
             repository_type, record_id
         )
-        # Combine the metadata results (the merge strategy is up to you)
         combined_metadata = {
             "embedded": embedded_metadata if success_embedded else {},
             "api": {"metadata": api_metadata, "source": "json"},
@@ -263,7 +260,6 @@ async def fetch_repository_api(
     try:
         client = HttpClient.get_client()
         url = construct_repository_url(repository_type, record_id)
-        logger.info(f"Fetching from {repository_type} API: {url}")
 
         # Disable automatic redirects to manually process 301/302 status
         response = await client.get(url, follow_redirects=False)
