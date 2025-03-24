@@ -47,7 +47,10 @@ if env_settings.service.lower() == "ollama":
     )
 elif env_settings.service.lower() == "openai":
     model = OpenAiModel(
-        model_name=env_settings.llm_model, openai_key=env_settings.openai_key
+        model_name=env_settings.llm_model,
+        openai_key=env_settings.openai_key,
+        temperature=env_settings.temperature,
+        top_p=env_settings.top_p,
     )
 else:
     raise ValueError("Serivce not supported")

@@ -134,7 +134,6 @@ class BaseTest:
             )
             chunk_results.append(self.__parse_response(response))
 
-        # TODO: Check this after reading the paper by other student on techniques being used for passing back the results.
         chunk_results = self.filter_chunk_results(chunk_results)
         return self.__combine_chunk_results(model, chunk_results)
 

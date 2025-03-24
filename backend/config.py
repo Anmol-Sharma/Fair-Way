@@ -20,7 +20,9 @@ class EnvSettings(BaseSettings):
     # Have to moved to the global config
     llm_model: str
     temperature: float
-    num_cts: int
+    top_p: float
+    num_cts: Optional[int] = None
+    keep_alive: Optional[str] = None
 
     # Celery Configuration
     broker_url: str
@@ -63,11 +65,21 @@ class EnvSettings(BaseSettings):
                 raise ValueError(
                     "You selected ollama as the llm service. Provide its end point URL"
                 )
+            if not self.num_cts:
+                raise ValueError(
+                    "Define the context window size to use for ollama models"
+                )
+            if not self.keep_alive:
+                raise ValueError("Set the keep alive parameter for ollama.")
         elif self.service.lower() == "openai":
             if not self.openai_key:
                 raise ValueError(
                     "You selected openai as the llm service. Provide its API Key"
                 )
+            if not self.temperature:
+                raise ValueError("You must define the temperature to use")
+            if not self.top_p:
+                raise ValueError("You must define the top_p parameter to use")
         else:
             raise ValueError(
                 "Only OLLAMA and OPENAI as LLM service providers supported"

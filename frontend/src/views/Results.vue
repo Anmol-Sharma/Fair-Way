@@ -129,7 +129,10 @@ onMounted(async () => {
     >
       <div class="text-center">
         <span class="spinner-border text-primary" role="status" aria-hidden="true"></span>
-        <h3 class="mt-3">Please wait while your results are being processed...</h3>
+        <h3 class="mt-3">
+          Please wait while your results are being processed...<br />Request can take between 4-8
+          minutes
+        </h3>
       </div>
     </div>
 
@@ -292,7 +295,7 @@ onMounted(async () => {
             <a
               class="link-primary"
               href="https://www.fairsfair.eu/fairsfair-data-object-assessment-metrics-request-comments"
-              >FAIRsFAIR Data Object Assessment Metrics (v0.5)</a
+              >FAIRsFAIR Data Object Assessment Metrics (v0.4)</a
             >
           </p>
         </div>

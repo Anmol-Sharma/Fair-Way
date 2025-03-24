@@ -8,7 +8,7 @@ content_splitter = Splitter()
 
 
 class TestSplitter(TestCase):
-    # TODO: Define the pending tests
+    # TODO: Define the pending tests (low priority)
     # def test_xml_split(self):
     #     # content_splitter.split_file()
     #     pass

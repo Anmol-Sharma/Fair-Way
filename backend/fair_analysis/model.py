@@ -28,6 +28,7 @@ class OllamaModel:
             response: ChatResponse = self.__client.chat(
                 model=self.__model_name,
                 messages=messages,
+                options=self.__model_options,
                 format=ResponseFormat,
             )
             return response["message"]["content"]
@@ -37,6 +38,7 @@ class OllamaModel:
             response: ChatResponse = self.__client.chat(
                 model=self.__model_name,
                 messages=messages,
+                options=self.__model_options,
                 format=ResponseFormat,
             )
             return response["message"]["content"]
@@ -46,10 +48,18 @@ class OllamaModel:
 
 
 class OpenAiModel:
-    def __init__(self, model_name: str, openai_key: str) -> None:
+    def __init__(
+        self,
+        model_name: str,
+        openai_key: str,
+        temperature: float,
+        top_p: Optional[float] = None,
+    ) -> None:
         self.__model_name = model_name
         self.__client = OpenAI(api_key=openai_key)
         self.__logger = logging.getLogger("celery")
+        self.temp = temperature
+        self.top_p = top_p
 
     def send_request(self, messages, ResponseFormat: Optional[BaseModel] = None):
         """
@@ -63,13 +73,15 @@ class OpenAiModel:
                 response = self.__client.beta.chat.completions.parse(
                     model=self.__model_name,
                     messages=messages,
+                    temperature=self.temp,
+                    top_p=self.top_p,
                     response_format=ResponseFormat,
                 )
-                # Necessary sleep to still avoid 429
-                sleep(2.5)
+                # Necessary sleep to still avoid 429 even with rate limit exceptions
+                sleep(2.0)
                 return response.choices[0].message.content
             except openai.RateLimitError:
-                # Handle rate limit error
+                # Handle rate limit error Even with sleep delay (Very Rare Case but still have to be handled)
                 self.__logger.warning(
                     f"Rate limit exceeded. Attempt {attempt + 1} of {retries}. Retrying in {backoff} seconds..."
                 )
