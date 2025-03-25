@@ -37,7 +37,7 @@ watch(
 // Placeholder function for condition
 function getPlaceholder(type) {
   if (type === "Vocabulary Check") {
-    return "Eg:\n'Temporal Resolution', Describes the frequency or interval of data collection over time\n'Geospatial Extent', Geographic area covered by a dataset";
+    return "Eg:\n'Temporal Resolution', Describes the frequency or interval of data collection over time\nAVOID UNNECESSAY COMMAS TO AVOID ERRORs";
   } else if (type === "Standard Check") {
     return "Describe a single standard check here. Don't create complex instructions, Keep it simple in a manner which can be answered on metadata with true/false.";
   }

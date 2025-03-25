@@ -49,7 +49,7 @@ t1 = Test(
     1. Related entities include information about references to other datasets or resources. Check for 'funder', 'git repository', 'citations', 'versions' and 'contributor'.
     2. They can also be referenced by fields like 'RelatedIdentifier' and 'RelationType' 'ORCID' for contributors, 'ROR' for institutions, 'HasVersion' for Version. Check also if these have been used.
     3. Analyze carefully the final list of related entities. Each entry should look like a related entity actually part of given metadata and not random text.
-    Answer back in the provide metadata format.
+    Answer back in the provided response format.
     """,
     test_instruction="Check if metadata includes information about related entities.",
     few_shot_samples=FEW_SHOT_SAMPLES,

@@ -57,9 +57,9 @@ def aggregate_results(results):
     summary["total_metrics"] = len(results)
 
     summary["score_summary"] = {
-        "score": {"F": 0, "A": 0, "I": 0, "R": 0},
-        "score_out_of": {"F": 0, "A": 0, "I": 0, "R": 0},
-        "score_percent": {"F": 0, "A": 0, "I": 0, "R": 0},
+        "score": {"F": 0, "A": 0, "I": 0, "R": 0, "U": 0.0},
+        "score_out_of": {"F": 0, "A": 0, "I": 0, "R": 0, "U": 0.0},
+        "score_percent": {"F": 0, "A": 0, "I": 0, "R": 0, "U": 0.0},
     }
 
     try:
@@ -78,6 +78,9 @@ def aggregate_results(results):
             elif "FsF_R" in metric_id:
                 summary["score_summary"]["score"]["R"] += val
                 summary["score_summary"]["score_out_of"]["R"] += total
+            elif "FuM" in metric_id:
+                summary["score_summary"]["score"]["U"] += val
+                summary["score_summary"]["score_out_of"]["U"] += total
 
         for k in summary["score_summary"]["score_percent"]:
             if summary["score_summary"]["score_out_of"][k] > 0:

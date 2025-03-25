@@ -30,6 +30,7 @@ let fPercent = ref(0.0);
 let aPercent = ref(0.0);
 let iPercent = ref(0.0);
 let rPercent = ref(0.0);
+let uPercent = ref(0.0);
 
 let fAccordions;
 let aAccordions;
@@ -84,9 +85,13 @@ onMounted(async () => {
     // get the total fair score
     const _scores = parsedRes["fair_assessment"]["summary"]["score_summary"]["score"];
     Object.keys(_scores).forEach((key) => {
-      totalFairScore.value += _scores[key];
-      maxFairScore.value +=
-        parsedRes["fair_assessment"]["summary"]["score_summary"]["score_out_of"][key];
+      if (key === "U") {
+        // DO Nothing: Don't use the user-defined metrics for final FAIR Score. They are only for user reference
+      } else {
+        totalFairScore.value += _scores[key];
+        maxFairScore.value +=
+          parsedRes["fair_assessment"]["summary"]["score_summary"]["score_out_of"][key];
+      }
     });
     fPercent.value = (
       parsedRes["fair_assessment"]["summary"]["score_summary"]["score_percent"]["F"] * 100
@@ -100,16 +105,21 @@ onMounted(async () => {
     rPercent.value = (
       parsedRes["fair_assessment"]["summary"]["score_summary"]["score_percent"]["R"] * 100
     ).toFixed(1);
+
     // Create accordions for individual metrics
     fAccordions = computeAccList(parsedRes["fair_assessment"]["metrics"], "findable");
     aAccordions = computeAccList(parsedRes["fair_assessment"]["metrics"], "accessible");
     iAccordions = computeAccList(parsedRes["fair_assessment"]["metrics"], "interoperable");
     rAccordions = computeAccList(parsedRes["fair_assessment"]["metrics"], "reusable");
-
-    // TODO: Also update the template below regarding the same to show user-defined section if and only if detected.
-    userAccordions = computeAccList(parsedRes["fair_assessment"]["metrics"], "user");
+    userAccordions = computeAccList(
+      parsedRes["fair_assessment"]["metrics"],
+      "user-defined-domain-checks"
+    );
     if (userAccordions.value.length > 0) {
       showUserAccordions.value = true;
+      uPercent.value = (
+        parsedRes["fair_assessment"]["summary"]["score_summary"]["score_percent"]["U"] * 100
+      ).toFixed(1);
     }
   } catch (error) {
     console.error("An error occurred while processing results. Please try again later");
@@ -130,7 +140,7 @@ onMounted(async () => {
       <div class="text-center">
         <span class="spinner-border text-primary" role="status" aria-hidden="true"></span>
         <h3 class="mt-3">
-          Please wait while your results are being processed...<br />Request can take between 4-8
+          Please wait while your results are being processed...<br />Processing can take between 4-8
           minutes
         </h3>
       </div>
@@ -198,7 +208,7 @@ onMounted(async () => {
                 <strong>Findability:</strong>
               </div>
               <div class="col">
-                <div class="progress" style="height: 2.5em">
+                <div class="progress" style="height: 3em">
                   <div
                     class="progress-bar bg-success"
                     role="progressbar"
@@ -219,7 +229,7 @@ onMounted(async () => {
                 <strong>Accessbility:</strong>
               </div>
               <div class="col">
-                <div class="progress" style="height: 2.5em">
+                <div class="progress" style="height: 3em">
                   <div
                     class="progress-bar bg-info"
                     role="progressbar"
@@ -241,7 +251,7 @@ onMounted(async () => {
                 <strong>Interoperability:</strong>
               </div>
               <div class="col">
-                <div class="progress" style="height: 2.5em">
+                <div class="progress" style="height: 3em">
                   <div
                     class="progress-bar bg-warning"
                     role="progressbar"
@@ -263,7 +273,7 @@ onMounted(async () => {
                 <strong>Reusability:</strong>
               </div>
               <div class="col">
-                <div class="progress" style="height: 2.5em">
+                <div class="progress" style="height: 3em">
                   <div
                     class="progress-bar"
                     role="progressbar"
@@ -273,6 +283,28 @@ onMounted(async () => {
                     aria-valuemax="100"
                   >
                     {{ rPercent }}%
+                  </div>
+                </div>
+              </div>
+              <br />
+            </div>
+
+            <!-- User-Defined Metric -->
+            <div class="row d-flex my-2" v-if="showUserAccordions">
+              <div class="col">
+                <strong>User Defined Metrics:</strong>
+              </div>
+              <div class="col">
+                <div class="progress" style="height: 3em">
+                  <div
+                    class="progress-bar bg-info"
+                    role="progressbar"
+                    :style="{ width: uPercent + '%' }"
+                    :aria-valuenow="uPercent"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  >
+                    {{ uPercent }}%
                   </div>
                 </div>
               </div>

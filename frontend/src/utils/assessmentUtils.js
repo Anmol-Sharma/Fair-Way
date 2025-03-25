@@ -81,7 +81,15 @@ export function validateVocabulary(vocabData) {
 
   if (lines.length === 0) {
     result.isValid = false;
-    result.errors.push("No valid data lines found");
+    result.errors.push("No valid vocabulary condition defined");
+    return result;
+  }
+
+  if (lines.length > 1) {
+    result.isValid = false;
+    result.errors.push(
+      "For a single Vocab Test Please define at most one vocabulary item.\nMove additional items to another test."
+    );
     return result;
   }
 

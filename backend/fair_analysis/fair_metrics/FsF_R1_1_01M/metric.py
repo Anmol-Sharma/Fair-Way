@@ -33,7 +33,6 @@ class Metric(BaseMetric):
         return {**t_result, **t_result2}, ResponseFormat
 
     def score_test_results(self, t_results):
-        self.logger.info(f"Received Results:-{t_results}")
         score = 0
         if t_results["license"] != "":
             score = 1

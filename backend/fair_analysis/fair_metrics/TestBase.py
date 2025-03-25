@@ -96,7 +96,8 @@ class BaseTest:
         1. Carefully analyze results, remove duplicate results and answer as precisely as possible which reflect the final result.
         2. If a test succeeded in one of the chunks, then the final result should be successful. If a test failed in all chunks ONLY then the result of the test should be false.
         3. Similarly if a key is empty in all but one chunk, then the test is a success and return the given key value.
-        4. Avoid returning generic statements return back precise results and answer in the provided JSON format."""
+        4. When combining text information be precise and make sure to avoid any information about chunks but rather focus on how someone with no information of system will look at the final result on whole metadata.
+        5. Answer in the provided JSON format."""
         chunk_results = self.filter_chunk_results(chunk_results)
         messages = [
             {

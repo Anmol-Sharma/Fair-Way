@@ -44,6 +44,7 @@ if env_settings.service.lower() == "ollama":
             "temperature": env_settings.temperature,
             "num_cts": env_settings.num_cts,
         },
+        keep_alive=env_settings.keep_alive,
     )
 elif env_settings.service.lower() == "openai":
     model = OpenAiModel(

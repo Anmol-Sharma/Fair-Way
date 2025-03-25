@@ -10,11 +10,14 @@ import openai
 
 
 class OllamaModel:
-    def __init__(self, model_name: str, options: Dict, client_url: str) -> None:
+    def __init__(
+        self, model_name: str, options: Dict, client_url: str, keep_alive: str
+    ) -> None:
         self.__model_name = model_name
         self.__model_options = options
         self.__client = Client(host=client_url, timeout=75.0)
         self.__logger = logging.getLogger("celery")
+        self.__keep_alive = keep_alive
 
     def send_request(
         self, messages: List[Dict], ResponseFormat: Optional[BaseModel] = None
@@ -30,6 +33,7 @@ class OllamaModel:
                 messages=messages,
                 options=self.__model_options,
                 format=ResponseFormat,
+                keep_alive=self.__keep_alive,
             )
             return response["message"]["content"]
         except ReadTimeout:
@@ -40,6 +44,7 @@ class OllamaModel:
                 messages=messages,
                 options=self.__model_options,
                 format=ResponseFormat,
+                keep_alive=self.__keep_alive,
             )
             return response["message"]["content"]
         except Exception as e:

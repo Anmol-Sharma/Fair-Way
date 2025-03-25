@@ -25,7 +25,9 @@ function processMetricResults(metricResults) {
     out_of: metricResults.out_of,
     test_results: {},
   };
-  for (const [testKey, result] of Object.entries(metricResults.test_results)) {
+  for (const [testKey, result] of Object.entries(metricResults.test_results).sort(
+    ([keyA], [keyB]) => keyA.localeCompare(keyB)
+  )) {
     const testId = renameId(testKey);
     bodyContent.test_results[testId] = result;
   }
@@ -87,7 +89,7 @@ export function computeAccList(testResults, principle) {
 
   for (const [key, val] of Object.entries(testResults)) {
     // Process FsF Metrics
-    if (principle != "user" && val.principle === principle) {
+    if (val.principle === principle) {
       const acId = renameId(key);
       const bodyContent = processMetricResults(val);
       const color = determineColor(val);
@@ -95,17 +97,6 @@ export function computeAccList(testResults, principle) {
         title: `${acId}: ${val.metric_name}`,
         id: acId,
         metric_analysis: bodyContent,
-        color: color,
-      });
-    } else if (principle === "user" && !("principle" in val)) {
-      // Process User Metrics
-      const acId = renameId(key);
-      const bodyContent = processMetricResults(val);
-      const color = determineColor(val);
-      accList.push({
-        title: `${acId}: ${val.metric_name}`,
-        id: acId,
-        test_analysis: bodyContent,
         color: color,
       });
     }
