@@ -76,7 +76,7 @@ async def handle_published(data: OnlineResource):
     try:
         logger.info(f"Request initiated for online resource: {data.url}")
         # Using the given the url try to fetch metadata from different sources.
-        success, metadata = await fetch_metadata_using_url(data.url)
+        success, metadata = await fetch_metadata_using_url(data.url.strip("/"))
 
         # Remove empty metadata sources
         for k in metadata.keys():

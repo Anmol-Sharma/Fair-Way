@@ -106,24 +106,24 @@ def identify_repository_and_id(url: str) -> Tuple[str, Optional[str]]:
         return: ("dryad", "doi:10.5061/dryad.s1rn8pkcq")
       - DOI URLs, e.g., "https://doi.org/api/handles/10.5281/zenodo.6673464"
         return: ("doi", "10.5281/zenodo.6673464")
-      - Huggingface URLs similarly extract the record id.
+      - Huggingface URLs similarly datasetpath.
     """
     patterns = {
         "zenodo": (
-            r"^(?:https?://)?zenodo\.org/records?/(\d+)$",
+            r"^(?:https?://)?zenodo\.org/records?/(\d+)\/?$",
             lambda m: ("zenodo", m.group(1)),
         ),
         "dryad": (
             # Include "doi:" in the captured group so that it remains part of the record ID
-            r"^(?:https?://)?datadryad\.org(?:/stash)?/dataset/(doi:10\.\d+/dryad\.[a-zA-Z0-9-]+)$",
+            r"^(?:https?://)?datadryad\.org(?:/stash)?/dataset/(doi:10\.\d+/dryad\.[a-zA-Z0-9-]+)\/?$",
             lambda m: ("dryad", m.group(1)),
         ),
         "huggingface": (
-            r"^(?:https?://)?huggingface\.co/(?:api/)?datasets/([\w-]+(?:/[\w-]+)*)$",
+            r"^(?:https?://)huggingface\.co/(?:api/)?datasets/([\w-]+(?:/[\w-]+)*)/?$",
             lambda m: ("huggingface", m.group(1)),
         ),
         "doi": (
-            r"^(?:https?://)?(?:doi\.org|dx\.doi\.org)/(?:api/handles/)?(10\.\d+\/\S+)$",
+            r"^(?:https?://)?(?:doi\.org|dx\.doi\.org)/(?:api/handles/)?(10\.\d+\/\S+)\/?$",
             lambda m: ("doi", m.group(1)),
         ),
     }
@@ -223,8 +223,8 @@ def construct_repository_url(repository_type: str, record_id: str) -> str:
     """Construct repository URL from type and ID."""
     base_url = REPOSITORY_URL_PATTERNS.get(repository_type, "")
     if repository_type == "dryad":
-        return f"{base_url}{quote_plus(record_id)}"
-    return f"{base_url}{record_id}"
+        return urljoin(base_url, quote_plus(record_id))
+    return urljoin(base_url, record_id)
 
 
 def clean_metadata(metadata: Dict, repository_type: str) -> Dict:
@@ -259,7 +259,7 @@ async def fetch_repository_api(
 
     try:
         client = HttpClient.get_client()
-        url = construct_repository_url(repository_type, record_id)
+        url = construct_repository_url(repository_type, record_id).strip()
 
         # Disable automatic redirects to manually process 301/302 status
         response = await client.get(url, follow_redirects=False)
