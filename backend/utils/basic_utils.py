@@ -33,7 +33,7 @@ def aggregate_results(results):
     summary = {}
     logger.info("Aggregating Metric Results")
     try:
-        summary["title"] = results["FsF_F2_01M"]["test_results"]["FsF_F2_01M-1"][
+        summary["title"] = results["FsF_F2_01M"]["test_results"]["FsF_F2_01M-1-2-3"][
             "title"
         ]
     except KeyError:
