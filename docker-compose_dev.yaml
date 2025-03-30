@@ -35,6 +35,12 @@ services:
       - fairway-app-network
     expose:
       - "8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 3s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
 
   # Celery Workers
   celery_workers:
@@ -75,7 +81,8 @@ services:
     volumes:
       - ./configs:/configs
     depends_on:
-      - backend
+      - backend:
+        condition: service_healthy
       - redis_server
       - celery_workers
     ports:

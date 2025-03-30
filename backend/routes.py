@@ -266,3 +266,13 @@ async def survey(survey_data: Survey):
             detail="Failed to save survey",
         )
     return {"success": True}
+
+
+# Define an endpoint to check for healthy status of the application
+@app_router.get("/health")
+def health_check():
+    try:
+        # Everything is OK
+        return {"status": "healthy"}
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"Service unhealthy: {str(e)}")

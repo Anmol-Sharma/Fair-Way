@@ -16,6 +16,7 @@ RUN npm install
 
 # Backend
 FROM --platform=$BUILDPLATFORM python:3.12.8-alpine AS backend_base
+RUN apk add --no-cache curl
 # Add user asharma with specific UID/GID
 RUN adduser -D -u 1014 -G root asharma && \
     mkdir -p /configs && \
