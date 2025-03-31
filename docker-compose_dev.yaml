@@ -37,10 +37,10 @@ services:
       - "8000"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 3s
-      timeout: 10s
+      timeout: 15s
       retries: 5
-      start_period: 5s
+      start_period: 8s
+      interval: 30
 
   # Celery Workers
   celery_workers:

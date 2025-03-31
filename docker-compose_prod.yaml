@@ -38,6 +38,12 @@ services:
     expose:
       - "8000"
     user: "1014:1014"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      timeout: 15s
+      retries: 5
+      start_period: 8s
+      interval: 30
 
   # Celery Workers
   celery_workers:
