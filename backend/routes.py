@@ -7,6 +7,8 @@ from celery.result import AsyncResult
 from typing import Dict, Optional
 
 from celery_tasks import analyze_fair
+from eval_tasks import evaluate_fair as eval_fair
+
 from resp_models import (
     OnlineResource,
     ResourceAcceptAssessment,
@@ -23,9 +25,9 @@ from utils.db_utils import (
     save_survey,
 )
 
-from config import setup_logging
+from config import setup_logging, get_env_settings
 
-
+env_settings = get_env_settings()
 # Define router to be imported
 app_router = APIRouter()
 
@@ -48,7 +50,13 @@ def __add_to_queue(metadata, user_tests: Optional[Dict] = None) -> str:
         task_id of the created Task
     """
     try:
-        Task = analyze_fair.apply_async((metadata, user_tests), countdown=1)
+        if env_settings.environment.lower() == "prod":
+            Task = analyze_fair.apply_async((metadata, user_tests), countdown=1)
+        elif env_settings.environment.lower() == "eval":
+            logger.info("Creating Task for Evaluation")
+            Task = eval_fair.apply_async((metadata, user_tests), countdown=1)
+        else:
+            raise ValueError("Invalid value for Environment Variable 'Environment'")
         logger.info(f"Successfully created Task with ID: {Task.task_id}")
         return Task.task_id
     except Exception as e:
@@ -65,7 +73,9 @@ async def handle_published(data: OnlineResource):
     or any webpage with embedded metadata
 
     Args:
-        data (OnlineResource): The url/doi of the datasets or any webpage with metadata
+        data (OnlineResource):-
+            * The url/doi of the datasets or any webpage with metadata
+            * List of advanced tests
 
     Returns:
         ResourceAcceptResponse: Response indicating successful upload and task ID
@@ -276,3 +286,49 @@ def health_check():
         return {"status": "healthy"}
     except Exception as e:
         raise HTTPException(status_code=503, detail=f"Service unhealthy: {str(e)}")
+
+
+@app_router.post(
+    "/api/EvaluateOnlineResource",
+    status_code=status.HTTP_202_ACCEPTED,
+    response_model=ResourceAcceptAssessment,
+)
+def evaluate_published(metadata: Dict):
+    """Helper function ONLY FOR EVALUATION
+    Args:
+        metadata: Extracted metadata from various sources similar to the one scraped in handlePublished Function.
+    Returns:
+        ResourceAcceptResponse: Response indicating successful upload and task ID
+
+    Raises:
+        HTTPException: If there's an error processing the item, with status code 500
+    """
+    try:
+        logger.info("Request initiated for evaluation.")
+        # Remove empty metadata sources
+        for k in metadata.keys():
+            if not metadata[k]:
+                del metadata[k]
+
+        if len(metadata.keys()) < 1:
+            raise HTTPException(
+                status_code=400,
+                detail="Provided metadata not correct",
+            )
+
+        # Add to processing queue
+        task_id = __add_to_queue(
+            metadata=metadata,
+            user_tests=[],
+        )
+
+        return {
+            "success": True,
+            "comment": "Assessment is being processed",
+            "task_id": task_id,
+        }
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        logger.error(f"Error processing evaluation metadata Error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
