@@ -40,7 +40,7 @@ services:
       timeout: 15s
       retries: 5
       start_period: 8s
-      interval: 30
+      interval: 45s
 
   # Celery Workers
   celery_workers:

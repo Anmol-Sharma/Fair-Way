@@ -43,6 +43,7 @@ if env_settings.service.lower() == "ollama":
         options={
             "temperature": env_settings.temperature,
             "num_cts": env_settings.num_cts,
+            "top_p": env_settings.top_p,
         },
         keep_alive=env_settings.keep_alive,
     )

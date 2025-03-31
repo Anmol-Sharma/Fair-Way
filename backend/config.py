@@ -12,6 +12,8 @@ from pydantic import model_validator
 
 
 class EnvSettings(BaseSettings):
+    environment: str
+
     service: str
     ollama_url: Optional[str] = None
     role_user: str
