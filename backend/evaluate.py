@@ -1,6 +1,6 @@
 import asyncio
 
-from Evaluation.test_executor import TestExecutor
+from Evaluation.testing import TestExecutor
 from Evaluation.eval_utils import load_test_items
 
 import logging
@@ -16,9 +16,12 @@ async def main():
 
         # Initialize test executor
         executor = TestExecutor()
+        # evaluator = ResultEvaluator()
 
         # Run tests
+        logger.info("Starting test execution phase")
         await executor.execute_all_tests(test_items)
+        logger.info("Test execution phase completed")
 
     except Exception as e:
         logger.error(f"Error in main execution: {e}", exc_info=True)
