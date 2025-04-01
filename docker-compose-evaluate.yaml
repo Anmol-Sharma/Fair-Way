@@ -1,3 +1,4 @@
+# TODO: Move some of these to the prod
 services:
   redis_server:
     build:
@@ -45,14 +46,13 @@ services:
       start_period: 8s
       interval: 45s
 
-  # Celery Workers
   celery_workers:
     build:
       context: .
-      dockerfile: dockerfile_prod
-      target: celery
-    image: fairway_celery_workers
-    container_name: fairway_celery_ct
+      dockerfile: dockerfile_eval
+      target: evaluator_celery_workers
+    image: fairway_celery_eval_workers
+    container_name: fairway_celery_eval_ct
     restart: unless-stopped
     volumes:
       - ./backend:/app
@@ -61,37 +61,6 @@ services:
     depends_on:
       - redis_server
       - backend
-    networks:
-      - fairway-app-network
-    user: "1014:1014"
-
-  # TODO: Handle this later on
-  # flower:
-  #   volumes:
-  #     - ./backend:/app
-  #   ports:
-  #     - "5555:5555"
-  #   depends_on:
-  #     - redis_server
-  #   command: ["celery", "-A", "celery_tasks.cel", "flower", "--loglevel=info"]
-
-  # Frontend vuejs application
-  frontend_server:
-    build:
-      context: .
-      dockerfile: dockerfile_prod
-      target: frontend_server
-    image: fairway_frontend
-    container_name: fairway_frontend_ct
-    volumes:
-      - ./configs:/configs
-    depends_on:
-      - backend:
-        condition: service_healthy
-      - redis_server
-      - celery_workers
-    ports:
-      - "8011:80"
     networks:
       - fairway-app-network
     user: "1014:1014"
@@ -118,6 +87,22 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
+
+  test_runner:
+    build:
+      context: .
+      dockerfile: dockerfile_eval
+      target: evaluator_base
+    image: fairway_evaluation_runner
+    container_name: fairway_evaluator_ct
+    depends_on:
+      backend:
+        condition: service_healthy
+    volumes:
+      - /home/asharma/Data/Evaluate:/var/tmp/Evaluate
+    networks:
+      - fairway-app-network
+    user: "1014:1014"
 
 networks:
   fairway-app-network:

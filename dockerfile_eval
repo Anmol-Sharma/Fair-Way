@@ -1,0 +1,28 @@
+# Use the backend base to reuse environment
+FROM fairway_backend AS evaluator_base
+USER root
+RUN mkdir -p /evaluate && \
+    chown asharma:root /evaluate
+WORKDIR /evaluate
+USER asharma
+COPY ./backend/ ./
+RUN mkdir -p /var/tmp/Evaluate
+RUN poetry install --without dev
+CMD ["poetry", "run", "python", "evaluate.py"]
+
+# Run the celery service
+FROM fairway_backend AS evaluator_celery_workers
+USER asharma
+# No additional steps needed since we're using volumes
+CMD ["poetry", "run", "celery", "-A", "eval_tasks.cel", "worker", "--loglevel=info"]
+
+
+# FOR PROD, DISABLE FOR DEV
+
+# OLLAMA setup
+FROM ollama/ollama:0.5.8 as ollama_server
+# Copy the script to the docker image
+COPY ./wait_for_ollama.sh /wait_for_ollama.sh
+# Ensure the script is executable
+RUN chmod +x /wait_for_ollama.sh
+ENTRYPOINT ["/bin/sh", "/wait_for_ollama.sh"]

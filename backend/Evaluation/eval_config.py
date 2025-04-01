@@ -38,10 +38,15 @@ class TestConfig:
     def __post_init__(self):
         if self.model_list is None:
             self.model_list = [
-                {"model_name": "qwen2.5-coder:7b-instruct-q6_K", "service": "ollama"},
-                {"model_name": "llama3.1:8b-instruct-q5_K_M", "service": "ollama"},
+                {"model_name": "phi4:14b-q8_0", "service": "ollama"},
+                {
+                    "model_name": "mistral-small:24b-instruct-2501-q8_0",
+                    "service": "ollama",
+                },
+                {"model_name": "qwen2.5-coder:32b-instruct-q8_0", "service": "ollama"},
+                {"model_name": "llama3.3:70b-instruct-q5_K_M", "service": "ollama"},
                 {"model_name": "gpt-4o-2024-08-06", "service": "openai"},
             ]
 
         if self.temperatures is None:
-            self.temperatures = [0.3, 0.5]
+            self.temperatures = [0.3, 0.5, 0.7]
