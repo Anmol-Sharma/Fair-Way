@@ -23,7 +23,7 @@ class EnvSettings(BaseSettings):
     llm_model: str
     temperature: float
     top_p: float
-    num_cts: Optional[int] = None
+    num_ctx: Optional[int] = None
     keep_alive: Optional[str] = None
 
     # Celery Configuration
@@ -67,7 +67,7 @@ class EnvSettings(BaseSettings):
                 raise ValueError(
                     "You selected ollama as the llm service. Provide its end point URL"
                 )
-            if not self.num_cts:
+            if not self.num_ctx:
                 raise ValueError(
                     "Define the context window size to use for ollama models"
                 )

@@ -67,7 +67,7 @@ class TestExecutor:
         meta["model_options"] = {
             "temp": temperature,
             "top_p": env_settings.top_p,
-            "num_cts": env_settings.num_cts,
+            "num_ctx": env_settings.num_ctx,
             "keep_alive": env_settings.keep_alive,
         }
 

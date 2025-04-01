@@ -66,7 +66,7 @@ def evaluate_fair(metadata, user_tests=[]) -> Sequence[Dict[str, Any]]:
             client_url=env_settings.ollama_url,
             options={
                 "temperature": m_options["temp"],
-                "num_cts": m_options["num_cts"],
+                "num_ctx": m_options["num_ctx"],
                 "top_p": m_options["top_p"],
             },
             keep_alive=env_settings.keep_alive,
