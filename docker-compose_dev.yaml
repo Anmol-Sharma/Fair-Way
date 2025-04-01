@@ -27,7 +27,7 @@ services:
       - ../Data/Logs:/var/logs
       - ../Data/Feedbacks:/app/data
     depends_on:
-      - redis_server
+      redis_server: {}
     env_file: "./backend/.env"
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -55,8 +55,8 @@ services:
       - ./configs:/configs
       - ../Data/Logs:/var/logs
     depends_on:
-      - redis_server
-      - backend
+      redis_server: {}
+      backend: {}
     networks:
       - fairway-app-network
 
@@ -81,10 +81,10 @@ services:
     volumes:
       - ./configs:/configs
     depends_on:
-      - backend:
+      backend:
         condition: service_healthy
-      - redis_server
-      - celery_workers
+      redis_server: {}
+      celery_workers: {}
     ports:
       - "80:80"
     networks:

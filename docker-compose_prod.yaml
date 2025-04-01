@@ -31,7 +31,7 @@ services:
       - /home/asharma/Data/Logs:/var/logs
       - /home/asharma/Data/Feedbacks:/app/data
     depends_on:
-      - redis_server
+      redis_server: {}
     env_file: "./backend/.env"
     networks:
       - fairway-app-network
@@ -59,8 +59,8 @@ services:
       - ./configs:/configs
       - /home/asharma/Data/Logs:/var/logs
     depends_on:
-      - redis_server
-      - backend
+      redis_server: {}
+      backend: {}
     networks:
       - fairway-app-network
     user: "1014:1014"
@@ -86,10 +86,11 @@ services:
     volumes:
       - ./configs:/configs
     depends_on:
-      - backend:
-        condition: service_healthy
-      - redis_server
-      - celery_workers
+      backend:
+          condition: service_healthy
+      redis_server: {}
+      celery_workers: {}
+      fairway_ollama: {}
     ports:
       - "8011:80"
     networks:
