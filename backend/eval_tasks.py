@@ -54,29 +54,29 @@ def evaluate_fair(metadata, user_tests=[]) -> Sequence[Dict[str, Any]]:
     global fair_analyzer, splitter
     logger = logging.getLogger("celery")
 
-    m = dict(metadata["model"])
-    m_options = dict(metadata["model_options"])
+    mdl = dict(metadata["model"])
+    mdl_options = dict(metadata["model_options"])
 
-    logger.info(m)
-    logger.info(m_options)
+    logger.info(mdl)
+    logger.info(mdl_options)
 
-    if m["service"].lower() == "ollama":
+    if mdl["service"].lower() == "ollama":
         model = OllamaModel(
-            model_name=m["model_name"],
+            model_name=mdl["model_name"],
             client_url=env_settings.ollama_url,
             options={
-                "temperature": m_options["temp"],
-                "num_ctx": m_options["num_ctx"],
-                "top_p": m_options["top_p"],
+                "temperature": mdl_options["temp"],
+                "num_ctx": mdl_options["num_ctx"],
+                "top_p": mdl_options["top_p"],
             },
             keep_alive=env_settings.keep_alive,
         )
-    elif m["service"].lower() == "openai":
+    elif mdl["service"].lower() == "openai":
         model = OpenAiModel(
-            model_name=m["model_name"],
+            model_name=mdl["model_name"],
             openai_key=env_settings.openai_key,
-            temperature=m_options["temp"],
-            top_p=m_options["top_p"],
+            temperature=mdl_options["temp"],
+            top_p=mdl_options["top_p"],
         )
     else:
         raise ValueError("Wrong service provided in model list")
@@ -131,5 +131,5 @@ def evaluate_fair(metadata, user_tests=[]) -> Sequence[Dict[str, Any]]:
         all_results["metrics"][res["metric_id"]] = res
 
     all_results["summary"] = aggregate_results(results=all_results["metrics"])
-    all_results["summary"]["LLM"] = m["model_name"].split(":")[0]
+    all_results["summary"]["LLM"] = mdl["model_name"].split(":")[0]
     return all_results
