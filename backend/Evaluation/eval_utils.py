@@ -118,8 +118,7 @@ def load_test_items(csv_path: str) -> List[Tuple[str, str]]:
                 test_items.append((row[0], row[1]))
 
         logger.info(f"Loaded {len(test_items)} test items from {csv_path}")
-        # TODO: Remove this limit after dev and testing phase
-        return test_items[:2]
+        return test_items
 
     except Exception as e:
         logger.error(f"Error loading test items: {e}", exc_info=True)
