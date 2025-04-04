@@ -2,7 +2,8 @@ import copy
 import asyncio
 from typing import List, Dict, Any, Tuple
 import os
-import json
+
+# import json
 
 from Evaluation.eval_utils import fetch_results
 from utils.network_utils import HttpClient, fetch_metadata_using_url
@@ -83,6 +84,10 @@ class TestExecutor:
                 return
 
             # Fetch results
+            logger.info("Starting to fetch results")
+            logger.info(self.api_config.status_url)
+            logger.info(self.api_config.results_url)
+
             results = await fetch_results(
                 initiated_task_str=req["task_id"],
                 client=self.client,
@@ -103,16 +108,18 @@ class TestExecutor:
 
         except Exception as e:
             logger.error(f"Error in test iteration: {e}", exc_info=True)
+            raise e
 
     async def execute_model_tests(
         self, model: Dict[str, str], test_items: List[Tuple[str, str]]
     ) -> None:
         """Run tests for a specific model across all test items and temperatures."""
-        logger.info(f"Testing for model: {model['model_name']}")
         tests_executed = False  # Add a flag to track if any tests were executed
 
         for temperature in self.test_config.temperatures:
-            logger.info(f"Testing with temperature: {temperature}")
+            logger.info(
+                f"Testing for model: {model['model_name']} with temperature: {temperature}"
+            )
 
             for url, test_id in test_items:
                 try:
@@ -122,7 +129,7 @@ class TestExecutor:
                     ):
                         logger.info(
                             f"Skipping test for model={model['model_name']}, temp={temperature}, "
-                            f"url={url}, test_id={test_id} as results already exist"
+                            f"url={url}, test_id={test_id} as results already exist."
                         )
                         continue
 
@@ -167,3 +174,339 @@ class TestExecutor:
         """Execute tests for all models."""
         for model in self.test_config.model_list:
             await self.execute_model_tests(model, test_items)
+
+
+# class ResultEvaluator:
+#     """Handles the evaluation of test results against reference outputs."""
+
+#     def __init__(
+#         self,
+#         test_config: TestConfig = TestConfig(),
+#         file_manager: FileManager = FileManager(),
+#     ):
+#         self.test_config = test_config
+#         self.file_manager = file_manager
+
+#     def is_structurally_matching(self, json1, json2):
+#         """
+#         Check if two JSON objects have the same structure (same keys and value types),
+#         regardless of the actual values.
+
+#         Args:
+#             json1: First JSON object (dict, list, or primitive)
+#             json2: Second JSON object (dict, list, or primitive)
+
+#         Returns:
+#             bool: True if structures match, False otherwise
+#         """
+#         # Check if both are dictionaries
+#         if isinstance(json1, dict) and isinstance(json2, dict):
+#             # Check if they have the same keys
+#             if set(json1.keys()) != set(json2.keys()):
+#                 return False
+
+#             # Check each key-value pair recursively
+#             for key in json1:
+#                 if not self.is_structurally_matching(json1[key], json2[key]):
+#                     return False
+#             return True
+
+#         # Check if both are lists
+#         elif isinstance(json1, list) and isinstance(json2, list):
+#             # Check if they have the same length
+#             if len(json1) != len(json2):
+#                 return False
+
+#             # If lists are empty, they match
+#             if len(json1) == 0:
+#                 return True
+
+#             # For non-empty lists, we need to check if all items follow the same structure
+#             # This is tricky because list items can be in different order
+#             # For simplicity, we'll check if the first item's structure appears in all items
+
+#             # Get structure of first item in json1
+#             sample_item = json1[0]
+
+#             # Check if all items in both lists match the structure of the sample item
+#             for item1 in json1:
+#                 if not self.is_structurally_matching(item1, sample_item):
+#                     return False
+
+#             for item2 in json2:
+#                 if not self.is_structurally_matching(item2, sample_item):
+#                     return False
+
+#             return True
+
+#         # Check if they are the same primitive type
+#         else:
+#             return type(json1) == type(json2)
+
+#     def is_exact_json_match(self, json1, json2):
+#         """
+#         Check if two JSON objects match exactly (same keys, types, and values).
+
+#         Args:
+#             json1: First JSON object (dict, list, or primitive)
+#             json2: Second JSON object (dict, list, or primitive)
+
+#         Returns:
+#             bool: True if they match exactly, False otherwise
+#         """
+#         # Check if both are dictionaries
+#         if isinstance(json1, dict) and isinstance(json2, dict):
+#             # Check if they have the same keys
+#             if set(json1.keys()) != set(json2.keys()):
+#                 return False
+
+#             # Check each key-value pair recursively
+#             for key in json1:
+#                 if not self.is_exact_json_match(json1[key], json2[key]):
+#                     return False
+#             return True
+
+#         # Check if both are lists
+#         elif isinstance(json1, list) and isinstance(json2, list):
+#             # Check if they have the same length
+#             if len(json1) != len(json2):
+#                 return False
+
+#             # For exact matching, order matters in JSON, so compare each position
+#             for i in range(len(json1)):
+#                 if not self.is_exact_json_match(json1[i], json2[i]):
+#                     return False
+#             return True
+
+#         # For primitives, use direct equality comparison
+#         else:
+#             return json1 == json2
+
+#     async def compare_results(
+#         self, model: Dict[str, str], test_items: List[Tuple[str, str]]
+#     ) -> Dict[str, Any]:
+#         """
+#         Compare test results against reference outputs for a specific model.
+#         Args:
+#             model: The model information
+#             test_items: List of test items (url, test_id)
+
+#         Returns:
+#             Dict containing comparison results
+#         """
+#         comparison_results = {
+#             "model": model["model_name"],
+#             "service": model["service"],
+#             "tests": [],
+#         }
+
+#         for temperature in self.test_config.temperatures:
+#             for url, test_id in test_items:
+#                 test_result = {
+#                     "url": url,
+#                     "test_id": test_id,
+#                     "temperature": temperature,
+#                     "iterations": [],
+#                 }
+
+#                 # Get reference output path for this test
+#                 reference_path = self.file_manager.get_reference_path(url, test_id)
+
+#                 if not os.path.exists(reference_path):
+#                     logger.warning(f"Reference output not found at {reference_path}")
+#                     test_result["error"] = "Reference output not found"
+#                     comparison_results["tests"].append(test_result)
+#                     continue
+
+#                 # Load reference output
+#                 try:
+#                     with open(reference_path, "r") as f:
+#                         reference_output = json.load(f)
+#                 except Exception as e:
+#                     logger.error(f"Error loading reference output: {e}", exc_info=True)
+#                     test_result["error"] = f"Failed to load reference output: {str(e)}"
+#                     comparison_results["tests"].append(test_result)
+#                     continue
+
+#                 # Check each iteration
+#                 for i in range(1, self.test_config.test_repeat_n + 1):
+#                     result_path = self.file_manager.get_results_path(
+#                         model["model_name"], temperature, url, test_id, i
+#                     )
+
+#                     if not os.path.exists(result_path):
+#                         logger.warning(f"Result file not found: {result_path}")
+#                         test_result["iterations"].append(
+#                             {"iteration": i, "error": "Result file not found"}
+#                         )
+#                         continue
+
+#                     # Load test result
+#                     try:
+#                         with open(result_path, "r") as f:
+#                             test_output = json.load(f)
+#                     except Exception as e:
+#                         logger.error(f"Error loading test result: {e}", exc_info=True)
+#                         test_result["iterations"].append(
+#                             {
+#                                 "iteration": i,
+#                                 "error": f"Failed to load test result: {str(e)}",
+#                             }
+#                         )
+#                         continue
+
+#                     # Compare results
+#                     structure_match = self.is_structurally_matching(
+#                         test_output, reference_output
+#                     )
+#                     exact_match = self.is_exact_json_match(
+#                         test_output, reference_output
+#                     )
+
+#                     iteration_result = {
+#                         "iteration": i,
+#                         "structural_match": structure_match,
+#                         "exact_match": exact_match,
+#                         "result_path": result_path,
+#                     }
+
+#                     test_result["iterations"].append(iteration_result)
+
+#                 comparison_results["tests"].append(test_result)
+
+#         return comparison_results
+
+#     async def evaluate_all_models(
+#         self, test_items: List[Tuple[str, str]]
+#     ) -> List[Dict[str, Any]]:
+#         """
+#         Evaluate test results for all models.
+
+#         Args:
+#             test_items: List of test items (url, test_id)
+
+#         Returns:
+#             List of comparison results for each model
+#         """
+#         evaluation_results = []
+
+#         for model in self.test_config.model_list:
+#             logger.info(f"Evaluating results for model: {model['model_name']}")
+#             model_results = await self.compare_results(model, test_items)
+#             evaluation_results.append(model_results)
+
+#             # Save evaluation results
+#             results_path = self.file_manager.get_evaluation_path(model["model_name"])
+#             try:
+#                 with open(results_path, "w") as f:
+#                     json.dump(model_results, f, indent=2)
+#                 logger.info(f"Evaluation results saved to {results_path}")
+#             except Exception as e:
+#                 logger.error(f"Error saving evaluation results: {e}", exc_info=True)
+
+#         return evaluation_results
+
+#     def compile_summary(
+#         self, evaluation_results: List[Dict[str, Any]]
+#     ) -> Dict[str, Any]:
+#         """
+#         Compile summary statistics from evaluation results.
+
+#         Args:
+#             evaluation_results: List of evaluation results for each model
+
+#         Returns:
+#             Dict containing summary statistics
+#         """
+#         summary = {
+#             "models": [],
+#             "test_items": set(),
+#             "total_tests": 0,
+#             "total_iterations": 0,
+#             "overall_structural_match_rate": 0,
+#             "overall_exact_match_rate": 0,
+#         }
+
+#         total_structural_matches = 0
+#         total_exact_matches = 0
+#         total_iterations_count = 0
+
+#         for model_result in evaluation_results:
+#             model_summary = {
+#                 "model": model_result["model"],
+#                 "service": model_result["service"],
+#                 "test_count": len(model_result["tests"]),
+#                 "structural_match_rate": 0,
+#                 "exact_match_rate": 0,
+#             }
+
+#             model_structural_matches = 0
+#             model_exact_matches = 0
+#             model_iterations_count = 0
+
+#             for test in model_result["tests"]:
+#                 summary["test_items"].add((test["url"], test["test_id"]))
+#                 summary["total_tests"] += 1
+
+#                 for iteration in test.get("iterations", []):
+#                     if "error" not in iteration:
+#                         model_iterations_count += 1
+#                         if iteration.get("structural_match", False):
+#                             model_structural_matches += 1
+#                         if iteration.get("exact_match", False):
+#                             model_exact_matches += 1
+
+#             if model_iterations_count > 0:
+#                 model_summary["structural_match_rate"] = (
+#                     model_structural_matches / model_iterations_count
+#                 )
+#                 model_summary["exact_match_rate"] = (
+#                     model_exact_matches / model_iterations_count
+#                 )
+
+#             model_summary["iterations_count"] = model_iterations_count
+#             summary["models"].append(model_summary)
+
+#             total_structural_matches += model_structural_matches
+#             total_exact_matches += model_exact_matches
+#             total_iterations_count += model_iterations_count
+
+#         summary["test_items"] = list(summary["test_items"])
+#         summary["total_iterations"] = total_iterations_count
+
+#         if total_iterations_count > 0:
+#             summary["overall_structural_match_rate"] = (
+#                 total_structural_matches / total_iterations_count
+#             )
+#             summary["overall_exact_match_rate"] = (
+#                 total_exact_matches / total_iterations_count
+#             )
+
+#         return summary
+
+#     async def run_evaluation(self, test_items: List[Tuple[str, str]]) -> Dict[str, Any]:
+#         """
+#         Run the complete evaluation process: evaluate results and compile summary.
+
+#         Args:
+#             test_items: List of test items (url, test_id)
+
+#         Returns:
+#             Dict containing summary of evaluation
+#         """
+#         # Evaluate results for all models
+#         evaluation_results = await self.evaluate_all_models(test_items)
+
+#         # Compile summary statistics
+#         summary = self.compile_summary(evaluation_results)
+
+#         # Save summary
+#         summary_path = self.file_manager.get_summary_path()
+#         try:
+#             with open(summary_path, "w") as f:
+#                 json.dump(summary, f, indent=2)
+#             logger.info(f"Evaluation summary saved to {summary_path}")
+#         except Exception as e:
+#             logger.error(f"Error saving evaluation summary: {e}", exc_info=True)
+
+#         return summary

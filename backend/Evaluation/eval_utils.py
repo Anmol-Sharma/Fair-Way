@@ -32,13 +32,17 @@ async def fetch_results(initiated_task_str: str, client, STATUS_URL, RESULTS_URL
 
     # Configuration
     start_time = time.time()
-    timeout = 1800  # 30 minutes
+    timeout = 2700  # 45 minutes
     initial_delay = 120  # Start with a larger delay
-    min_delay = 3  # Minimum delay of 3 seconds
+    min_delay = 3  # Lowest time difference between check
     decrease_factor = 0.5  # Decrease delay by this factor each time
 
     delay = initial_delay
     attempt = 0
+
+    # Sleep for 4 seconds before starting to look for status updates.
+    # Allow task to be initiated on the celery side.
+    await asyncio.sleep(4)
 
     while True:
         # Check for timeout
@@ -87,7 +91,7 @@ async def fetch_results(initiated_task_str: str, client, STATUS_URL, RESULTS_URL
                 sleep_time = min(delay, remaining)
                 await asyncio.sleep(sleep_time)
 
-                # Decrease delay for next iteration, but don't go below min_delay
+                # Decrease delay for next iteration by given factor, but don't go below min_delay
                 delay = max(delay * decrease_factor, min_delay)
 
         except (ValueError, TimeoutError):
@@ -106,6 +110,7 @@ async def fetch_results(initiated_task_str: str, client, STATUS_URL, RESULTS_URL
             raise RuntimeError(f"Failed to fetch results: {error}") from error
 
 
+# Load test items from reference csv files
 def load_test_items(csv_path: str) -> List[Tuple[str, str]]:
     """Load test items from CSV file."""
     test_items = []

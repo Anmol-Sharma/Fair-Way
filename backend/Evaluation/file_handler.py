@@ -1,8 +1,10 @@
 import os
 import json
 from typing import Dict, Any, Tuple
-
+import logging
 from Evaluation.eval_config import TestConfig
+
+logger = logging.getLogger(__name__)
 
 
 class FileManager:
@@ -46,7 +48,6 @@ class FileManager:
         model_dir = f"{model_name.split(':')[0]}__{str(temperature).replace('.', '_')}"
         base_dir = os.path.join(self.results_path, model_dir)
         os.makedirs(base_dir, exist_ok=True)
-
         filename = url.split("/")[-1]
         return os.path.join(base_dir, f"{test_id}_{filename}_{iteration}.json")
 
@@ -56,18 +57,17 @@ class FileManager:
         """Check if all result files for a test already exist."""
         model_dir = f"{model_name.split(':')[0]}__{str(temperature).replace('.', '_')}"
         base_dir = os.path.join(self.results_path, model_dir)
-
         if not os.path.exists(base_dir):
             return False
-
         filename = url.split("/")[-1]
-
         # Check if all iterations exist
         for i in range(1, TestConfig().test_repeat_n + 1):
             result_path = os.path.join(base_dir, f"{test_id}_{filename}_{i}.json")
             if not os.path.exists(result_path):
+                logger.warning(
+                    f"File:- {result_path} does not exist for {model_name} and temperature : {temperature}"
+                )
                 return False
-
         return True
 
     def save_metadata(

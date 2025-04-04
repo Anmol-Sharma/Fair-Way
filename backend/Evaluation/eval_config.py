@@ -31,8 +31,13 @@ class ApiConfig:
 class TestConfig:
     """Configuration for test parameters."""
 
+    # How many times to repeat a single test entry for a given model, temp. combination
     test_repeat_n: int = 2
+
+    # List of Models to test on
     model_list: List[Dict[str, str]] = None
+
+    # List of temperatures
     temperatures: List[float] = None
 
     def __post_init__(self):
