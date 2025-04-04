@@ -21,21 +21,36 @@ class Metric(BaseMetric):
 
     def execute_tests(self, model, file_chunks, file_type):
         # For this particular metric we have split up the main test into multiple parts for validation.
-        t21_result = self.tests["1"].perform_test(
+        succ1, t21_result = self.tests["1"].perform_test(
             model=model,
             file_chunks=file_chunks,
             file_type=file_type,
         )
-        t22_result = self.tests["2"].perform_test(
+        succ2, t22_result = self.tests["2"].perform_test(
             model=model,
             file_chunks=file_chunks,
             file_type=file_type,
         )
-        t23_result = self.tests["3"].perform_test(
+        succ3, t23_result = self.tests["3"].perform_test(
             model=model,
             file_chunks=file_chunks,
             file_type=file_type,
         )
+        if not succ1:
+            self.logger.warning(
+                f"LLM failed to process request correctly for {self.metric_id} for creator and title information"
+            )
+            t21_result = {"creator": "", "title": ""}
+        if not succ2:
+            self.logger.warning(
+                f"LLM failed to process request correctly for {self.metric_id} for publisher and publication_date information"
+            )
+            t22_result = {"publisher": "", "publication_date": ""}
+        if not succ3:
+            self.logger.warning(
+                f"LLM failed to process request correctly for {self.metric_id} for summary and keyword information"
+            )
+            t23_result = {"summary": "", "keywords": ""}
 
         return {**t21_result, **t22_result, **t23_result}, ResponseFormat
 

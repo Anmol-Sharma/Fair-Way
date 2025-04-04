@@ -12,11 +12,20 @@ class Metric(BaseMetric):
         super().__init__(metric_id, name, active, tests, principle)
 
     def execute_tests(self, model, file_chunks, file_type):
-        t_result = self.tests["FsF_F1_02D-1"].perform_test(
+        succ, t_result = self.tests["FsF_F1_02D-1"].perform_test(
             model=model,
             file_chunks=file_chunks,
             file_type=file_type,
         )
+        if not succ:
+            self.logger.warning(
+                f"LLM failed to process request correctly for {self.metric_id}"
+            )
+            t_result = {
+                "success": False,
+                "identifier": "",
+                "comment": "LLM failed to process request correctly",
+            }
         return t_result, self.tests["FsF_F1_02D-1"].test_feedback_format
 
     def score_test_results(self, t_results):
@@ -32,7 +41,7 @@ class Metric(BaseMetric):
                 t_results_2 = self.tests["FsF_F1_02D-2"].perform_test(
                     t_results["identifier"]
                 )
-            except:
+            except Exception:
                 self.logger.info("Couldn't resolve the GUI")
                 t_results_2 = {"success": False, "comment": "Identifier unresolvable"}
         else:

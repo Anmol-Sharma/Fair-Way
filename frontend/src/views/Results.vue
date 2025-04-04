@@ -275,7 +275,7 @@ onMounted(async () => {
               <div class="col">
                 <div class="progress" style="height: 3em">
                   <div
-                    class="progress-bar"
+                    class="progress-bar bg-danger"
                     role="progressbar"
                     :style="{ width: rPercent + '%' }"
                     :aria-valuenow="rPercent"
@@ -297,7 +297,7 @@ onMounted(async () => {
               <div class="col">
                 <div class="progress" style="height: 3em">
                   <div
-                    class="progress-bar bg-info"
+                    class="progress-bar bg-secondary"
                     role="progressbar"
                     :style="{ width: uPercent + '%' }"
                     :aria-valuenow="uPercent"

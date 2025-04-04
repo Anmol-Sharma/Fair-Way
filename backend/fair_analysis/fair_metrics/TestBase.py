@@ -53,14 +53,20 @@ class BaseTest:
 
         # There will be a single chunk if there is no need to generate chunks
         if isinstance(file_chunks, list) and len(file_chunks) == 1:
-            return self.__perform_test_on_full_contents(
-                model, file_content=file_chunks[0], file_type=file_type
-            )
+            try:
+                return True, self.__perform_test_on_full_contents(
+                    model, file_content=file_chunks[0], file_type=file_type
+                )
+            except Exception:
+                return False, {}
 
         # More than one chunk, so perform operation on different chunks
-        return self.__perform_test_on_chunks(
-            model, chunks=file_chunks, file_type=file_type
-        )
+        try:
+            return True, self.__perform_test_on_chunks(
+                model, chunks=file_chunks, file_type=file_type
+            )
+        except Exception:
+            return False, {}
 
     def __perform_test_on_full_contents(
         self, model: OllamaModel, file_content: str, file_type: str

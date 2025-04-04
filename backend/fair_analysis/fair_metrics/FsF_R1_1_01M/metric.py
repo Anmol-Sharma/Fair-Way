@@ -19,17 +19,30 @@ class Metric(BaseMetric):
         super().__init__(metric_id, name, active, tests, principle)
 
     def execute_tests(self, model, file_chunks, file_type):
-        t_result = self.tests["FsF_R1_1_01M-1"].perform_test(
+        succ1, t_result = self.tests["FsF_R1_1_01M-1"].perform_test(
             model=model,
             file_chunks=file_chunks,
             file_type=file_type,
         )
+        if not succ1:
+            self.logger.warning(
+                f"LLM failed to process request correctly for {self.metric_id}"
+            )
+            t_result = {
+                "license": "",
+                "comment": "LLM failed to process request correctly",
+            }
 
-        t_result2 = self.tests["FsF_R1_1_01M-2"].perform_test(
+        succ2, t_result2 = self.tests["FsF_R1_1_01M-2"].perform_test(
             model=model,
             file_chunks=(json.dumps(t_result),),
             file_type="json",
         )
+        if not succ2:
+            t_result2 = {
+                "success": False,
+                "comment": "LLM failed to process request correctly",
+            }
         return {**t_result, **t_result2}, ResponseFormat
 
     def score_test_results(self, t_results):

@@ -16,6 +16,12 @@ services:
       - "6379"
     networks:
       - fairway-app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 8s
+      retries: 10
+      start_period: 4s
 
   backend:
     build:
@@ -31,7 +37,10 @@ services:
       - /home/asharma/Data/Logs:/var/logs
       - /home/asharma/Data/Feedbacks:/app/data
     depends_on:
-      redis_server: {}
+      redis_server:
+        condition: service_healthy
+      celery_workers:
+        condition: service_started
     env_file: "./backend/.env"
     networks:
       - fairway-app-network
@@ -59,8 +68,8 @@ services:
       - ./configs:/configs
       - /home/asharma/Data/Logs:/var/logs
     depends_on:
-      redis_server: {}
-      backend: {}
+      redis_server:
+        condition: service_healthy
     networks:
       - fairway-app-network
     user: "1014:1014"
@@ -87,10 +96,13 @@ services:
       - ./configs:/configs
     depends_on:
       backend:
-          condition: service_healthy
-      redis_server: {}
-      celery_workers: {}
-      fairway_ollama: {}
+        condition: service_healthy
+      redis_server:
+        condition: service_healthy
+      celery_workers:
+        condition: service_started
+      fairway_ollama:
+        condition: service_started
     ports:
       - "8011:80"
     networks:

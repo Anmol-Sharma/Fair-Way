@@ -15,7 +15,7 @@ class OllamaModel:
     ) -> None:
         self.__model_name = model_name
         self.__model_options = options
-        self.__client = Client(host=client_url, timeout=100.0)
+        self.__client = Client(host=client_url, timeout=90.0)
         self.__logger = logging.getLogger("celery")
         self.__keep_alive = keep_alive
 

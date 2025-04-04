@@ -10,11 +10,19 @@ class Metric(BaseMetric):
         super().__init__(metric_id, name, active, tests, principle)
 
     def execute_tests(self, model, file_chunks, file_type):
-        t_result = self.tests["FsF_A1_01M-1"].perform_test(
+        succ, t_result = self.tests["FsF_A1_01M-1"].perform_test(
             model=model,
             file_chunks=file_chunks,
             file_type=file_type,
         )
+        if not succ:
+            self.logger.warning(
+                f"LLM failed to process request correctly for {self.metric_id}"
+            )
+            t_result = {
+                "access_condition": "",
+                "comment": "LLM failed to process request correctly",
+            }
         return t_result, self.tests["FsF_A1_01M-1"].test_feedback_format
 
     def score_test_results(self, t_results):

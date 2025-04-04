@@ -13,6 +13,12 @@ services:
       - "6379"
     networks:
       - fairway-app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 8s
+      retries: 10
+      start_period: 4s
 
   backend:
     build:
@@ -27,7 +33,10 @@ services:
       - ../Data/Logs:/var/logs
       - ../Data/Feedbacks:/app/data
     depends_on:
-      redis_server: {}
+      redis_server:
+        condition: service_healthy
+      celery_workers:
+        condition: service_started
     env_file: "./backend/.env"
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -39,7 +48,7 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       timeout: 15s
       retries: 5
-      start_period: 8s
+      start_period: 6s
       interval: 45s
 
   # Celery Workers
@@ -55,8 +64,8 @@ services:
       - ./configs:/configs
       - ../Data/Logs:/var/logs
     depends_on:
-      redis_server: {}
-      backend: {}
+      redis_server:
+        condition: service_healthy
     networks:
       - fairway-app-network
 
@@ -83,8 +92,10 @@ services:
     depends_on:
       backend:
         condition: service_healthy
-      redis_server: {}
-      celery_workers: {}
+      redis_server:
+        condition: service_healthy
+      celery_workers:
+        condition: service_started
     ports:
       - "80:80"
     networks:

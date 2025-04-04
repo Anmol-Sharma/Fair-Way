@@ -11,11 +11,19 @@ class CustomMetric(BaseMetric):
     def execute_tests(self, model, file_chunks, file_type):
         all_results = {}
         for tid, t in self.tests.items():
-            t_result = t.perform_test(
+            succ, t_result = t.perform_test(
                 model=model,
                 file_chunks=file_chunks,
                 file_type=file_type,
             )
+            if not succ:
+                self.logger.warning(
+                    f"LLM failed to process request correctly for {self.metric_id}"
+                )
+                t_result = {
+                    "success": False,
+                    "comment": "LLM failed to process request correctly",
+                }
             all_results[tid] = t_result
         return all_results
 

@@ -20,16 +20,32 @@ class Metric(BaseMetric):
 
     def execute_tests(self, model, file_chunks, file_type):
         if len(file_chunks) > 1:
-            t_result = self.tests["FsF_R1_3_02D-1"].perform_test(
+            succ1, t_result = self.tests["FsF_R1_3_02D-1"].perform_test(
                 model=model,
                 file_chunks=file_chunks,
                 file_type=file_type,
             )
-            t_result_2 = self.tests["FsF_R1_3_02D-2"].perform_test(
+            if not succ1:
+                self.logger.warning(
+                    f"LLM failed to process request correctly for {self.metric_id}"
+                )
+                t_result = {
+                    "success": False,
+                    "comment": "LLM failed to process request correctly",
+                }
+            succ2, t_result_2 = self.tests["FsF_R1_3_02D-2"].perform_test(
                 model=model,
                 file_chunks=file_chunks,
                 file_type=file_type,
             )
+            if not succ2:
+                self.logger.warning(
+                    f"LLM failed to process request correctly for {self.metric_id}"
+                )
+                t_result_2 = {
+                    "scientific_fmt": False,
+                    "info": "",
+                }
         else:
             t_result = {"success": False, "comment": "No File information found"}
             t_result_2 = {
