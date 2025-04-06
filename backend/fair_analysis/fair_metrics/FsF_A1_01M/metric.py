@@ -27,7 +27,10 @@ class Metric(BaseMetric):
 
     def score_test_results(self, t_results):
         score = 0
-        if t_results["access_condition"].strip() != "":
+        if (
+            t_results.get("access_condition")
+            and t_results["access_condition"].strip() != ""
+        ):
             score = 0.5
 
         self.results["test_results"]["FsF_A1_01M-1"] = t_results

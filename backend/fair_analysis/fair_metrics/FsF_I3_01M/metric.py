@@ -58,7 +58,7 @@ class Metric(BaseMetric):
 
     def score_test_results(self, t_results):
         score = 0.0
-        if len(t_results["entities"]) >= 1:
+        if t_results.get("entities") and len(t_results["entities"]) >= 1:
             score = 1.0
 
         self.results["test_results"]["FsF_I3_01M-1"] = t_results

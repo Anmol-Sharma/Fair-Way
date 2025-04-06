@@ -31,14 +31,14 @@ class Metric(BaseMetric):
 
     def score_test_results(self, t_results):
         score = 0
-        if t_results["success"]:
-            if t_results["identifier"].strip() != "":
+        if t_results.get("success") and t_results["success"]:
+            if t_results.get("identifier") and t_results["identifier"].strip() != "":
                 score = 1.0
         else:
             if (
-                (t_results["file_name"].strip() != "")
-                or (t_results["file_size"].strip() != "")
-                or (t_results["file_type"].strip() != "")
+                (t_results.get("file_name") and t_results["file_name"].strip() != "")
+                or (t_results.get("file_size") and t_results["file_size"].strip() != "")
+                or (t_results.get("file_type") and t_results["file_type"].strip() != "")
             ):
                 score = 0.5
 

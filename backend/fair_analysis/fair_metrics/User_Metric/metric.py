@@ -104,7 +104,7 @@ class V_Metric(CustomMetric):
         score = 0.0
         out_of = 0.0
         for k, t in t_results.items():
-            if t["success"]:
+            if t.get("success") and t["success"]:
                 score += increment
                 out_of += increment
             self.results["test_results"][f"FuM-Vocab-{k}"] = t
@@ -142,7 +142,7 @@ class S_Metric(CustomMetric):
         score = 0.0
         out_of = 0.0
         for k, t in t_results.items():
-            if t["success"]:
+            if t.get("success") and t["success"]:
                 score += increment
                 out_of += increment
             self.results["test_results"][f"FuM-Standard-{k}"] = t

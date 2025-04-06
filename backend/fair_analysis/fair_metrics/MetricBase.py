@@ -67,8 +67,18 @@ class BaseMetric:
             }
         )
 
-        response = model.send_request(messages=messages, ResponseFormat=response_format)
-        return json.loads(response)
+        try:
+            response = model.send_request(
+                messages=messages, ResponseFormat=response_format
+            )
+            return json.loads(response)
+        except json.decoder.JSONDecodeError:
+            return {
+                "success": False,
+                "comment": "LLM failed to generate proper json results",
+            }
+        except Exception:
+            return {"success": False, "comment": "Request failed to be processed"}
 
     def analyze_metric(self, model, metadata):
         """

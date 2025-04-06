@@ -30,18 +30,28 @@ class Metric(BaseMetric):
 
     def score_test_results(self, t_results):
         score = 0
-        if t_results["success"]:
+        if t_results.get("success") and t_results["success"]:
             score = 0.5
 
-        if t_results["success"] and re.match(
-            "^(https?:\/\/)?([\w\-]+\.)+[\w]{2,}(:\d+)?(\/[^\s]*)?$",
-            t_results["identifier"],
+        if (
+            t_results.get("success")
+            and t_results["success"]
+            and re.match(
+                "^(https?:\/\/)?([\w\-]+\.)+[\w]{2,}(:\d+)?(\/[^\s]*)?$",
+                t_results["identifier"],
+            )
         ):
             self.logger.info(f"Detect GUID:-{t_results}")
             try:
-                t_results_2 = self.tests["FsF_F1_01D-2"].perform_test(
-                    t_results["identifier"]
-                )
+                if t_results.get("identifer"):
+                    t_results_2 = self.tests["FsF_F1_01D-2"].perform_test(
+                        t_results["identifier"]
+                    )
+                else:
+                    t_results_2 = {
+                        "success": False,
+                        "comment": "Identifier not found by llm",
+                    }
             except Exception:
                 self.logger.info("Couldn't resolve the GUI")
                 t_results_2 = {"success": False, "comment": "Identifier unresolvable"}

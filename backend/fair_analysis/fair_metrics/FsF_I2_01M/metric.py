@@ -28,7 +28,12 @@ class Metric(BaseMetric):
 
     def score_test_results(self, t_results):
         score = 0.0
-        if (len(t_results["resources"]) >= 1) and (t_results["success"]):
+        if (
+            t_results.get("resources")
+            and t_results.get("success")
+            and (len(t_results["resources"]) >= 1)
+            and (t_results["success"])
+        ):
             score = 1.0
 
         self.results["test_results"]["FsF_I2_01M-1"] = t_results

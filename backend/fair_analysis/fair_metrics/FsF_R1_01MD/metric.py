@@ -28,10 +28,14 @@ class Metric(BaseMetric):
 
     def score_test_results(self, t_results):
         score = 0.0
-        if len(t_results["files"]) >= 1 or len(t_results["variables"]) >= 1:
+        if (
+            t_results.get("files")
+            and t_results.get("variables")
+            and (len(t_results["files"]) >= 1 or len(t_results["variables"]) >= 1)
+        ):
             score = 1.0
         if score > 0.0:
-            if len(t_results["files"]) > 1:
+            if t_results.get("files") and len(t_results["files"]) > 1:
                 for file_info in t_results["files"]:
                     if (
                         (file_info["name"].strip() != "")
@@ -41,7 +45,7 @@ class Metric(BaseMetric):
                         score += 1.0
                         break
 
-            if len(t_results["variables"]) > 1:
+            if t_results.get("variables") and len(t_results["variables"]) > 1:
                 score += 1.0
 
         self.results["test_results"]["FsF_R1_01MD-1"] = t_results

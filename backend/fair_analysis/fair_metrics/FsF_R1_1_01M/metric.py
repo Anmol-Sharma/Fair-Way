@@ -47,16 +47,16 @@ class Metric(BaseMetric):
 
     def score_test_results(self, t_results):
         score = 0
-        if t_results["license"] != "":
+        if t_results.get("license") and t_results["license"].strip() != "":
             score = 1
-            if t_results["success"]:
+            if t_results.get("success") and t_results["success"]:
                 score = 2
         self.results["test_results"]["FsF_R1_1_01M-1"] = {
-            "license": t_results["license"]
+            "license": t_results.get("license")
         }
         self.results["test_results"]["FsF_R1_1_01M-2"] = {
-            "success": t_results["success"],
-            "comment": t_results["comment"],
+            "success": t_results.get("success"),
+            "comment": t_results.get("comment"),
         }
         self.results["score"] = score
         self.results["out_of"] = 2
