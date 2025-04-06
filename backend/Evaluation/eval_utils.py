@@ -30,6 +30,10 @@ async def fetch_results(initiated_task_str: str, client, STATUS_URL, RESULTS_URL
     if not initiated_task_str:
         raise ValueError("No initiated task found")
 
+    # Sleep for 4 seconds before starting to look for status updates.
+    # Allow task to be initiated on the celery side.
+    await asyncio.sleep(4)
+
     # Configuration
     start_time = time.time()
     timeout = 2700  # 45 minutes
@@ -39,10 +43,6 @@ async def fetch_results(initiated_task_str: str, client, STATUS_URL, RESULTS_URL
 
     delay = initial_delay
     attempt = 0
-
-    # Sleep for 4 seconds before starting to look for status updates.
-    # Allow task to be initiated on the celery side.
-    await asyncio.sleep(4)
 
     while True:
         # Check for timeout
