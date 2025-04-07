@@ -6,9 +6,13 @@ services:
       target: redis_prod
     image: fairway_redis
     container_name: fairway_redis_ct
+    restart: unless-stopped
     hostname: redis
     volumes:
-      - ./redis.conf:/usr/local/etc/redis/redis.conf
+      # Direct bind read-only mount for config
+      - ./redis.conf:/usr/local/etc/redis/redis.conf:ro
+      # Named Mount for Data
+      - redis_data:/data
     expose:
       - "6379"
     networks:
@@ -27,16 +31,15 @@ services:
       target: backend
     image: fairway_backend
     container_name: fairway_backend_ct
+    restart: unless-stopped
     volumes:
       - ./backend:/app
       - ./configs:/configs
-      - ../Data/Logs:/var/logs
-      - ../Data/Feedbacks:/app/data
+      - backend_logs:/var/logs
+      - feedback_data:/app/data
     depends_on:
       redis_server:
         condition: service_healthy
-      celery_workers:
-        condition: service_started
     env_file: "./backend/.env"
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -59,12 +62,15 @@ services:
       target: celery
     image: fairway_celery_workers
     container_name: fairway_celery_ct
+    restart: unless-stopped
     volumes:
       - ./backend:/app
       - ./configs:/configs
-      - ../Data/Logs:/var/logs
+      - celery_logs:/var/logs
     depends_on:
       redis_server:
+        condition: service_healthy
+      backend:
         condition: service_healthy
     networks:
       - fairway-app-network
@@ -105,3 +111,9 @@ networks:
   fairway-app-network:
     external: false
     driver: bridge
+
+volumes:
+  redis_data:
+  backend_logs:
+  feedback_data:
+  celery_logs:
