@@ -9,9 +9,10 @@ services:
     restart: unless-stopped
     hostname: redis
     volumes:
-      - ./redis.conf:/usr/local/etc/redis/redis.conf
-      - /home/asharma/Data/Logs/redis_logs:/var/log/redis
-      - /home/asharma/Data/Redis:/data
+      # Direct bind read-only mount for config
+      - ./redis.conf:/usr/local/etc/redis/redis.conf:ro
+      # Named Mount for Data
+      - redis_data:/data
     expose:
       - "6379"
     networks:
@@ -34,19 +35,16 @@ services:
     volumes:
       - ./backend:/app
       - ./configs:/configs
-      - /home/asharma/Data/Logs:/var/logs
-      - /home/asharma/Data/Feedbacks:/app/data
+      - backend_logs:/var/logs
+      - feedback_data:/app/data
     depends_on:
       redis_server:
         condition: service_healthy
-      celery_workers:
-        condition: service_started
     env_file: "./backend/.env"
     networks:
       - fairway-app-network
     expose:
       - "8000"
-    user: "1014:1014"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       timeout: 15s
@@ -66,25 +64,15 @@ services:
     volumes:
       - ./backend:/app
       - ./configs:/configs
-      - /home/asharma/Data/Logs:/var/logs
+      - celery_logs:/var/logs
     depends_on:
       redis_server:
         condition: service_healthy
+      backend:
+        condition: service_healthy
     networks:
       - fairway-app-network
-    user: "1014:1014"
 
-  # TODO: Handle this later on
-  # flower:
-  #   volumes:
-  #     - ./backend:/app
-  #   ports:
-  #     - "5555:5555"
-  #   depends_on:
-  #     - redis_server
-  #   command: ["celery", "-A", "celery_tasks.cel", "flower", "--loglevel=info"]
-
-  # Frontend vuejs application
   frontend_server:
     build:
       context: .
@@ -107,7 +95,6 @@ services:
       - "8011:80"
     networks:
       - fairway-app-network
-    user: "1014:1014"
 
   # Important NOTE:- If the models aren't downloaded, simply start ONLY this service and the models will be downloaded
   fairway_ollama:
@@ -118,7 +105,7 @@ services:
     image: fairway_ollama
     container_name: fairway_ollama_ct
     volumes:
-      - /home/asharma/Data/.ollama:/root/.ollama
+      - ../Data/.ollama:/root/.ollama
     restart: unless-stopped
     expose:
       - "11434"
@@ -136,3 +123,9 @@ networks:
   fairway-app-network:
     external: false
     driver: bridge
+
+volumes:
+  redis_data:
+  backend_logs:
+  feedback_data:
+  celery_logs:
