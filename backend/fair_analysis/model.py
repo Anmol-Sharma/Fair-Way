@@ -71,10 +71,12 @@ class OpenAiModel:
         Helper function to send requests to the LLM model
         """
         retries = 3  # Set number of retries
-        backoff = 5  # Initial backoff time in seconds
+        backoff = 15.0  # Initial backoff time in seconds
 
         for attempt in range(retries):
             try:
+                # Necessary sleep to still avoid 429 even with rate limit exceptions
+                sleep(3.5)
                 response = self.__client.beta.chat.completions.parse(
                     model=self.__model_name,
                     messages=messages,
@@ -82,8 +84,6 @@ class OpenAiModel:
                     top_p=self.top_p,
                     response_format=ResponseFormat,
                 )
-                # Necessary sleep to still avoid 429 even with rate limit exceptions
-                sleep(2.0)
                 return response.choices[0].message.content
             except openai.RateLimitError:
                 # Handle rate limit error Even with sleep delay (Very Rare Case but still have to be handled)
@@ -97,7 +97,6 @@ class OpenAiModel:
                 self.__logger.warning(
                     f"Something went wrong. Retrying! Error: {str(e)}"
                 )
-                sleep(2)  # Fixed wait time for errors
 
         # If we exhaust all retries, we raise an exception to indicate failure
         self.__logger.error("Max retries reached. Could not complete the request.")
