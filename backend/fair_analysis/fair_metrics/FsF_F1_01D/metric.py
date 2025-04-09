@@ -43,7 +43,7 @@ class Metric(BaseMetric):
         ):
             self.logger.info(f"Detect GUID:-{t_results}")
             try:
-                if t_results.get("identifer"):
+                if t_results.get("identifier"):
                     t_results_2 = self.tests["FsF_F1_01D-2"].perform_test(
                         t_results["identifier"]
                     )
