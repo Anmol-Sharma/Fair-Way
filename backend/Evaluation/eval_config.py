@@ -48,8 +48,8 @@ class TestConfig:
                     "model_name": "mistral-small:24b-instruct-2501-q8_0",
                     "service": "ollama",
                 },
-                {"model_name": "qwen2.5-coder:32b-instruct-q8_0", "service": "ollama"},
-                {"model_name": "llama3.3:70b-instruct-q5_K_M", "service": "ollama"},
+                {"model_name": "qwen2.5-coder:32b-instruct-q6_k", "service": "ollama"},
+                {"model_name": "llama3.3:70b-instruct-q4_K_M", "service": "ollama"},
                 {"model_name": "gpt-4o-2024-08-06", "service": "openai"},
             ]
 
