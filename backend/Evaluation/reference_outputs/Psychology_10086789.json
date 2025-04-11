@@ -1,0 +1,146 @@
+{
+  "FsF_F1_01D": {
+    "test_results": {
+      "FsF_F1_01D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.10086789"
+      },
+      "FsF_F1_01D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F1_02D": {
+    "test_results": {
+      "FsF_F1_02D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.10086789"
+      },
+      "FsF_F1_02D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F2_01M": {
+    "test_results": {
+      "FsF_F2_01M-1-2-3": {
+        "creator": "Di Tecco, Antonio",
+        "title": "Dataset DT22",
+        "publisher": "Zenodo",
+        "publication_date": "2023-11-09",
+        "summary": "Dataset is a collection of the emotional states of 112 participants involved in the experiment named Sperimentazione DT22. It was presented in part and cited in the following article and book: Di Tecco, A., Foglia, P., & Prete, C. A. (2024). Video Quality Prediction: An Exploratory Study with Valence and Arousal Signals. IEEE Access. DOI: 0.1109/ACCESS.2024.3374056. Di Tecco, A. (2024). Intelligent Systems for Human Health and Well-Being. The dataset is not currently available for distribution.",
+        "keywords": "dataset dt22, database dt22, emotion, valence, arousal, dominance, quality, satisfaction, interest, involvement, Machine learning, Pattern recognition, Supervised learning, Unsupervised learning, Psychology, Psychiatry, Cognitive psychology, Economics and business"
+      }
+    }
+  },
+  "FsF_F3_01M": {
+    "test_results": {
+      "FsF_F3_01M-1": {
+        "success": true,
+        "identifier": "https://zenodo.org/api/records/10086789/files",
+        "file_name": "",
+        "file_size": "",
+        "file_type": ""
+      }
+    }
+  },
+  "FsF_A1_01M": {
+    "test_results": {
+      "FsF_A1_01M-1": {
+        "access_condition": "restricted",
+        "comment": "The dataset is not currently available for distribution, but the creator is working to make it accessible as soon as possible. (source: Embedded Metadata)"
+      }
+    }
+  },
+  "FsF_I1_01M": {
+    "test_results": {
+      "FsF_I1_01M-1": {
+        "success": true,
+        "comment": "Parsable, structured metadata(JSON-LD) was successfully detected on the landing page, confirming that it contains correctly embedded, machine-readable metadata. JSON-LD is a formal serialization format so this condition is satisfied. It includes essential elements such as '@context' and '@type', confirming the use of JSON-LD syntax."
+      }
+    }
+  },
+  "FsF_I2_01M": {
+    "test_results": {
+      "FsF_I2_01M-1": {
+        "success": true,
+        "resources": []
+      }
+    }
+  },
+  "FsF_I3_01M": {
+    "test_results": {
+      "FsF_I3_01M-1": {
+        "entities": [
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "https://orcid.org/0000-0003-0126-8079, Source: Embedded Metadata"
+          },
+          {
+            "entity": "Funder",
+            "value": "European Commission, DOI: 10.13039/501100000780, Grant Code: B15J20000200006, Source: Harvested Metadata"
+          },
+          {
+            "entity": "Funder",
+            "value": "European Commission, DOI: 10.13039/501100000780, Grant Code: B11J22000580002, Source: Harvested Metadata"
+          },
+          {
+            "entity": "Citations",
+            "value": "Di Tecco, A., Foglia, P., & Prete, C. A. (2024). Video Quality Prediction: An Exploratory Study with Valence and Arousal Signals. IEEE Access. DOI: 0.1109/ACCESS.2024.3374056, Source: Embedded Metadata"
+          },
+          {
+            "entity": "Citations",
+            "value": "Di Tecco, A. (2024). Intelligent Systems for Human Health and Well-Being. ISBN: 979-12-210-5664-8. DOI: 10.979.12210/56648, Source: Embedded Metadata"
+          }
+        ]
+      }
+    }
+  },
+  "FsF_R1_01MD": {
+    "test_results": {
+      "FsF_R1_01MD-1": {
+        "files": [],
+        "variables": []
+      }
+    }
+  },
+  "FsF_R1_1_01M": {
+    "test_results": {
+      "FsF_R1_1_01M-1": {
+        "license": "Creative Commons Public Licence"
+      },
+      "FsF_R1_1_01M-2": {
+        "success": true,
+        "comment": "The metadata file contains a license that is recognized by the SPDX license registry, ensuring compliance and standardization."
+      }
+    }
+  },
+  "FsF_R1_2_01M": {
+    "test_results": {
+      "FsF_R1_2_01M-1": {
+        "success": true,
+        "entities": {
+          "creator": "Antonio Di Tecco",
+          "contributors": [],
+          "curation_date": "2023-11-09T01:15:54.246705+00:00",
+          "version": "Not specified",
+          "modification_date": "2024-11-06T00:05:51.653121+00:00",
+          "source": ""
+        },
+        "formal_vocab": false
+      }
+    }
+  },
+  "FsF_R1_3_02D": {
+    "test_results": {
+      "FsF_R1_3_02D-1": {
+        "success": false,
+        "comment": "No File information found",
+        "scientific_fmt": false,
+        "info": "No File information found, cannot check for scientific format"
+      }
+    }
+  }
+}

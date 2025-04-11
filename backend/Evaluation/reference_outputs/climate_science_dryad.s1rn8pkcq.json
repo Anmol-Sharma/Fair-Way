@@ -1,0 +1,195 @@
+{
+  "FsF_F1_01D": {
+    "test_results": {
+      "FsF_F1_01D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5061/dryad.s1rn8pkcq"
+      },
+      "FsF_F1_01D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F1_02D": {
+    "test_results": {
+      "FsF_F1_02D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5061/dryad.s1rn8pkcq"
+      },
+      "FsF_F1_02D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F2_01M": {
+    "test_results": {
+      "FsF_F2_01M-1-2-3": {
+        "creator": "Lynne Stenzel, Brian Hudgens, Gary Page, Kriss Neuman, Amy Palkovic, Jenny Erbes, Carleton Eyster, Bernadette Ramer, Douglas George",
+        "title": "Data from: Climate change consequences for differential adult survival and the mating system of a temperate breeding shorebird",
+        "publisher": "Dryad",
+        "publication_date": "2023-04-06",
+        "summary": "Managing climate change impacts on already imperiled species requires understanding how climate affects their survival. We studied this for the West Coast breeding population of snowy plovers (Charadrius nivosus), listed as threatened in 1993 due to significant declines in breeding numbers and sites. Snowy plovers have a serially polygamous system where males typically raise the chicks—a behavior influenced by male-biased sex ratios. Using mark-capture data from 1,219 banded plovers over 38 years in Monterey Bay, we examined climate effects on adult survival. While sex and non-climate factors like predation were primary drivers, prolonged cold weather—with lows below 2°C and highs under 10°C—reduced winter survival, especially for females, reinforcing male-biased ratios. With future winters projected to be warmer and less severe, reduced cold-related mortality may offset some threats like predators and habitat loss, while potentially influencing sex ratios and the species' breeding dynamics.",
+        "keywords": "adult sex ratio, annual survival, California coast, Charadrius nivosus, Climate change, Demography, Program MARK, shorebird, snowy plover"
+      }
+    }
+  },
+  "FsF_F3_01M": {
+    "test_results": {
+      "FsF_F3_01M-1": {
+        "success": true,
+        "identifier": "http://datadryad.org/api/v2/datasets/doi%253A10.5061%252Fdryad.s1rn8pkcq/download",
+        "file_name": "",
+        "file_size": "12295759",
+        "file_type": "application/zip"
+      }
+    }
+  },
+  "FsF_A1_01M": {
+    "test_results": {
+      "FsF_A1_01M-1": {
+        "access_condition": "public",
+        "comment": "Data is publicly accessible with a CC0 1.0 license. Provided with Creative Commons Zero v1.0 Universal Licence."
+      }
+    }
+  },
+  "FsF_I1_01M": {
+    "test_results": {
+      "FsF_I1_01M-1": {
+        "success": true,
+        "comment": "Parsable, structured metadata(JSON-LD) was successfully detected on the landing page, confirming that it contains correctly embedded, machine-readable metadata. JSON-LD is a formal serialization format so this condition is satisfied. It includes essential elements such as '@context' and '@type', confirming the use of JSON-LD syntax."
+      }
+    }
+  },
+  "FsF_I2_01M": {
+    "test_results": {
+      "FsF_I2_01M-1": {
+        "success": false,
+        "resources": []
+      }
+    }
+  },
+  "FsF_I3_01M": {
+    "test_results": {
+      "FsF_I3_01M-1": {
+        "entities": [
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "http://orcid.org/0000-003-4539-6769"
+          },
+          {
+            "entity": "ROR/Institution/University/Organization",
+            "value": "https://ror.org/03sn6yr77"
+          },
+          {
+            "entity": "ROR/Institution/University/Organization",
+            "value": "https://ror.org/04tpgrv36"
+          },
+          {
+            "entity": "ROR/Institution/University/Organization",
+            "value": "https://ror.org/01db6pq27"
+          },
+          {
+            "entity": "Funder",
+            "value": "Strategic Environmental Research and Development Program"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "Brian Hudgens"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "Gary Page"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "Kriss Neuman"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "Amy Palkovic"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "Jenny Erbes"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "Carleton Eyster"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "Bernadette Ramer"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "Douglas George"
+          }
+        ]
+      }
+    }
+  },
+  "FsF_R1_01MD": {
+    "test_results": {
+      "FsF_R1_01MD-1": {
+        "files": [],
+        "variables": [
+          "adult sex ratio",
+          "annual survival",
+          "Charadrius nivosus",
+          "Demography",
+          "Program MARK",
+          "shorebird",
+          "snowy plover"
+        ]
+      }
+    }
+  },
+  "FsF_R1_1_01M": {
+    "test_results": {
+      "FsF_R1_1_01M-1": {
+        "license": "CC0 1.0 Universal (CC0 1.0) Public Domain Dedication"
+      },
+      "FsF_R1_1_01M-2": {
+        "success": true,
+        "comment": "The metadata file contains a license that is recognized by the SPDX license registry, ensuring compliance and standardization."
+      }
+    }
+  },
+  "FsF_R1_2_01M": {
+    "test_results": {
+      "FsF_R1_2_01M-1": {
+        "success": true,
+        "entities": {
+          "creator": "Lynne Stenzel",
+          "contributors": [
+            "Brian Hudgens",
+            "Gary Page",
+            "Kriss Neuman",
+            "Amy Palkovic",
+            "Jenny Erbes",
+            "Carleton Eyster",
+            "Bernadette Ramer",
+            "Douglas George"
+          ],
+          "curation_date": "2023-04-06",
+          "version": "3",
+          "modification_date": "2023-04-06",
+          "source": "Data were year-round wildlife observations of individually-marked Snowy Plovers, collected from coastal habitat at central California sites, from Sonoma to Monterey Counties."
+        },
+        "formal_vocab": false
+      }
+    }
+  },
+  "FsF_R1_3_02D": {
+    "test_results": {
+      "FsF_R1_3_02D-1": {
+        "success": false,
+        "comment": "No File information found",
+        "scientific_fmt": false,
+        "info": "No File information found, cannot check for scientific format"
+      }
+    }
+  }
+}

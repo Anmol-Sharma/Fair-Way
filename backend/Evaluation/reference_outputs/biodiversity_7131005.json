@@ -1,0 +1,130 @@
+{
+  "FsF_F1_01D": {
+    "test_results": {
+      "FsF_F1_01D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.7131005"
+      },
+      "FsF_F1_01D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F1_02D": {
+    "test_results": {
+      "FsF_F1_02D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.7131005"
+      },
+      "FsF_F1_02D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F2_01M": {
+    "test_results": {
+      "FsF_F2_01M-1-2-3": {
+        "creator": "CELAC",
+        "title": "CELAC-Biodiverisity",
+        "publisher": "Zenodo",
+        "publication_date": "2022-09-30",
+        "summary": "CELAC countries involved: Ecuador, Bolivia, Brazil",
+        "keywords": "Biodiversity"
+      }
+    }
+  },
+  "FsF_F3_01M": {
+    "test_results": {
+      "FsF_F3_01M-1": {
+        "success": true,
+        "identifier": "https://zenodo.org/api/records/7131005/files",
+        "file_name": "",
+        "file_size": "",
+        "file_type": ""
+      }
+    }
+  },
+  "FsF_A1_01M": {
+    "test_results": {
+      "FsF_A1_01M-1": {
+        "access_condition": "restricted",
+        "comment": "Access is restricted as per metadata access_right field. Source: Harvested Metadata"
+      }
+    }
+  },
+  "FsF_I1_01M": {
+    "test_results": {
+      "FsF_I1_01M-1": {
+        "success": true,
+        "comment": "Parsable, structured metadata(JSON-LD) was successfully detected on the landing page, confirming that it contains correctly embedded, machine-readable metadata. JSON-LD is a formal serialization format so this condition is satisfied. It includes essential elements such as '@context' and '@type', confirming the use of JSON-LD syntax."
+      }
+    }
+  },
+  "FsF_I2_01M": {
+    "test_results": {
+      "FsF_I2_01M-1": {
+        "success": false,
+        "resources": []
+      }
+    }
+  },
+  "FsF_I3_01M": {
+    "test_results": {
+      "FsF_I3_01M-1": {
+        "entities": [
+          {
+            "entity": "HasVersion",
+            "value": "recid:7131004"
+          }
+        ]
+      }
+    }
+  },
+  "FsF_R1_01MD": {
+    "test_results": {
+      "FsF_R1_01MD-1": {
+        "files": [],
+        "variables": []
+      }
+    }
+  },
+  "FsF_R1_1_01M": {
+    "test_results": {
+      "FsF_R1_1_01M-1": {
+        "license": ""
+      },
+      "FsF_R1_1_01M-2": {
+        "success": false,
+        "comment": "The metadata file contains no information about license"
+      }
+    }
+  },
+  "FsF_R1_2_01M": {
+    "test_results": {
+      "FsF_R1_2_01M-1": {
+        "success": false,
+        "entities": {
+          "creator": "CELAC",
+          "contributors": [],
+          "curation_date": "2022-10-01T00:06:38.319284+00:00",
+          "version": "",
+          "modification_date": "2022-10-01T02:26:24.000238+00:00",
+          "source": ""
+        },
+        "formal_vocab": false
+      }
+    }
+  },
+  "FsF_R1_3_02D": {
+    "test_results": {
+      "FsF_R1_3_02D-1": {
+        "success": false,
+        "comment": "No File information found",
+        "scientific_fmt": false,
+        "info": "No File information found, cannot check for scientific format"
+      }
+    }
+  }
+}

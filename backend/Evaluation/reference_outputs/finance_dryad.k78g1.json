@@ -1,0 +1,152 @@
+{
+  "FsF_F1_01D": {
+    "test_results": {
+      "FsF_F1_01D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5061/dryad.k78g1"
+      },
+      "FsF_F1_01D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F1_02D": {
+    "test_results": {
+      "FsF_F1_02D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5061/dryad.k78g1"
+      },
+      "FsF_F1_02D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F2_01M": {
+    "test_results": {
+      "FsF_F2_01M-1-2-3": {
+        "creator": "Joanne Petrie, Sandra Easton, Vaishali Naik, Christopher Lockie, Stephen J. Brett, Richard St\u00fcmpfle",
+        "title": "Data from: Hospital costs of out-of-hospital cardiac arrest patients treated in intensive care; a single centre evaluation using the national tariff-based system",
+        "publisher": "Dryad",
+        "publication_date": "2015-04-21",
+        "summary": "This study addresses the limited data on hospital costs for out-of-hospital cardiac arrest (OOHCA) survivors in the UK, crucial for evaluating the cost-effectiveness of interventions within the NHS. We retrospectively reviewed ICU admissions at a London hospital over 18 months from January 2011, focusing on in-hospital costs by survival and neurological outcome, with secondary analysis estimating cost per quality-adjusted life year (QALY) using existing survival and utility data. Of 69 patients admitted post-return of spontaneous circulation, 48% survived to discharge, with 26 in favorable neurological states (CPC 1-2). The average cost per hospital survivor was £50,000, rising to £65,000 for CPC 1-2 survivors. ICU care accounted for 69% of total costs, with CPC 1-2 patients incurring lower costs and shorter stays than those with poorer outcomes. The estimated cost per QALY for CPC 1-2 survivors was £16,000, suggesting these interventions are economically justifiable.",
+        "keywords": "Adult cardiology"
+      }
+    }
+  },
+  "FsF_F3_01M": {
+    "test_results": {
+      "FsF_F3_01M-1": {
+        "success": true,
+        "identifier": "http://datadryad.org/api/v2/datasets/doi%253A10.5061%252Fdryad.k78g1/download",
+        "file_name": "",
+        "file_size": "",
+        "file_type": "application/zip"
+      }
+    }
+  },
+  "FsF_A1_01M": {
+    "test_results": {
+      "FsF_A1_01M-1": {
+        "access_condition": "public",
+        "comment": "Provided with Creative Commons Zero v1.0 Universal Licence (Embedded) / Data is publicly available with CC0 1.0 Universal license (Harvested)"
+      }
+    }
+  },
+  "FsF_I1_01M": {
+    "test_results": {
+      "FsF_I1_01M-1": {
+        "success": true,
+        "comment": "Parsable, structured metadata(JSON-LD) was successfully detected on the landing page, confirming that it contains correctly embedded, machine-readable metadata. JSON-LD is a formal serialization format so this condition is satisfied. It includes essential elements such as '@context' and '@type', confirming the use of JSON-LD syntax."
+      }
+    }
+  },
+  "FsF_I2_01M": {
+    "test_results": {
+      "FsF_I2_01M-1": {
+        "success": true,
+        "resources": []
+      }
+    }
+  },
+  "FsF_I3_01M": {
+    "test_results": {
+      "FsF_I3_01M-1": {
+        "entities": [
+          {
+            "entity": "ROR/Institution/University/Organization",
+            "value": "https://ror.org/056ffv270"
+          },
+          {
+            "entity": "Citation/Reference",
+            "value": "http://doi.org/10.1136/bmjopen-2014-005797"
+          },
+          {
+            "entity": "Related Publication ISSN",
+            "value": "2044-6055"
+          },
+          {
+            "entity": "Affiliation/ROR",
+            "value": "https://ror.org/056ffv270"
+          },
+          {
+            "entity": "Related Work DOI",
+            "value": "https://doi.org/10.1136/bmjopen-2014-005797"
+          }
+        ]
+      }
+    }
+  },
+  "FsF_R1_01MD": {
+    "test_results": {
+      "FsF_R1_01MD-1": {
+        "files": [],
+        "variables": [
+          "hospital costs",
+          "neurological outcomes",
+          "quality adjusted life year (QALY)",
+          "cerebral performance category (CPC)",
+          "length of stay"
+        ]
+      }
+    }
+  },
+  "FsF_R1_1_01M": {
+    "test_results": {
+      "FsF_R1_1_01M-1": {
+        "license": "CC0 1.0 Universal (CC0 1.0) Public Domain Dedication"
+      },
+      "FsF_R1_1_01M-2": {
+        "success": true,
+        "comment": "The metadata file contains a license that is recognized by the SPDX license registry, ensuring compliance and standardization."
+      }
+    }
+  },
+  "FsF_R1_2_01M": {
+    "test_results": {
+      "FsF_R1_2_01M-1": {
+        "success": true,
+        "entities": {
+          "creator": "Joanne Petrie",
+          "contributors": [],
+          "curation_date": "2015-04-21",
+          "version": "1",
+          "modification_date": "",
+          "source": ""
+        },
+        "formal_vocab": false
+      }
+    }
+  },
+  "FsF_R1_3_02D": {
+    "test_results": {
+      "FsF_R1_3_02D-1": {
+        "success": false,
+        "comment": "No File information found",
+        "scientific_fmt": false,
+        "info": "No File information found, cannot check for scientific format"
+      }
+    }
+  }
+}

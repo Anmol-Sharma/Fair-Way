@@ -1,0 +1,165 @@
+{
+  "FsF_F1_01D": {
+    "test_results": {
+      "FsF_F1_01D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.3261807"
+      },
+      "FsF_F1_01D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F1_02D": {
+    "test_results": {
+      "FsF_F1_02D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.3261807"
+      },
+      "FsF_F1_02D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F2_01M": {
+    "test_results": {
+      "FsF_F2_01M-1-2-3": {
+        "creator": "Michael Hoffman, Kellee Koenig, Gill Bunting, Jennifer Costanza, Kristen J. Williams",
+        "title": "Biodiversity Hotspots (version 2016.1)",
+        "publisher": "Zenodo",
+        "publication_date": "2016-04-25",
+        "summary": "There are currently 36 recognized biodiversity hotspots. Earth's most biologically rich yet threatened terrestrial regions. To qualify, an area must have at least 1,500 endemic vascular plant species and have lost at least 70% of its original native vegetation. Many hotspots far exceed these thresholds; for example, the Sundaland in Southeast Asia and the Tropical Andes in South America each host around 15,000 endemic plant species, with vegetation loss reaching up to 95% in some areas.",
+        "keywords": "Biodiversity, Conservation Priorities"
+      }
+    }
+  },
+  "FsF_F3_01M": {
+    "test_results": {
+      "FsF_F3_01M-1": {
+        "success": true,
+        "identifier": "https://zenodo.org/api/records/3261807/files/hotspots_2016_1.zip/content",
+        "file_name": "hotspots_2016_1.zip",
+        "file_size": "13.56 MB",
+        "file_type": "application/zip"
+      }
+    }
+  },
+  "FsF_A1_01M": {
+    "test_results": {
+      "FsF_A1_01M-1": {
+        "access_condition": "public",
+        "comment": "Access right is open with a Creative Commons license (cc-by-sa-4.0)"
+      }
+    }
+  },
+  "FsF_I1_01M": {
+    "test_results": {
+      "FsF_I1_01M-1": {
+        "success": true,
+        "comment": "Parsable, structured metadata(JSON-LD) was successfully detected on the landing page, confirming that it contains correctly embedded, machine-readable metadata. JSON-LD is a formal serialization format so this condition is satisfied. It includes essential elements such as '@context' and '@type', confirming the use of JSON-LD syntax."
+      }
+    }
+  },
+  "FsF_I2_01M": {
+    "test_results": {
+      "FsF_I2_01M-1": {
+        "success": false,
+        "resources": []
+      }
+    }
+  },
+  "FsF_I3_01M": {
+    "test_results": {
+      "FsF_I3_01M-1": {
+        "entities": [
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "https://orcid.org/0000-0003-4785-2254"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "https://orcid.org/0000-0002-2505-860X"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "https://orcid.org/0000-0002-3747-538X"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "https://orcid.org/0000-0002-7324-5880"
+          },
+          {
+            "entity": "Version",
+            "value": "2016.1"
+          },
+          {
+            "entity": "Citation/Reference",
+            "value":"Myers, N., Mittermeier, R. A., Mittermeier, C. G., da Fonseca, G. A. B., & Kent, J. (2000). Biodiversity hotspots for conservation priorities. Nature, 403, 853\u2013858."
+          },
+          {
+            "entity": "Citation/Reference",
+            "value": "Noss, R.F., Platt, W.J., Sorrie, B.A., Weakley, A.S., Means, D.B., Costanza, J., and Peet, R.K. (2015). How global biodiversity hotspots may go unrecognized: lessons from the North American Coastal Plain. Diversity and Distributions, 21, 236\u2013244."
+          }
+        ]
+      }
+    }
+  },
+  "FsF_R1_01MD": {
+    "test_results": {
+      "FsF_R1_01MD-1": {
+        "files": [
+          {
+            "name": "hotspots_2016_1",
+            "f_type": "zip",
+            "size": "14.22MB"
+          }
+        ],
+        "variables": []
+      }
+    }
+  },
+  "FsF_R1_1_01M": {
+    "test_results": {
+      "FsF_R1_1_01M-1": {
+        "license": "Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)"
+      },
+      "FsF_R1_1_01M-2": {
+        "success": true,
+        "comment": "The metadata file contains a license that is recognized by the SPDX license registry, ensuring compliance and standardization."
+      }
+    }
+  },
+  "FsF_R1_2_01M": {
+    "test_results": {
+      "FsF_R1_2_01M-1": {
+        "success": true,
+        "entities": {
+          "creator": "Michael Hoffman, Kellee Koenig, Gill Bunting, Jennifer Costanza, Kristen J. Williams",
+          "contributors": [
+            "https://orcid.org/0000-0003-4785-2254",
+            "https://orcid.org/0000-0002-2505-860X",
+            "https://orcid.org/0000-0002-3747-538X",
+            "https://orcid.org/0000-0002-7324-5880"
+          ],
+          "curation_date": "2019-09-09T13:10:12.504558+00:00",
+          "version": "2016.1",
+          "modification_date": "2020-01-24T19:25:48.035766+00:00",
+          "source": ""
+        },
+        "formal_vocab": false
+      }
+    }
+  },
+  "FsF_R1_3_02D": {
+    "test_results": {
+      "FsF_R1_3_02D-1": {
+        "success": false,
+        "comment": "No File information found",
+        "scientific_fmt": false,
+        "info": "No File information found, cannot check for scientific format"
+      }
+    }
+  }
+}

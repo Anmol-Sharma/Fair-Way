@@ -1,0 +1,136 @@
+{
+  "FsF_F1_01D": {
+    "test_results": {
+      "FsF_F1_01D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.6673464"
+      },
+      "FsF_F1_01D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F1_02D": {
+    "test_results": {
+      "FsF_F1_02D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.6673464"
+      },
+      "FsF_F1_02D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F2_01M": {
+    "test_results": {
+      "FsF_F2_01M-1-2-3": {
+        "creator": "Casey Ka Wun Leung",
+        "title": "Raw Data for Evidence for Isotropic s-Wave Superconductivity in High-Entropy Alloys",
+        "publisher": "Zenodo",
+        "publication_date": "2022-06-21",
+        "summary": "Raw Data for the paper \"Evidence for Isotropic s-Wave Superconductivity in High-Entropy Alloys\".",
+        "keywords": "Superconductivity, High-Entropy Alloys, Isotropic s-Wave"
+      }
+    }
+  },
+  "FsF_F3_01M": {
+    "test_results": {
+      "FsF_F3_01M-1": {
+        "success": true,
+        "identifier": "https://zenodo.org/api/records/6673464/files",
+        "file_name": "Evidence for Isotropic s-Wave Superconductivity in High-Entropy Alloys Raw Data.zip",
+        "file_size": "12.57 MB",
+        "file_type": "application/zip"
+      }
+    }
+  },
+  "FsF_A1_01M": {
+    "test_results": {
+      "FsF_A1_01M-1": {
+        "access_condition": "public",
+        "comment": "Provided with Open Creative Commons Licence (source: Embedded Metadata) / Access right is open with Creative Commons Licence (source: Harvested Metadata)"
+      }
+    }
+  },
+  "FsF_I1_01M": {
+    "test_results": {
+      "FsF_I1_01M-1": {
+        "success": true,
+        "comment": "Parsable, structured metadata(JSON-LD) was successfully detected on the landing page, confirming that it contains correctly embedded, machine-readable metadata. JSON-LD is a formal serialization format so this condition is satisfied. It includes essential elements such as '@context' and '@type', confirming the use of JSON-LD syntax."
+      }
+    }
+  },
+  "FsF_I2_01M": {
+    "test_results": {
+      "FsF_I2_01M-1": {
+        "success": false,
+        "resources": []
+      }
+    }
+  },
+  "FsF_I3_01M": {
+    "test_results": {
+      "FsF_I3_01M-1": {
+        "entities": [
+          {
+            "entity": "Version",
+            "value": "recid:6673463"
+          }
+        ]
+      }
+    }
+  },
+  "FsF_R1_01MD": {
+    "test_results": {
+      "FsF_R1_01MD-1": {
+        "files": [
+          {
+            "name": "Evidence for Isotropic s-Wave Superconductivity in High-Entropy Alloys Raw Data",
+            "f_type": "zip",
+            "size": "12.57 MB (13183940 bytes)"
+          }
+        ],
+        "variables": []
+      }
+    }
+  },
+  "FsF_R1_1_01M": {
+    "test_results": {
+      "FsF_R1_1_01M-1": {
+        "license": "Creative Commons Public Licence"
+      },
+      "FsF_R1_1_01M-2": {
+        "success": true,
+        "comment": "The metadata file contains a license that is recognized by the SPDX license registry, ensuring compliance and standardization."
+      }
+    }
+  },
+  "FsF_R1_2_01M": {
+    "test_results": {
+      "FsF_R1_2_01M-1": {
+        "success": true,
+        "entities": {
+          "creator": "Casey Ka Wun Leung",
+          "contributors": [],
+          "curation_date": "2022-06-21T07:24:46.707965+00:00",
+          "version": "recid:6673463",
+          "modification_date": "2022-06-22T01:51:23.537333+00:00",
+          "source": ""
+        },
+        "formal_vocab": false
+      }
+    }
+  },
+  "FsF_R1_3_02D": {
+    "test_results": {
+      "FsF_R1_3_02D-1": {
+        "success": false,
+        "comment": "No File information found",
+        "scientific_fmt": false,
+        "info": "No File information found, cannot check for scientific format"
+      }
+    }
+  }
+}

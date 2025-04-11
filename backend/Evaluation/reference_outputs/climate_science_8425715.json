@@ -1,0 +1,134 @@
+{
+  "FsF_F1_01D": {
+    "test_results": {
+      "FsF_F1_01D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.8425715"
+      },
+      "FsF_F1_01D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F1_02D": {
+    "test_results": {
+      "FsF_F1_02D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.8425715"
+      },
+      "FsF_F1_02D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F2_01M": {
+    "test_results": {
+      "FsF_F2_01M-1-2-3": {
+        "creator": "Michael Kempf",
+        "title": "A dataset to model Levantine landcover and land-use change triggered by climate change, the Arab Spring and COVID-19",
+        "publisher": "Zenodo",
+        "publication_date": "2023-10-12",
+        "summary": "The Levant region is highly vulnerable to climate change, experiencing prolonged heat waves that have led to societal crises and population displacement. Since 2010, the area has been marked by socio-political turmoil, including the Syrian civil war, which has strained neighbouring countries like Jordan due to the influx of Syrian refugees. Jordan, in particular, has seen rapid population growth and significant changes in land use and infrastructure, leading to over-exploitation of the landscape through irrigation and construction. This article uses climate data, satellite imagery, and land cover information to illustrate the substantial increase in construction activity and highlights the intricate relationship between climate change predictions and current socio-political developments in the Levant.",
+        "keywords": "Built-up change; Climate Change; Migration; Land degradation; Drought; Jordan"
+      }
+    }
+  },
+  "FsF_F3_01M": {
+    "test_results": {
+      "FsF_F3_01M-1": {
+        "success": true,
+        "identifier": "https://zenodo.org/api/records/8425715/files",
+        "file_name": "",
+        "file_size": "",
+        "file_type": ""
+      }
+    }
+  },
+  "FsF_A1_01M": {
+    "test_results": {
+      "FsF_A1_01M-1": {
+        "access_condition": "embargoed",
+        "comment": "Embargoed until 2025-05-15"
+      }
+    }
+  },
+  "FsF_I1_01M": {
+    "test_results": {
+      "FsF_I1_01M-1": {
+        "success": true,
+        "comment": "Parsable, structured metadata(JSON-LD) was successfully detected on the landing page, confirming that it contains correctly embedded, machine-readable metadata. JSON-LD is a formal serialization format so this condition is satisfied. It includes essential elements such as '@context' and '@type', confirming the use of JSON-LD syntax."
+      }
+    }
+  },
+  "FsF_I2_01M": {
+    "test_results": {
+      "FsF_I2_01M-1": {
+        "success": false,
+        "resources": []
+      }
+    }
+  },
+  "FsF_I3_01M": {
+    "test_results": {
+      "FsF_I3_01M-1": {
+        "entities": [
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "0000-0002-9474-4670 from Harvested Metadata"
+          },
+          {
+            "entity": "Version",
+            "value": "recid:8425714"
+          }
+        ]
+      }
+    }
+  },
+  "FsF_R1_01MD": {
+    "test_results": {
+      "FsF_R1_01MD-1": {
+        "files": [],
+        "variables": []
+      }
+    }
+  },
+  "FsF_R1_1_01M": {
+    "test_results": {
+      "FsF_R1_1_01M-1": {
+        "license": "Creative Commons Attribution 4.0 International"
+      },
+      "FsF_R1_1_01M-2": {
+        "success": true,
+        "comment": "The metadata file contains a license that is recognized by the SPDX license registry, ensuring compliance and standardization."
+      }
+    }
+  },
+  "FsF_R1_2_01M": {
+    "test_results": {
+      "FsF_R1_2_01M-1": {
+        "success": true,
+        "entities": {
+          "creator": "Michael Kempf",
+          "contributors": [],
+          "curation_date": "2023-10-12T07:01:50.648865+00:00",
+          "version": "",
+          "modification_date": "2023-10-12T07:07:38.768801+00:00",
+          "source": ""
+        },
+        "formal_vocab": false
+      }
+    }
+  },
+  "FsF_R1_3_02D": {
+    "test_results": {
+      "FsF_R1_3_02D-1": {
+        "success": false,
+        "comment": "No Specific File information found",
+        "scientific_fmt": false,
+        "info": "No File information found, cannot check for scientific format"
+      }
+    }
+  }
+}

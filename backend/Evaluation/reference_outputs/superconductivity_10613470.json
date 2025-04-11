@@ -1,0 +1,145 @@
+{
+  "FsF_F1_01D": {
+    "test_results": {
+      "FsF_F1_01D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.10613470"
+      },
+      "FsF_F1_01D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F1_02D": {
+    "test_results": {
+      "FsF_F1_02D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.10613470"
+      },
+      "FsF_F1_02D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F2_01M": {
+    "test_results": {
+      "FsF_F2_01M-1-2-3": {
+        "creator": "Pawlak, Remy",
+        "title": "Observation of low-energy sub-gap states in a supramolecular electron spin lattice on superconducting Pb(111)",
+        "publisher": "Zenodo",
+        "publication_date": "2024-02-03",
+        "summary": "Data set of the manuscript \"Gate-tunable topological superconductivity in a supramolecular electron spin lattice\"",
+        "keywords": ""
+      }
+    }
+  },
+  "FsF_F3_01M": {
+    "test_results": {
+      "FsF_F3_01M-1": {
+        "success": true,
+        "identifier": "https://zenodo.org/api/records/10613470/files/dataset.zip/content",
+        "file_name": "dataset.zip",
+        "file_size": "116.57 MB",
+        "file_type": "application/zip"
+      }
+    }
+  },
+  "FsF_A1_01M": {
+    "test_results": {
+      "FsF_A1_01M-1": {
+        "access_condition": "public",
+        "comment": "Access right is open with a Creative Commons License (cc-by-4.0)"
+      }
+    }
+  },
+  "FsF_I1_01M": {
+    "test_results": {
+      "FsF_I1_01M-1": {
+        "success": true,
+        "comment": "Parsable, structured metadata(JSON-LD) was successfully detected on the landing page, confirming that it contains correctly embedded, machine-readable metadata. JSON-LD is a formal serialization format so this condition is satisfied. It includes essential elements such as '@context' and '@type', confirming the use of JSON-LD syntax."
+      }
+    }
+  },
+  "FsF_I2_01M": {
+    "test_results": {
+      "FsF_I2_01M-1": {
+        "success": false,
+        "resources": []
+      }
+    }
+  },
+  "FsF_I3_01M": {
+    "test_results": {
+      "FsF_I3_01M-1": {
+        "entities": [
+          {
+            "entity": "ROR/Institution/University/Organization",
+            "value": "https://ror.org/02s6k3f65"
+          },
+          {
+            "entity": "Version",
+            "value": "recid:10613469"
+          }
+        ]
+      }
+    }
+  },
+  "FsF_R1_01MD": {
+    "test_results": {
+      "FsF_R1_01MD-1": {
+        "files": [
+          {
+            "name": "dataset",
+            "f_type": "zip",
+            "size": "116.57MB"
+          },
+          {
+            "name": "dataset.zip",
+            "f_type": "zip",
+            "size": "122228363 bytes"
+          }
+        ],
+        "variables": []
+      }
+    }
+  },
+  "FsF_R1_1_01M": {
+    "test_results": {
+      "FsF_R1_1_01M-1": {
+        "license": "Creative Commons Public Licence"
+      },
+      "FsF_R1_1_01M-2": {
+        "success": true,
+        "comment": "The metadata file contains a license that is recognized by the SPDX license registry, ensuring compliance and standardization."
+      }
+    }
+  },
+  "FsF_R1_2_01M": {
+    "test_results": {
+      "FsF_R1_2_01M-1": {
+        "success": true,
+        "entities": {
+          "creator": "Remy Pawlak",
+          "contributors": [],
+          "curation_date": "2024-02-03T14:33:20.851993+00:00",
+          "version": "recid:10613469",
+          "modification_date": "2024-08-15T10:22:40.212830+00:00",
+          "source": ""
+        },
+        "formal_vocab": false
+      }
+    }
+  },
+  "FsF_R1_3_02D": {
+    "test_results": {
+      "FsF_R1_3_02D-1": {
+        "success": true,
+        "comment": "All listed file formats in the metadata are open, indicating that the metadata format is indeed an open file format.",
+        "scientific_fmt": true,
+        "info": "The metadata format has been successfully identified as a scientific file format. The test results indicate that the metadata structure conforms to the expected scientific standards, with all necessary keys and values present. Any discrepancies found in individual sections were resolved, ensuring the integrity and consistency of the entire metadata file. This ensures that the metadata is suitable for scientific data management and exchange."
+      }
+    }
+  }
+}

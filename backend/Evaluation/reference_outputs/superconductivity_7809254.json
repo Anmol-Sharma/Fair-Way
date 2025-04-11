@@ -1,0 +1,309 @@
+{
+  "FsF_F1_01D": {
+    "test_results": {
+      "FsF_F1_01D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.7809254"
+      },
+      "FsF_F1_01D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F1_02D": {
+    "test_results": {
+      "FsF_F1_02D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.7809254"
+      },
+      "FsF_F1_02D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F2_01M": {
+    "test_results": {
+      "FsF_F2_01M-1-2-3": {
+        "creator": "Weijiong Chen, Clara Neerup Brei\u00f8, Freek Massee, M.P. Allan, C. Petrovic, J.C. S\u00e9amus Davis, P.J. Hirschfeld, Brian M. Andersen, Andreas Kreisel",
+        "title": "Replication Data and Code for: Interplay of Hidden Orbital Order and Superconductivity in CeCoIn5",
+        "publisher": "Zenodo",
+        "publication_date": "2023-04-24",
+        "summary": "Replication Data and Code for: Interplay of Hidden Orbital Order and Superconductivity in CeCoIn5",
+        "keywords": ""
+      }
+    }
+  },
+  "FsF_F3_01M": {
+    "test_results": {
+      "FsF_F3_01M-1": {
+        "success": true,
+        "identifier": "https://zenodo.org/api/records/7809254/files",
+        "file_name": "Theory_Data_Code.zip",
+        "file_size": "84.93 MB",
+        "file_type": "application/zip"
+      }
+    }
+  },
+  "FsF_A1_01M": {
+    "test_results": {
+      "FsF_A1_01M-1": {
+        "access_condition": "public",
+        "comment": "Access right is open with Creative Commons Licence"
+      }
+    }
+  },
+  "FsF_I1_01M": {
+    "test_results": {
+      "FsF_I1_01M-1": {
+        "success": true,
+        "comment": "Parsable, structured metadata(JSON-LD) was successfully detected on the landing page, confirming that it contains correctly embedded, machine-readable metadata. JSON-LD is a formal serialization format so this condition is satisfied. It includes essential elements such as '@context' and '@type', confirming the use of JSON-LD syntax."
+      }
+    }
+  },
+  "FsF_I2_01M": {
+    "test_results": {
+      "FsF_I2_01M-1": {
+        "success": true,
+        "resources": []
+      }
+    }
+  },
+  "FsF_I3_01M": {
+    "test_results": {
+      "FsF_I3_01M-1": {
+        "entities": [
+          {
+            "entity": "Version",
+            "value": "recid:7709888"
+          }
+        ]
+      }
+    }
+  },
+  "FsF_R1_01MD": {
+    "test_results": {
+      "FsF_R1_01MD-1": {
+        "files": [
+          {
+            "name": "FigS5c",
+            "f_type": "txt",
+            "size": "289352 bytes"
+          },
+          {
+            "name": "FigS5b",
+            "f_type": "txt",
+            "size": "285715 bytes"
+          },
+          {
+            "name": "FigS8a",
+            "f_type": "txt",
+            "size": "23508 bytes"
+          },
+          {
+            "name": "FigS7b",
+            "f_type": "txt",
+            "size": "271008 bytes"
+          },
+          {
+            "name": "FigS7a",
+            "f_type": "txt",
+            "size": "1069418 bytes"
+          },
+          {
+            "name": "FigS6h",
+            "f_type": "txt",
+            "size": "6597579 bytes"
+          },
+          {
+            "name": "FigS5a",
+            "f_type": "txt",
+            "size": "294640 bytes"
+          },
+          {
+            "name": "FigS6g",
+            "f_type": "txt",
+            "size": "6597524 bytes"
+          },
+          {
+            "name": "FigS4b",
+            "f_type": "txt",
+            "size": "8187 bytes"
+          },
+          {
+            "name": "FigS6f",
+            "f_type": "txt",
+            "size": "6597799 bytes"
+          },
+          {
+            "name": "FigS4a",
+            "f_type": "txt",
+            "size": "8187 bytes"
+          },
+          {
+            "name": "FigS3d",
+            "f_type": "txt",
+            "size": "1071201 bytes"
+          },
+          {
+            "name": "FigS6e",
+            "f_type": "txt",
+            "size": "6597832 bytes"
+          },
+          {
+            "name": "FigS6d",
+            "f_type": "txt",
+            "size": "8007692 bytes"
+          },
+          {
+            "name": "FigS6c",
+            "f_type": "txt",
+            "size": "8000004 bytes"
+          },
+          {
+            "name": "FigS6b",
+            "f_type": "txt",
+            "size": "8110802 bytes"
+          },
+          {
+            "name": "FigS6a",
+            "f_type": "txt",
+            "size": "5133827 bytes"
+          },
+          {
+            "name": "FigS5f",
+            "f_type": "txt",
+            "size": "288095 bytes"
+          },
+          {
+            "name": "FigS3c",
+            "f_type": "txt",
+            "size": "1071798 bytes"
+          },
+          {
+            "name": "FigS5e",
+            "f_type": "txt",
+            "size": "289281 bytes"
+          },
+          {
+            "name": "Theory_Data_Code",
+            "f_type": "zip",
+            "size": "2017647 bytes"
+          },
+          {
+            "name": "Figure Data",
+            "f_type": "zip",
+            "size": "12431210 bytes"
+          },
+          {
+            "name": "Figure2",
+            "f_type": "zip",
+            "size": "1019807 bytes"
+          },
+          {
+            "name": "FigS9d",
+            "f_type": "txt",
+            "size": "5397051 bytes"
+          },
+          {
+            "name": "FigS5d",
+            "f_type": "txt",
+            "size": "288843 bytes"
+          },
+          {
+            "name": "FigS9c",
+            "f_type": "txt",
+            "size": "1859694 bytes"
+          },
+          {
+            "name": "FigS9b",
+            "f_type": "txt",
+            "size": "5397645 bytes"
+          },
+          {
+            "name": "FigS9a",
+            "f_type": "txt",
+            "size": "7117 bytes"
+          },
+          {
+            "name": "FigS8b",
+            "f_type": "txt",
+            "size": "23507 bytes"
+          }
+        ],
+        "variables": []
+      }
+    }
+  },
+  "FsF_R1_1_01M": {
+    "test_results": {
+      "FsF_R1_1_01M-1": {
+        "license": "Creative Commons Attribution 4.0 International"
+      },
+      "FsF_R1_1_01M-2": {
+        "success": true,
+        "comment": "The metadata file contains a license that is recognized by the SPDX license registry, ensuring compliance and standardization."
+      }
+    }
+  },
+  "FsF_R1_2_01M": {
+    "test_results": {
+      "FsF_R1_2_01M-1": {
+        "success": true,
+        "entities": {
+          "creator": "Weijiong Chen, Clara Neerup Brei\u00f8, Freek Massee, M.P. Allan, C. Petrovic, J.C. S\u00e9amus Davis, P.J. Hirschfeld, Brian M. Andersen, Andreas Kreisel",
+          "contributors": [
+            {
+              "entity": "ORCID/Collaborator/Creator/Contributor",
+              "value": "Clara Neerup Brei\u00f8"
+            },
+            {
+              "entity": "ORCID/Collaborator/Creator/Contributor",
+              "value": "Freek Massee"
+            },
+            {
+              "entity": "ORCID/Collaborator/Creator/Contributor",
+              "value": "M.P. Allan"
+            },
+            {
+              "entity": "ORCID/Collaborator/Creator/Contributor",
+              "value": "C. Petrovic"
+            },
+            {
+              "entity": "ORCID/Collaborator/Creator/Contributor",
+              "value": "J.C. S\u00e9amus Davis"
+            },
+            {
+              "entity": "ORCID/Collaborator/Creator/Contributor",
+              "value": "P.J. Hirschfeld"
+            },
+            {
+              "entity": "ORCID/Collaborator/Creator/Contributor",
+              "value": "Brian M. Andersen"
+            },
+            {
+              "entity": "ORCID/Collaborator/Creator/Contributor",
+              "value": "Andreas Kreisel"
+            }
+          ],
+          "curation_date": "2023-04-24T16:30:20.077189+00:00",
+          "version": "recid:7709888",
+          "modification_date": "2023-04-25T02:26:51.099693+00:00",
+          "source": "https://doi.org/10.5281/zenodo.7809254"
+        },
+        "formal_vocab": false
+      }
+    }
+  },
+  "FsF_R1_3_02D": {
+    "test_results": {
+      "FsF_R1_3_02D-1": {
+        "success": true,
+        "comment": "All listed file formats in the metadata are confirmed to be open formats, including 'txt', which is considered open as it represents plaintext.",
+        "scientific_fmt": true,
+        "info": "The metadata format has been successfully identified as a scientific file format. At the same time the list of files provided in the metadata also are scientific data formats."
+      }
+    }
+  }
+}

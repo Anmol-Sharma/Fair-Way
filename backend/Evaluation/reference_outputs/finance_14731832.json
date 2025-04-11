@@ -1,0 +1,151 @@
+{
+  "FsF_F1_01D": {
+    "test_results": {
+      "FsF_F1_01D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.14731832"
+      },
+      "FsF_F1_01D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F1_02D": {
+    "test_results": {
+      "FsF_F1_02D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.14731832"
+      },
+      "FsF_F1_02D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F2_01M": {
+    "test_results": {
+      "FsF_F2_01M-1-2-3": {
+        "creator": "Tamiru, Gabusho; Chala, Gelana; Ismael, Hussein",
+        "title": "Effect of Financial Inclusion on Rural-Urban Households' Economic Welfare West Hararghe Zone, Evidence's From Some Selected Woredaa",
+        "publisher": "Zenodo",
+        "publication_date": "2025-01-24",
+        "summary": "To lets a reader to know where and how to access data that support the results and analysis of my submitted paper to support that were analyzed and generated during the study, descriptions of what data are available and information on how to access data that is publicly available; on the behalf of corresponding authors states the supporting data including tables and figures were attached at the end page of blind manuscript submitted.",
+        "keywords": "Economics, Community finance, Public finance, Finances, Housing finance, Local finance, Sustainable finance"
+      }
+    }
+  },
+  "FsF_F3_01M": {
+    "test_results": {
+      "FsF_F3_01M-1": {
+        "success": true,
+        "identifier": "https://zenodo.org/api/records/14731832/files",
+        "file_name": "Research Dta Fin F1000.dta",
+        "file_size": "57001",
+        "file_type": "dta"
+      }
+    }
+  },
+  "FsF_A1_01M": {
+    "test_results": {
+      "FsF_A1_01M-1": {
+        "access_condition": "public",
+        "comment": "Access right is open with a Creative Commons license (cc-by-4.0)"
+      }
+    }
+  },
+  "FsF_I1_01M": {
+    "test_results": {
+      "FsF_I1_01M-1": {
+        "success": true,
+        "comment": "Parsable, structured metadata(JSON-LD) was successfully detected on the landing page, confirming that it contains correctly embedded, machine-readable metadata. JSON-LD is a formal serialization format so this condition is satisfied. It includes essential elements such as '@context' and '@type', confirming the use of JSON-LD syntax."
+      }
+    }
+  },
+  "FsF_I2_01M": {
+    "test_results": {
+      "FsF_I2_01M-1": {
+        "success": true,
+        "resources": []
+      }
+    }
+  },
+  "FsF_I3_01M": {
+    "test_results": {
+      "FsF_I3_01M-1": {
+        "entities": [
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "Tamiru, Gabusho"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "Chala, Gelana"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "Ismael, Hussein"
+          },
+          {
+            "entity": "Version",
+            "value": "recid:14731831"
+          }
+        ]
+      }
+    }
+  },
+  "FsF_R1_01MD": {
+    "test_results": {
+      "FsF_R1_01MD-1": {
+        "files": [
+          {
+            "name": "Research Dta Fin F1000",
+            "f_type": "dta",
+            "size": "57001 bytes"
+          }
+        ],
+        "variables": []
+      }
+    }
+  },
+  "FsF_R1_1_01M": {
+    "test_results": {
+      "FsF_R1_1_01M-1": {
+        "license": "Creative Commons Public Licence"
+      },
+      "FsF_R1_1_01M-2": {
+        "success": true,
+        "comment": "The metadata file contains a license that is recognized by the SPDX license registry, ensuring compliance and standardization."
+      }
+    }
+  },
+  "FsF_R1_2_01M": {
+    "test_results": {
+      "FsF_R1_2_01M-1": {
+        "success": true,
+        "entities": {
+          "creator": "Tamiru, Gabusho",
+          "contributors": [
+            "Chala, Gelana",
+            "Ismael, Hussein"
+          ],
+          "curation_date": "2025-01-24T11:46:01.542182+00:00",
+          "version": "recid:14731831",
+          "modification_date": "2025-01-24T11:46:02.131352+00:00",
+          "source": ""
+        },
+        "formal_vocab": false
+      }
+    }
+  },
+  "FsF_R1_3_02D": {
+    "test_results": {
+      "FsF_R1_3_02D-1": {
+        "success": false,
+        "comment": "No File information found",
+        "scientific_fmt": false,
+        "info": "No File information found, cannot check for scientific format"
+      }
+    }
+  }
+}

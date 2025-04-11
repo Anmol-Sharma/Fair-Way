@@ -1,0 +1,173 @@
+{
+  "FsF_F1_01D": {
+    "test_results": {
+      "FsF_F1_01D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.11094549"
+      },
+      "FsF_F1_01D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F1_02D": {
+    "test_results": {
+      "FsF_F1_02D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.11094549"
+      },
+      "FsF_F1_02D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F2_01M": {
+    "test_results": {
+      "FsF_F2_01M-1-2-3": {
+        "creator": "Mart\u00edn Carbonell, Marta; Sequeira, Doris; Domenech, Julio; Espejo, Bego\u00f1a",
+        "title": "Dataset HC-Pairs Chile, Colombia and Spain",
+        "publisher": "Zenodo",
+        "publication_date": "2024-04-30",
+        "summary": "This dataset contains data from the Health Care Providers\u2019 Pain and Impairment Relationship Scale (HC-PAIRS) in health professionals and university students from Chile, Colombia, and Spain. Data from Colombia and Chile was collected between August, 2021, and April, 2022. Data for Spain was collected between September and November 2011. Demographic variables and responses to items on the Health Care Providers\u2019 Pain and Impairment Relationship Scale (HC-PAIRS) are included. Although the language of the file is originally Spanish, the variable names and value labels have been translated into English for easier understanding. Data and codebooks are provided in csv format, following the FAIR principles. Three files are provided: 1. HC-Pairs data, with the data related to sample characteristics and the answers to the questionnaire items in the three countries. 2. Database codebook of variables, with information of the labels of the variables of the HC-Pairs data file. 3. Variables values codebook, with the labels of the values of the variables in the HC-Pairs data file.",
+        "keywords": "pain, hc-pairs, Medical and health sciences, health care providers, psychometrics, Psychology, university students, Health care sciences, Health care services"
+      }
+    }
+  },
+  "FsF_F3_01M": {
+    "test_results": {
+      "FsF_F3_01M-1": {
+        "success": true,
+        "identifier": "https://zenodo.org/api/records/11094549/files",
+        "file_name": "Dataset HC-Pairs Chile, Colombia and Spain.csv",
+        "file_size": "118.25 KB",
+        "file_type": "csv"
+      }
+    }
+  },
+  "FsF_A1_01M": {
+    "test_results": {
+      "FsF_A1_01M-1": {
+        "access_condition": "public",
+        "comment": "Access right is open with a Creative Commons Licence (cc-by-4.0)"
+      }
+    }
+  },
+  "FsF_I1_01M": {
+    "test_results": {
+      "FsF_I1_01M-1": {
+        "success": true,
+        "comment": "Parsable, structured metadata(JSON-LD) was successfully detected on the landing page, confirming that it contains correctly embedded, machine-readable metadata. JSON-LD is a formal serialization format so this condition is satisfied. It includes essential elements such as '@context' and '@type', confirming the use of JSON-LD syntax."
+      }
+    }
+  },
+  "FsF_I2_01M": {
+    "test_results": {
+      "FsF_I2_01M-1": {
+        "success": false,
+        "resources": []
+      }
+    }
+  },
+  "FsF_I3_01M": {
+    "test_results": {
+      "FsF_I3_01M-1": {
+        "entities": [
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "https://orcid.org/0000-0003-1793-8372"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "https://orcid.org/0000-0001-9488-8159"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "https://orcid.org/0000-0003-0788-2969"
+          },
+          {
+            "entity": "Institution/University/Organization",
+            "value": "https://ror.org/02s7fkk92"
+          },
+          {
+            "entity": "Related Identifier",
+            "value": "10.1016/j.heliyon.2024.e34652"
+          },
+          {
+            "entity": "Version",
+            "value": "recid:11094548"
+          }
+        ]
+      }
+    }
+  },
+  "FsF_R1_01MD": {
+    "test_results": {
+      "FsF_R1_01MD-1": {
+        "files": [
+          {
+            "name": "Dataset HC-Pairs Chile, Colombia and Spain",
+            "f_type": "csv",
+            "size": "115058 bytes"
+          },
+          {
+            "name": "Database codebook of variables",
+            "f_type": "csv",
+            "size": "2158 bytes"
+          },
+          {
+            "name": "Variable values codebook",
+            "f_type": "csv",
+            "size": "2897 bytes"
+          }
+        ],
+        "variables": [
+          "Demographic variables",
+          "HC-PAIRS responses"
+        ]
+      }
+    }
+  },
+  "FsF_R1_1_01M": {
+    "test_results": {
+      "FsF_R1_1_01M-1": {
+        "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+      },
+      "FsF_R1_1_01M-2": {
+        "success": true,
+        "comment": "The metadata file contains a license that is recognized by the SPDX license registry, ensuring compliance and standardization."
+      }
+    }
+  },
+  "FsF_R1_2_01M": {
+    "test_results": {
+      "FsF_R1_2_01M-1": {
+        "success": true,
+        "entities": {
+          "creator": "Marta Mart\u00edn Carbonell",
+          "contributors": [
+            "https://orcid.org/0000-0003-1793-8372",
+            "https://orcid.org/0000-0001-9488-8159",
+            "https://orcid.org/0000-0003-0788-2969"
+          ],
+          "curation_date": "2024-05-02T09:04:12.143859+00:00",
+          "version": "recid:11094548",
+          "modification_date": "2024-10-23T14:43:23.976491+00:00",
+          "source": ""
+        },
+        "formal_vocab": false
+      }
+    }
+  },
+  "FsF_R1_3_02D": {
+    "test_results": {
+      "FsF_R1_3_02D-1": {
+        "success": true,
+        "comment": "All listed file formats are open, indicating that the metadata format is indeed an open file format.",
+        "scientific_fmt": true,
+        "info": "The metadata format has been successfully identified as a scientific file format. At the same time the list of files provided in the metadata also are scientific data formats."
+      }
+    }
+  }
+}

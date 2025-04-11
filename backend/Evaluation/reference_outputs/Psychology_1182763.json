@@ -1,0 +1,294 @@
+{
+  "FsF_F1_01D": {
+    "test_results": {
+      "FsF_F1_01D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.1182763"
+      },
+      "FsF_F1_01D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F1_02D": {
+    "test_results": {
+      "FsF_F1_02D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.1182763"
+      },
+      "FsF_F1_02D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F2_01M": {
+    "test_results": {
+      "FsF_F2_01M-1-2-3": {
+        "creator": "Cannon, Peter Robert; Bidwell, Alexander; Buchtel, Emma",
+        "title": "Facial electromyography while listening to stories based on the moral foundations (New Zealand) [MV4",
+        "publisher": "Zenodo",
+        "publication_date": "2017-02-22",
+        "summary": "Raw data from a New Zealand replication of Cannon, P. R., Schnall, S., & White, M. (2011). Transgressions and expressions: Affective facial muscle activity predicts moral judgments. Social Psychological and Personality Science, 2, 325-331. Raw data are in proprietary format: Behavioural data is PST's Eprime 2 Professional (*.edat2) and Physiology data is Biopac's AcqKnowledge (*.ACQ). Text formatted raw data will be posted in a later version of the repository in a single archive once data collection is completed.",
+        "keywords": "Psychology, Electromyography, EMG, Moral Foundations, Morality, Emotion, Affect"
+      }
+    }
+  },
+  "FsF_F3_01M": {
+    "test_results": {
+      "FsF_F3_01M-1": {
+        "success": true,
+        "identifier": "https://zenodo.org/api/records/1182763/files",
+        "file_name": "M4P06.zip",
+        "file_size": "5.96 GB",
+        "file_type": "zip"
+      }
+    }
+  },
+  "FsF_A1_01M": {
+    "test_results": {
+      "FsF_A1_01M-1": {
+        "access_condition": "public",
+        "comment": "Access right is open with a Creative Commons ShareAlike Licence"
+      }
+    }
+  },
+  "FsF_I1_01M": {
+    "test_results": {
+      "FsF_I1_01M-1": {
+        "success": true,
+        "comment": "The metadata file contains a license that is recognized by the SPDX license registry, ensuring compliance and standardization."
+      }
+    }
+  },
+  "FsF_I2_01M": {
+    "test_results": {
+      "FsF_I2_01M-1": {
+        "success": false,
+        "resources": []
+      }
+    }
+  },
+  "FsF_I3_01M": {
+    "test_results": {
+      "FsF_I3_01M-1": {
+        "entities": [
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "Bidwell, Alexander"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "Buchtel, Emma"
+          },
+          {
+            "entity": "Version",
+            "value": "recid:898825"
+          }
+        ]
+      }
+    }
+  },
+  "FsF_R1_01MD": {
+    "test_results": {
+      "FsF_R1_01MD-1": {
+        "files": [
+          {
+            "name": "M4P06",
+            "f_type": "zip",
+            "size": "226487700"
+          },
+          {
+            "name": "M4P23",
+            "f_type": "zip",
+            "size": "213141605"
+          },
+          {
+            "name": "M4P22",
+            "f_type": "zip",
+            "size": "206464016"
+          },
+          {
+            "name": "M4P21",
+            "f_type": "zip",
+            "size": "207343981"
+          },
+          {
+            "name": "M4P20",
+            "f_type": "zip",
+            "size": "224896389"
+          },
+          {
+            "name": "M4P19",
+            "f_type": "zip",
+            "size": "236882101"
+          },
+          {
+            "name": "M4P18",
+            "f_type": "zip",
+            "size": "222402081"
+          },
+          {
+            "name": "M4P17",
+            "f_type": "zip",
+            "size": "211922010"
+          },
+          {
+            "name": "M4P16",
+            "f_type": "zip",
+            "size": "218778443"
+          },
+          {
+            "name": "M4P15",
+            "f_type": "zip",
+            "size": "194728824"
+          },
+          {
+            "name": "M4P14",
+            "f_type": "zip",
+            "size": "250098393"
+          },
+          {
+            "name": "M4P13",
+            "f_type": "zip",
+            "size": "199136728"
+          },
+          {
+            "name": "M4P12",
+            "f_type": "zip",
+            "size": "246627231"
+          },
+          {
+            "name": "M4P11",
+            "f_type": "zip",
+            "size": "203241522"
+          },
+          {
+            "name": "M4P10",
+            "f_type": "zip",
+            "size": "223402847"
+          },
+          {
+            "name": "M4P09",
+            "f_type": "zip",
+            "size": "199420400"
+          },
+          {
+            "name": "M4P08",
+            "f_type": "zip",
+            "size": "201715340"
+          },
+          {
+            "name": "M4P07",
+            "f_type": "zip",
+            "size": "198063748"
+          },
+          {
+            "name": "M4P05",
+            "f_type": "zip",
+            "size": "196985443"
+          },
+          {
+            "name": "M4P04",
+            "f_type": "zip",
+            "size": "217373331"
+          },
+          {
+            "name": "M4P03",
+            "f_type": "zip",
+            "size": "208387300"
+          },
+          {
+            "name": "M4P02",
+            "f_type": "zip",
+            "size": "218199389"
+          },
+          {
+            "name": "M4P01",
+            "f_type": "zip",
+            "size": "212808415"
+          },
+          {
+            "name": "M4P25",
+            "f_type": "zip",
+            "size": "214886539"
+          },
+          {
+            "name": "M4P26",
+            "f_type": "zip",
+            "size": "196764375"
+          },
+          {
+            "name": "M4P27",
+            "f_type": "zip",
+            "size": "186030373"
+          },
+          {
+            "name": "M4P28",
+            "f_type": "zip",
+            "size": "220210641"
+          },
+          {
+            "name": "M4P29",
+            "f_type": "zip",
+            "size": "208761341"
+          },
+          {
+            "name": "M4P30",
+            "f_type": "zip",
+            "size": "188543051"
+          },
+          {
+            "name": "M4P24",
+            "f_type": "zip",
+            "size": "250788676"
+          },
+          {
+            "name": "readme",
+            "f_type": "txt",
+            "size": "15"
+          }
+        ],
+        "variables": []
+      }
+    }
+  },
+  "FsF_R1_1_01M": {
+    "test_results": {
+      "FsF_R1_1_01M-1": {
+        "license": "Creative Commons Attribution-ShareAlike 4.0 International"
+      },
+      "FsF_R1_1_01M-2": {
+        "success": true,
+        "comment": "The metadata file contains a license that is recognized by the SPDX license registry, ensuring compliance and standardization."
+      }
+    }
+  },
+  "FsF_R1_2_01M": {
+    "test_results": {
+      "FsF_R1_2_01M-1": {
+        "success": true,
+        "entities": {
+          "creator": "Peter Robert Cannon",
+          "contributors": [],
+          "curation_date": "2018-02-22T01:18:19.581105+00:00",
+          "version": "2",
+          "modification_date": "2020-01-24T19:23:41.283321+00:00",
+          "source": "https://doi.org/10.5281/zenodo.1182763"
+        },
+        "formal_vocab": false
+      }
+    }
+  },
+  "FsF_R1_3_02D": {
+    "test_results": {
+      "FsF_R1_3_02D-1": {
+        "success": true,
+        "comment": "All listed file formats in the metadata are open.",
+        "scientific_fmt": true,
+        "info": "The metadata format has been successfully identified as a scientific file format. At the same time the list of files provided in the metadata also are scientific data formats."
+      }
+    }
+  }
+}

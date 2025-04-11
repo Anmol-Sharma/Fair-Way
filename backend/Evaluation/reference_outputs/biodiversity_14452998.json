@@ -1,0 +1,259 @@
+{
+  "FsF_F1_01D": {
+    "test_results": {
+      "FsF_F1_01D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.14452998"
+      },
+      "FsF_F1_01D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F1_02D": {
+    "test_results": {
+      "FsF_F1_02D-1": {
+        "success": true,
+        "identifier": "https://doi.org/10.5281/zenodo.14452998"
+      },
+      "FsF_F1_02D-2": {
+        "success": true,
+        "comment": "Identifier resolved"
+      }
+    }
+  },
+  "FsF_F2_01M": {
+    "test_results": {
+      "FsF_F2_01M-1-2-3": {
+        "creator": "Rehbein, Malte; Escobari Vargas, Andrea Belen; Fischer, Sarah; G\u0000fcntsch, Anton; Haas, Bettina; Matheisen, Giada; Perschl, Tobias; Wieshuber, Alois; Engel, Thore",
+        "title": "Historical Animal Observation Records by Bavarian Forestry Offices (1845)",
+        "publisher": "Zenodo",
+        "publication_date": "2024-12-13",
+        "summary": "In 1845, under Andreas Wagner's scientific leadership, the Bavarian government surveyed 44 selected vertebrate species across the country by sending questionnaires to all 119 forestry offices. For the first time, foresters' responses were systematically recorded and analyzed. The resulting dataset includes 5,467 geo-coded animal observations and stems from an interdisciplinary collaboration involving the University of Passau's Chair of Computational Humanities, the Bavarian State Archives, iDiv Halle-Jena-Leipzig, the Botanical Garden Berlin, and the NFDI4Biodiversity consortium.",
+        "keywords": "Biodiversity, Historical Ecology, Computational Humanities, Bavaria, 19th Century, Digital humanities, Biodiversity conservation, Zoology"
+      }
+    }
+  },
+  "FsF_F3_01M": {
+    "test_results": {
+      "FsF_F3_01M-1": {
+        "success": true,
+        "identifier": "https://zenodo.org/api/records/14452998/files",
+        "file_name": "",
+        "file_size": "",
+        "file_type": ""
+      }
+    }
+  },
+  "FsF_A1_01M": {
+    "test_results": {
+      "FsF_A1_01M-1": {
+        "access_condition": "public",
+        "comment": "Access right is open with a Creative Commons license (cc-by-4.0). Provided with Open Creative Commons Licence. Source: Embedded Metadata, Harvested Metadata"
+      }
+    }
+  },
+  "FsF_I1_01M": {
+    "test_results": {
+      "FsF_I1_01M-1": {
+        "success": true,
+        "comment": "Parsable, structured metadata(JSON-LD) was successfully detected on the landing page, confirming that it contains correctly embedded, machine-readable metadata. JSON-LD is a formal serialization format so this condition is satisfied. It includes essential elements such as '@context' and '@type', confirming the use of JSON-LD syntax."
+      }
+    }
+  },
+  "FsF_I2_01M": {
+    "test_results": {
+      "FsF_I2_01M-1": {
+        "success": false,
+        "resources": []
+      }
+    }
+  },
+  "FsF_I3_01M": {
+    "test_results": {
+      "FsF_I3_01M-1": {
+        "entities": [
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "https://orcid.org/0000-0002-3252-0604"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "https://orcid.org/0000-0002-4588-3180"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "https://orcid.org/0000-0002-6218-7275"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "https://orcid.org/0000-0002-4325-4030"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "https://orcid.org/0009-0004-1488-6110"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "https://orcid.org/0009-0001-5407-7041"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "https://orcid.org/0009-0008-7070-8705"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "https://orcid.org/0009-0001-7010-7968"
+          },
+          {
+            "entity": "ORCID/Collaborator/Creator/Contributor",
+            "value": "https://orcid.org/0000-0002-9245-4397"
+          },
+          {
+            "entity": "ROR/Institution/University/Organization",
+            "value": "https://ror.org/05ydjnb78"
+          },
+          {
+            "entity": "ROR/Institution/University/Organization",
+            "value": "https://ror.org/046ak2485"
+          },
+          {
+            "entity": "ROR/Institution/University/Organization",
+            "value": "https://ror.org/02n5r1g44"
+          },
+          {
+            "entity": "ROR/Institution/University/Organization",
+            "value": "https://ror.org/01jty7g66"
+          },
+          {
+            "entity": "ROR/Institution/University/Organization",
+            "value": "https://ror.org/000h6jb29"
+          },
+          {
+            "entity": "ROR/Institution/University/Organization",
+            "value": "https://ror.org/05qpz1x62"
+          },
+          {
+            "entity": "Related Identifier",
+            "value": "10.5281/zenodo.11183498 (obsoletes)"
+          },
+          {
+            "entity": "Related Identifier",
+            "value": "https://www.gbif.org/dataset/11c5c7f0-08cf-4a8b-a0e2-dfbc9ad768e3 (isCitedBy)"
+          },
+          {
+            "entity": "Related Identifier",
+            "value": "10.5281/zenodo.14557590 (isSupplementedBy)"
+          }
+        ]
+      }
+    }
+  },
+  "FsF_R1_01MD": {
+    "test_results": {
+      "FsF_R1_01MD-1": {
+        "files": [
+          {
+            "name": "AOD_Offices",
+            "f_type": "csv",
+            "size": "10145 bytes"
+          },
+          {
+            "name": "AOD_transcriptions",
+            "f_type": "xsd",
+            "size": "4964 bytes"
+          },
+          {
+            "name": "AOD_transcriptions",
+            "f_type": "xml",
+            "size": "1112881 bytes"
+          },
+          {
+            "name": "AOD_Observation_Record_Data",
+            "f_type": "csv",
+            "size": "2850126 bytes"
+          },
+          {
+            "name": "AOD_forestry_offices_staff",
+            "f_type": "csv",
+            "size": "51218 bytes"
+          },
+          {
+            "name": "AOD_Datatable_Documentation",
+            "f_type": "pdf",
+            "size": "3203881 bytes"
+          },
+          {
+            "name": "AOD_Districts",
+            "f_type": "csv",
+            "size": "1729 bytes"
+          },
+          {
+            "name": "AOD_Species_Names",
+            "f_type": "csv",
+            "size": "23292 bytes"
+          },
+          {
+            "name": "AOD_transcriptions_doc",
+            "f_type": "pdf",
+            "size": "88617 bytes"
+          }
+        ],
+        "variables": [
+          "geo-coded animal observation data",
+          "animal observation data",
+          "vertebrate species",
+          "geo-coded data"
+        ]
+      }
+    }
+  },
+  "FsF_R1_1_01M": {
+    "test_results": {
+      "FsF_R1_1_01M-1": {
+        "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+      },
+      "FsF_R1_1_01M-2": {
+        "success": true,
+        "comment": "The metadata file contains a license that is recognized by the SPDX license registry, ensuring compliance and standardization."
+      }
+    }
+  },
+  "FsF_R1_2_01M": {
+    "test_results": {
+      "FsF_R1_2_01M-1": {
+        "success": true,
+        "entities": {
+          "creator": "Rehbein, Malte",
+          "contributors": [
+            "https://orcid.org/0000-0002-3252-0604",
+            "https://orcid.org/0000-0002-4588-3180",
+            "https://orcid.org/0000-0002-6218-7275",
+            "https://orcid.org/0000-0002-4325-4030",
+            "https://orcid.org/0009-0004-1488-6110",
+            "https://orcid.org/0009-0001-5407-7041",
+            "https://orcid.org/0009-0008-7070-8705",
+            "https://orcid.org/0009-0001-7010-7968",
+            "https://orcid.org/0000-0002-9245-4397"
+          ],
+          "curation_date": "2024-12-13T19:35:07.868221+00:00",
+          "version": "1.4",
+          "modification_date": "2024-12-26T10:06:12.445431+00:00",
+          "source": "https://doi.org/10.5281/zenodo.14452998"
+        },
+        "formal_vocab": false
+      }
+    }
+  },
+  "FsF_R1_3_02D": {
+    "test_results": {
+      "FsF_R1_3_02D-1": {
+        "success": true,
+        "comment": "All listed file formats in the metadata are open, indicating that the metadata format is indeed an open file format.",
+        "scientific_fmt": true,
+        "info": "The metadata format has been successfully identified as a scientific file format. At the same time the list of files provided in the metadata also are scientific data formats."
+      }
+    }
+  }
+}
