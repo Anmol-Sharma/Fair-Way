@@ -105,7 +105,6 @@ async def fetch_results(initiated_task_str: str, client, STATUS_URL, RESULTS_URL
                 raise RuntimeError(
                     f"Internal Server Error when fetching task {initiated_task_str}"
                 )
-
             # For other errors, provide context and re-raise
             raise RuntimeError(f"Failed to fetch results: {error}") from error
 
@@ -114,7 +113,6 @@ async def fetch_results(initiated_task_str: str, client, STATUS_URL, RESULTS_URL
 def load_test_items(csv_path: str) -> List[Tuple[str, str]]:
     """Load test items from CSV file."""
     test_items = []
-
     try:
         with open(csv_path) as csvfile:
             reader = csv.reader(csvfile)
