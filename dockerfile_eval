@@ -6,7 +6,7 @@ RUN mkdir -p /evaluate
 WORKDIR /evaluate
 COPY ./backend/ ./
 RUN mkdir -p /var/tmp/Evaluate
-RUN poetry install --without dev
+RUN poetry install
 CMD ["poetry", "run", "python", "evaluate.py"]
 
 # Run the celery service
