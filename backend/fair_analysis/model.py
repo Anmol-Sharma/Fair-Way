@@ -5,7 +5,7 @@ from httpx import ReadTimeout
 from pydantic import BaseModel
 import logging
 from openai import OpenAI
-from time import sleep
+import time
 import openai
 
 
@@ -75,8 +75,8 @@ class OpenAiModel:
 
         for attempt in range(retries):
             try:
-                # Necessary sleep to still avoid 429 even with rate limit exceptions
-                sleep(3.5)
+                # Necessary sleep to still avoid 429 even with rate limit exceptions as limit for tokens per minute
+                time.sleep(4.0)
                 response = self.__client.beta.chat.completions.parse(
                     model=self.__model_name,
                     messages=messages,
@@ -90,7 +90,7 @@ class OpenAiModel:
                 self.__logger.warning(
                     f"Rate limit exceeded. Attempt {attempt + 1} of {retries}. Retrying in {backoff} seconds..."
                 )
-                sleep(backoff)
+                time.sleep(backoff)
                 backoff *= 2
             except Exception as e:
                 # Handle other exceptions

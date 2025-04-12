@@ -56,7 +56,9 @@ class BaseMetric:
         3. If there are partial results in both, select the one with more details. The returned feedback should look like an actual useful test result (on the task) to the user and not just a direct combination of two results.
         4. Select the source for each extracted key and its source of results (eg. Embedded or Harvested) by adding a `source` key to the final results for each key.
         5. Also, ONLY answer back in the common json data format of both the test results with no comments or explanation since you are interacting with an api and not a human and the json results need to be parsed. Combine the test items given below.\n"""
-        self.logger.info(f"Combining the Results for the metric :- {self.metric_id}")
+        self.logger.info(
+            f"Combining the Results from multiple Metadata Files for the metric :- {self.metric_id}"
+        )
         for k, result in results.items():
             msg = f"""Result source: '{k}'\n```{json.dumps(result, separators=(',', ':'))}```"""
             Base_MSG = "\n".join([Base_MSG, msg])

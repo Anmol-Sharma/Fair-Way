@@ -52,8 +52,11 @@ class BaseTest:
         """
 
         # There will be a single chunk if there is no need to generate chunks
-        if isinstance(file_chunks, list) and len(file_chunks) == 1:
+        if (isinstance(file_chunks, list) or isinstance(file_chunks, tuple)) and len(
+            file_chunks
+        ) == 1:
             try:
+                print("Performing test of full file contents.")
                 return True, self.__perform_test_on_full_contents(
                     model, file_content=file_chunks[0], file_type=file_type
                 )
@@ -141,8 +144,11 @@ class BaseTest:
             )
             chunk_results.append(self.__parse_response(response))
 
-        chunk_results = self.filter_chunk_results(chunk_results)
-        return self.__combine_chunk_results(model, chunk_results)
+        if len(chunk_results) <= 1:
+            return self.__parse_response(chunk_results[0])
+        else:
+            chunk_results = self.filter_chunk_results(chunk_results)
+            return self.__combine_chunk_results(model, chunk_results)
 
     def __build_messages(
         self, file_content: str, file_type: str
