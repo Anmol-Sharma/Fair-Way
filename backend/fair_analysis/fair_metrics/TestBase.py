@@ -56,7 +56,7 @@ class BaseTest:
             file_chunks
         ) == 1:
             try:
-                print("Performing test of full file contents.")
+                print("Performing test on single Chunk (or full file contents).")
                 return True, self.__perform_test_on_full_contents(
                     model, file_content=file_chunks[0], file_type=file_type
                 )

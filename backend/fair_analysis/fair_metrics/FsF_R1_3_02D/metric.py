@@ -47,10 +47,13 @@ class Metric(BaseMetric):
                     "info": "",
                 }
         else:
-            t_result = {"success": False, "comment": "No File information found"}
+            t_result = {
+                "success": False,
+                "comment": "No Specific File information found",
+            }
             t_result_2 = {
                 "scientific_fmt": False,
-                "info": "No File information found, cannot check for scientific format",
+                "info": "No File information found, cannot check for scientific format.",
             }
         return ({**t_result, **t_result_2}, ResponseFormat)
 
