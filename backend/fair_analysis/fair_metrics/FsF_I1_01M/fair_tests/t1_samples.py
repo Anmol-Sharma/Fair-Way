@@ -19,7 +19,33 @@ FEW_SHOT_SAMPLES = [
         "feedback": """{"success":true,"comment":"The JSON-LD document is a well-formed formal knowledge representation that follows linked data principles and ontology standards for semantic web."}""",
     },
     {
-        "ex": """<?xml version="1.0" encoding="UTF-8"?><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:geo="http://www.geonames.org/ontology#" xmlns:void="http://rdfs.org/ns/void#"><dcterms:Dataset rdf:about="https://example.org/dataset/geospatial"><dcterms:title>Global Geographic Locations Dataset</dcterms:title><dcterms:description>A dataset containing geospatial data, including cities, landmarks, and natural features, categorized using the GeoNames ontology.</dcterms:description><dcterms:creator><foaf:Person><foaf:name>Dr. John Smith</foaf:name><foaf:mbox>mailto:john.smith@example.org</foaf:mbox></foaf:Person></cterms:creator><dcterms:publisher><foaf:Organization><foaf:name>Geospatial Data Institute</foaf:name><foaf:homepage rdf:resource="https://example.org/gdi" /></foaf:Organization></dcterms:publisher><dcterms:issued>2024-02-25</dcterms:issued><dcterms:modified>2025-02-25</dcterms:modified><void:triples>1000000</void:triples><dcterms:subject><geo:Feature rdf:about="http://sws.geonames.org/6295630/"><dcterms:title>Earth</dcterms:title><dcterms:description>Our planet, categorized in the GeoNames ontology.</dcterms:description><geo:Feature></dcterms:subject></dcterms:Dataset></rdf:RDF>""",
-        "feedback": """{"success":false, "comment":"The original RDF/XML file has tag mismatches and missing closing tags, making it invalid"}""",
+        "ex": """# Dataset Metadata: Urban Air Quality Measurements (2024)
+        ## Overview
+        This dataset contains hourly air quality measurements collected from multiple monitoring stations across New York City for the year 2024.
+
+        ## Dataset Details
+        - **Title:** Urban Air Quality Measurements - NYC 2024
+        - **Description:** Hourly data on major pollutants including PM2.5, PM10, NO2, CO, and O3, collected from 15 monitoring sites.
+        - **Creator:** NYC Department of Environmental Protection
+        - **Version:** 1.0
+        - **License:** CC BY 4.0
+        - **DOI:** 10.1234/urban-air-nyc-2024
+
+        ## File Information
+        - **Format:** CSV
+        - **Size:** 200MB
+        - **Number of Records:** ~131,400 (15 stations × 365 days × 24 hours)
+
+        ## Columns
+        | Column Name | Description                 | Data Type |
+        |-------------|-----------------------------|-----------|
+        | station_id  | Monitoring station ID       | String    |
+        | timestamp   | Date and time of recording  | Datetime  |
+        | pm25        | PM2.5 concentration (µg/m³) | Float     |
+        | o3          | O3 concentration (ppb)      | Float     |
+
+        ## Usage
+        This dataset is intended for use in urban environmental research, machine learning models for air quality prediction, and public health analysis.""",
+        "feedback": """{"success":false, "comment":"Markdown data detected. Not formal representation."}""",
     },
 ]
