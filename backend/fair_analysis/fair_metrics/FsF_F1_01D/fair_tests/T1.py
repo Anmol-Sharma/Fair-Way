@@ -35,11 +35,11 @@ class Test(BaseTest):
 
 
 t1 = Test(
-    name="Data is assigned global unique identifier",
+    name="Data is assigned global unique identifier in the provided metadata.",
     feedback_format=ResponseFormat,
     test_main_cmd="""Your task is to help analyze the metadata and carefully check the condition if metadata contains a Global Unique Identifier for the Data. It should follow a unique syntax which are common to unique identifiers. Examples of unique identifiers of data are Internationalized Resource Identifier (IRI), Website URL, Digital Object Identifier (DOI) etc. Records associated with common data repositories are also globally unique. Key Steps to follow:-
-    1. Check for a GUID like a DOI or URL or URN or IRI or any other globally unique identifier you know. Verify similar vocabulary terms for an identifier.
-    2. Also check carefully if identifier is web accessble i.e. can be verified over internet. Random Text Cannot be a Persistent Identifier.
+    1. Check for a GUID like a DOI or URL or URN or IRI or any other globally unique identifier explicitly mentioned int the metadata.
+    2. Also check carefully if identifier is web accessble i.e. can be verified over internet. Random Text Cannot be a Persistent Identifier and SHOULD be explicitly mentioned in the metadata.
     3. If yes, then return success as true alongisde the detected identifier.
     4. If there is no detected global identifier, success should be false and identifier as empty.""",
     test_instruction="Check carefully if metadata has a globally unique identifier linked to the dataset or not.",

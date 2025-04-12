@@ -43,11 +43,11 @@ class Test(BaseTest):
 
 
 t1 = Test(
-    name="Metadata contains information about related entities.",
+    name="Metadata contains information about related entities and references to them.",
     feedback_format=ResponseFormat,
     test_main_cmd="""Your task is to help analyze the metadata provided and detect and extract related entities them from the given metadata. Key Steps:-
     1. Related entities include information about references to other datasets or resources. Check for 'funder', 'git repository', 'citations', 'versions' and 'contributor'.
-    2. They can be referenced by fields like 'RelatedIdentifier' and 'RelationType' 'ORCID' for contributors, 'ROR' for institutions, 'HasVersion' for Version in a more formal metadata and using casually related terms in informal metadata.
+    2. They can be referenced by fields like 'RelatedIdentifier' and 'RelationType' for relations to other entities. 'ORCID' can be mentioned for contributors, 'ROR' for institutions or Universities, 'HasVersion' or ('recid') for Version information in a more formal metadata and using casually related terms in informal metadata.
     3. Analyze carefully the final list of related entities. Each entry should look like an actual related entity which is part of the given metadata and not some random text.
     Answer back in the provided response format.
     """,

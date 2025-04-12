@@ -34,11 +34,11 @@ class Test(BaseTest):
 
 
 t2 = Test(
-    name="License used falls in SPDX licence registry.",
+    name="License associated with data in metadata falls in SPDX licence registry.",
     feedback_format=ResponseFormat,
     test_main_cmd="""You will be given licence information detected in a metadata. Your task is to check if this licence is part of some common licences in SPDX registry which will are provided to you below.
-    Some common licences used in spdx registery:- 'Apapche-1.0', 'CC-BY-4.0', 'CC0-1.0', 'FSFAP(FsF All Permisive)', 'NOSL(netizen open source licence)', 'NPL-1.0(netscape public licence)', 'OSL-1.1(Open software licence)', 'AFL (Academic Free licence)', 'CPL(Common public licence)', 'EUDatagrid licence', 'MIT', 'MPL (Mozilla public licence)', 'OSL (Open Software licence)', 'PDDL', 'ODC'.
+    Some common licences used in spdx registery:- 'Apapche-1.0', 'CC-BY-4.0', 'CC-BY-SA', 'CC0-1.0', 'FSFAP(FsF All Permisive)', 'NOSL(netizen open source licence)', 'NPL-1.0(netscape public licence)', 'OSL-1.1(Open software licence)', 'AFL (Academic Free licence)', 'CPL(Common public licence)', 'EUDatagrid licence', 'MIT', 'MPL (Mozilla public licence)', 'OSL (Open Software licence)', 'PDDL', 'ODC'.
     """,
-    test_instruction="Check if licence used is listed in SPDX registry.",
+    test_instruction="Check if licence associated with data in metadata is listed in SPDX registry.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )

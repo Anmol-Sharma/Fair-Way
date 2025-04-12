@@ -35,14 +35,16 @@ class Test(BaseTest):
 
 
 t1 = Test(
-    name="Namespaces of known semantic resources can be identified in metadata.",
+    name="Metadata contains identifiers to semantic resources like Vocabulary used and their URIs.",
     feedback_format=ResponseFormat,
-    test_main_cmd="""Your task is to help analyze the metadata provided and detect if any known vocabulary namespace URIs are found. Key Tasks:-
-    1. Check if metadata container any URI(Univeral Resource Identifiers) and extract them.
+    test_main_cmd="""Your task is to help analyze the metadata provided and detect if any known vocabulary namespace URIs are found in the metadata. Key Tasks:-
+    1. Check if metadata container any URI(Univeral Resource Identifiers) for vocabulary namespaces and extract them.
     2. Check if extracted URI belong to either 'rdf', 'rdfs', 'owl', 'xsd', 'schema.org'. These are common and you can ignore them.
     3. From the pending detected URIs check for examples like `bioportal`, `bartoc`, `linked open vocabularies (lov)`, purl linked vocabularies (eg. with url purl.org), `ontohub` etc. The metadata should explicilty list these with a distinct URI.
     4. Normal URLs or Universal Identifiers like DOI are NOT vocabulary namespace URIs. Similarly random names like `namespace1` or `namespace2` are not actual namespaces. Only include namespace with given URI explicitly part of metadata.
-    5. If there is no detected vocabulary namespaces, success should be false, and resources field as empty.""",
+    5. If there is no detected vocabulary namespaces, success should be false, and resources field as empty.
+    Also use the provided examples for carefully analyzing, how to perform this action.
+    """,
     test_instruction="Check if metadata includes information about used vocabulary namespace URIs.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )
