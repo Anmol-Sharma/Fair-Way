@@ -19,7 +19,7 @@ class Test(BaseTest):
     def __init__(self, vocab_item: dict):
         # Based on the provided instructions, domain define the base test.
 
-        name = "Metadata contains user defined vocabulary checks."
+        name = f"Metadata contains user defined vocabulary items for the domain {vocab_item["domain"]}."
         test_main_cmd = f"Your task is to help analyze the metadata provided for custom vocabulary item for the domain {vocab_item["domain"]}. The exact vocab item to check is: `{vocab_item["name"]}` and its description is: `{vocab_item["desc"]}`. Only return true if it is explicitly defined in the metadata."
         test_instruction = f"Check if metadata includes information explicitly about `{vocab_item["name"]}`"
         feedback_format = V_ResponseFormat

@@ -39,7 +39,7 @@ class Test(BaseTest):
 
 
 t2 = Test(
-    name="Metadata format is a scientific file format.",
+    name="File formats listed in the metadata are scientific file formats.",
     feedback_format=ResponseFormat,
     test_main_cmd="""Your task is to help analyze the provided metadata and check if data files listed used formats suitable for scientific usage. An scientific file format is format which can be used by anyone and generally used by a particular scientific community. Key Tasks :-
     1. Check if file formats information is listed in the metadata.
@@ -49,6 +49,6 @@ t2 = Test(
     '.fits', 'Silo', 'SPC', 'EOSSA', 'CCP4', 'SDF', 'CSDM', 'NetCDF', 'HDR/HDF', 'FMF', 'GRIB'(Meteorology), 'CML'(Chemical markup Lang), '.mol', '.g6', 'AB1'(DNA Sequencing), 'BCF', 'CRAM', 'DDBJ', 'FASTQ', 'GFF', 'PLN' (Protein Line notation), 'SCF', 'SRA', 'VCF', 'MINC', 'EDF', 'NPY', 'NPZ', 'MATLAB', 'GeoTIFF' etc.
     ```
     """,
-    test_instruction="Check if data file in listed in the metadat use open data file formats.",
+    test_instruction="Check if data files listed in the metadata are scientific file formats.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )

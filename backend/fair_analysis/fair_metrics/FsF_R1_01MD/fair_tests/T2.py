@@ -46,9 +46,9 @@ class Test(BaseTest):
 
 
 t2 = Test(
-    name="Metadata contains information about content of the data.",
+    name="Metadata contains information about content of the data like files and variables.",
     feedback_format=ResponseFormat,
-    test_main_cmd="Your task is to help analyze the metadata provided at the end for content of the data, which includes file types, file sizes and measured variables. Analyze file names carefully and reject any false positives. For eg. special characters like `:` or '}' as single characters cannot be valid file names. Check carefully if information explicitly about files has been mentioned and also carefully look if metadata includes information about variables/ observations which were measured.",
+    test_main_cmd="Your task is to help analyze the metadata provided at the end for content of the data, which includes file types, file sizes and measured variables. Analyze file names carefully and reject any false positives. For eg. special characters like `:` or '}' as single characters cannot be valid file names. Check carefully if information explicitly about files has been mentioned and also carefully look if metadata includes information about variables/ observations which were measured. This information needs to be explicitly mentioned and not randomly created by you. Use the provided examples for reference on how to perform the task.",
     test_instruction="Check if metadata includes information about data content. Check carefully as different vocabulary could have been used for them.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )

@@ -39,7 +39,7 @@ class Test(BaseTest):
 
 
 t1 = Test(
-    name="Metadata format is an open file format.",
+    name="File formats listed in the metadata are an open file formats.",
     feedback_format=ResponseFormat,
     test_main_cmd="""Your task is to help analyze the provided metadata and check if data files listed used open data file formats. An open file format is format which can be used by anyone royalty free. Key Tasks :-
     1. Check if file formats information is listed in the metadata.
@@ -50,6 +50,6 @@ t1 = Test(
     'apng', 'av1', 'flif', 'gif', 'jpeg', jpeg-'xl', 'png', 'webp', 'svg', 'xpm', 'alac', 'flac', 'mp3', 'ogg', 'vorbis', 'av1', 'webm', 'plaintext', 'csv', 'html', 'markdown', 'epub', 'latex', 'OpenXPS', 'Office_Open_XML', 'PDF' (open since v1.7), 'XHTML', '7z', 'bzip2', 'lzip', 'gzip', 'sqx', 'tar', 'xz', 'zip', 'css', 'hdf', 'json', 'netcdf', 'nzb', 'rss', 'xml', 'yaml', 'DjVu'
     ```
     """,
-    test_instruction="Check if data file in listed in the metadat use open data file formats.",
+    test_instruction="Check if data files listed in the metadata are open file formats.",
     few_shot_samples=FEW_SHOT_SAMPLES,
 )
