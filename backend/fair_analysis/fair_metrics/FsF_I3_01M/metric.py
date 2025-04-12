@@ -33,10 +33,9 @@ class Metric(BaseMetric):
         All_Results = {}
         resp_format = self.tests["FsF_I3_01M-1"].test_feedback_format
         for k in metadata.keys():
-            # Perform the test on complete metadata
             res = self.execute_tests(
                 model,
-                (metadata[k]["metadata"],),  # Single complete chunk --> full metadata
+                metadata[k]["metadata_chunks"],
                 metadata[k]["source"],
             )
             name = ""
