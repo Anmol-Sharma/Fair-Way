@@ -30,13 +30,13 @@ class Metric(BaseMetric):
     def score_test_results(self, t_results):
         score = 0.0
         if (
-            t_results.get("success")
-            and t_results.get("entities")
+            ("success" in t_results)
+            and ("entities" in t_results)
             and (t_results["success"])
             and (len(t_results["entities"].values()) > 1)
         ):
             score = 1.0
-            if t_results.get("formal_vocab") and t_results["formal_vocab"]:
+            if ("formal_vocab" in t_results) and t_results["formal_vocab"]:
                 score = 2.0
 
         self.results["test_results"]["FsF_R1_2_01M-1"] = t_results

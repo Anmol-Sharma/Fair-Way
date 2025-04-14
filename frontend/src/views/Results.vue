@@ -171,7 +171,9 @@ onMounted(async () => {
                 </tr>
                 <tr>
                   <th>FAIR Level:</th>
-                  <td>{{ ((totalFairScore / maxFairScore) * 100).toFixed(0) }}%</td>
+                  <td>
+                    <strong> {{ ((totalFairScore / maxFairScore) * 100).toFixed(0) }}% </strong>
+                  </td>
                 </tr>
                 <tr>
                   <th>Detected Resource PID/URL:</th>

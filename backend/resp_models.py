@@ -57,5 +57,4 @@ class TaskStatus(BaseModel):
 class AssessmentResults(BaseModel):
     task_id: str
     success: bool
-    # TODO: Define a detailed version of results after exporting one of the results
     fair_assessment: Dict[str, Any]

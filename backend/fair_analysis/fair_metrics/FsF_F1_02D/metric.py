@@ -30,11 +30,11 @@ class Metric(BaseMetric):
 
     def score_test_results(self, t_results):
         score = 0
-        if t_results.get("success") and t_results["success"]:
+        if ("success" in t_results) and t_results["success"]:
             score = 0.5
 
         if (
-            t_results.get("success")
+            ("success" in t_results)
             and t_results["success"]
             and re.match(
                 "^(https?:\/\/)?([\w\-]+\.)+[\w]{2,}(:\d+)?(\/[^\s]*)?$",
@@ -42,7 +42,7 @@ class Metric(BaseMetric):
             )
         ):
             try:
-                if t_results.get("identifier"):
+                if "identifier" in t_results:
                     t_results_2 = self.tests["FsF_F1_02D-2"].perform_test(
                         t_results["identifier"]
                     )

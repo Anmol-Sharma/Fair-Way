@@ -59,7 +59,7 @@ class Metric(BaseMetric):
 
     def score_test_results(self, t_results):
         score = 0.0
-        if t_results.get("success") and t_results["success"]:
+        if ("success" in t_results) and t_results["success"]:
             score = 1.0
 
         self.results["test_results"]["FsF_I1_01M-1"] = t_results

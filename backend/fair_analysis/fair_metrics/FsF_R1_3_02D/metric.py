@@ -19,7 +19,7 @@ class Metric(BaseMetric):
         super().__init__(metric_id, name, active, tests, principle)
 
     def execute_tests(self, model, file_chunks, file_type):
-        if len(file_chunks) > 1:
+        if len(file_chunks) >= 1:
             succ1, t_result = self.tests["FsF_R1_3_02D-1"].perform_test(
                 model=model,
                 file_chunks=file_chunks,
@@ -59,7 +59,7 @@ class Metric(BaseMetric):
 
     def score_test_results(self, t_results):
         score = 0.0
-        if (t_results.get("success") and t_results.get("scientific_fmt")) and (
+        if (("success" in t_results) and ("scientific_fmt" in t_results)) and (
             t_results["success"] or t_results["scientific_fmt"]
         ):
             score = 1.0

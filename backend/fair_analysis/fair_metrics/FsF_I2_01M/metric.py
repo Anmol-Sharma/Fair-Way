@@ -29,8 +29,8 @@ class Metric(BaseMetric):
     def score_test_results(self, t_results):
         score = 0.0
         if (
-            t_results.get("resources")
-            and t_results.get("success")
+            ("resources" in t_results)
+            and ("success" in t_results)
             and (len(t_results["resources"]) >= 1)
             and (t_results["success"])
         ):
