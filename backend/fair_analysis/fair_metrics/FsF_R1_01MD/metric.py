@@ -27,13 +27,10 @@ class Metric(BaseMetric):
         return t_result, self.tests["FsF_R1_01MD-1"].test_feedback_format
 
     def score_test_results(self, t_results):
-        self.logger.info("Received results in R1_01MD for scoring")
-        self.logger.info(t_results)
         score = 0.0
         if (("files" in t_results) and ("variables" in t_results)) and (
             (len(t_results["files"]) >= 1) or (len(t_results["variables"]) >= 1)
         ):
-            self.logger.info("Condition Triggered")
             score = 1.0
         if score > 0.0:
             if ("files" in t_results) and len(t_results["files"]) > 1:
