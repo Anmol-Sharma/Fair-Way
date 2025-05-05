@@ -2,7 +2,6 @@ from fair_analysis.fair_metrics.MetricBase import BaseMetric
 from fair_analysis.fair_metrics.FsF_A1_01M.fair_tests.T1 import t1
 from typing import Dict
 
-
 class Metric(BaseMetric):
     def __init__(
         self, metric_id: str, name: str, active: bool, tests: Dict, principle: str

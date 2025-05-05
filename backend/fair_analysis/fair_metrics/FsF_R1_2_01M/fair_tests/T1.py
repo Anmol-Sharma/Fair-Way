@@ -42,7 +42,7 @@ t1 = Test(
     name="Metadata contains provenance information about creators of the data.",
     feedback_format=ResponseFormat,
     test_main_cmd="""Your task is to help analyze the metadata provided for provenance information about data.
-    Key Step:-
+    Key Steps:-
     1. Carefully check if metadata contains information about all the following elements:- `creator`, `contributors` (ORCID ids provided), `date of curation`, `version information` using 'HasVersion' or 'recid', `modification date` and `source`(source of collection like an instrument or device). Remember when selecting creator and contributors that creator is usually a single primarily person (usually first) and other mentioned people classify as contributors.
     2. Set success as True if and only if all entities are present except contributor (it is optional), else return success as false.
     3. Once all the entities are collected and success is determined, check if the vocabulary in use for ALL entities entities uses formal standards like any of the following :- 'FOAF', 'PROV-AQ', 'PROV-DC', 'PROV-O', 'PROV-XML', 'PAV'. If so, use the variable formal_vocab as true, otherwise false.

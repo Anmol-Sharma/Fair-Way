@@ -329,7 +329,7 @@ onMounted(async () => {
             <a
               class="link-primary"
               href="https://www.fairsfair.eu/fairsfair-data-object-assessment-metrics-request-comments"
-              >FAIRsFAIR Data Object Assessment Metrics (v0.4)</a
+              >FAIRsFAIR Data Object Assessment Metrics (v0.5)</a
             >
           </p>
         </div>
