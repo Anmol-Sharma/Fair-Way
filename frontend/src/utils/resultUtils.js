@@ -9,12 +9,15 @@ function sleep(ms) {
 }
 
 function renameId(id) {
-  // Helper function to convert python module name syntax Metric/ Test Ids to their actual values
-  const matches = id.match(/[A-Za-z]\d_\d/g);
+  // First, handle patterns like R1_1, R1_2 by replacing _ with . between letters and numbers
+  const matches = id.match(/[A-Za-z]\d+_\d+/g);
   if (matches && matches.length > 0) {
-    const patternMatch = matches[0];
-    id = id.replace(patternMatch, patternMatch.replace("_", "."));
+    for (const match of matches) {
+      const replacement = match.replace(/_/, ".");
+      id = id.replace(match, replacement);
+    }
   }
+  // Then replace remaining underscores with hyphens
   return id.replace(/_/g, "-");
 }
 
@@ -25,8 +28,8 @@ function processMetricResults(metricResults) {
     out_of: metricResults.out_of,
     test_results: {},
   };
-  for (const [testKey, result] of Object.entries(metricResults.test_results).sort(
-    ([keyA], [keyB]) => keyA.localeCompare(keyB)
+  for (const [testKey, result] of Object.entries(metricResults.test_results).sort(([keyA], [keyB]) =>
+    keyA.localeCompare(keyB),
   )) {
     const testId = renameId(testKey);
     bodyContent.test_results[testId] = result;
