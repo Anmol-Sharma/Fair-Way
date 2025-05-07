@@ -9,15 +9,18 @@ function sleep(ms) {
 }
 
 function renameId(id) {
-  // First, handle patterns like R1_1, R1_2 by replacing _ with . between letters and numbers
-  const matches = id.match(/[A-Za-z]\d+_\d+/g);
+  // First identify special patterns like R1_1, R1_2 where we need a decimal
+  // Match letter+digits+underscore+digits that is not followed by letter or digit
+  const matches = id.match(/[A-Za-z]\d+_\d+(?![A-Za-z0-9])/g);
+
   if (matches && matches.length > 0) {
     for (const match of matches) {
       const replacement = match.replace(/_/, ".");
       id = id.replace(match, replacement);
     }
   }
-  // Then replace remaining underscores with hyphens
+
+  // Then replace all remaining underscores with hyphens
   return id.replace(/_/g, "-");
 }
 
