@@ -94,5 +94,10 @@ The metrics reside in the directory `backend/fair_analysis/fair_metrics/`. All t
 - Set of associated tests for the given metric defined in `fair_tests` directory
 - Then to enable the metric, add it to the list of metrics used in `backend/fair_analysis/fair_analyzer.py` file.
 
-
 The tests with a metric can also be defined by importing `backend/fair_analysis/TestBase.py` and extending based on this base class.
+
+## Citation
+
+Please cite Fair-Way as:  (Citation details to be finalized; check back for updates.)
+
+Paper Accepted at [CIKM 2025 Conference](https://cikm2025.org/)
